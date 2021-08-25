@@ -2,51 +2,85 @@
 import './App.css';
 import React from 'react';
 
-class Video extends React.Component {
+class Player extends React.Component {
+  constructor(props) {
+    super(props);
+    this.loadVideo = this.loadVideo.bind(this);
+    this.toggleVideo = this.toggleVideo.bind(this);
+    this.state = {
+      videoPlayer: null,
+      videoStatus: 'play'
+    };
+  }
 
   componentDidMount() {
     if (!window.YT) {
       const tag = document.createElement('script');
       tag.src = "https://www.youtube.com/iframe_api";
+      window.onYouTubeIframeAPIReady = this.loadVideo;
 
       const firstScriptTag = document.getElementsByTagName('script')[0];
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-      window.onYouTubeIframeAPIReady = this.loadPlayer;
+
     } else {
-      this.loadPlayer();
+      this.loadVideo();
     }
   };
 
-  loadPlayer() {
-    let player = new window.YT.Player('player');
-  };
+  loadVideo() {
+    let videoPlayer = new window.YT.Player('video', {
+      videoId: 'dZ47VLoL514',
+    });
+    this.setState({
+      videoPlayer: videoPlayer
+    });
+  }
+
+  toggleVideo() {
+    let videoPlayer = this.state.videoPlayer;
+    let videoStatus = this.state.videoStatus;
+    if (videoStatus === 'play') {
+      videoPlayer.playVideo();
+      this.setState({
+        videoStatus: 'pause'
+      })
+    } else {
+      videoPlayer.pauseVideo();
+      this.setState({
+        videoStatus: 'play'
+      })
+    }
+  }
 
   render() {
     return (
-      <div id="player"></div>
+      <div id="player">
+        <div id="video"></div>
+        <div id="controls">
+          <MediaButton 
+            text='prev'
+            onClick={() => this.toggleVideo()} />
+          <MediaButton 
+            text={this.state.videoStatus}
+            onClick={() => this.toggleVideo()} />
+          <MediaButton 
+            text='next'
+            onClick={() => this.toggleVideo()} />
+        </div>
+      </div>
     )
   }
 }
 
+function MediaButton(props) {
+  return (
+    <button onClick={props.onClick}>{props.text}</button>
+  )
+}
+
 function App() {
   return (
-    // <div className="App">
-    //   <header className="App-header">
-    //     <img src={logo} className="App-logo" alt="logo" />
-    //     <p>
-    //       Edit <code>src/App.js</code> and save to reload.
-    //     </p>
-    //     <a
-    //       className="App-link"
-    //       href="https://reactjs.org"
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //     >
-    //       Learn React
-    //     </a>
-    //   </header>
-    // </div>
-    <Video />
+    <Player />
   );
 }
 
