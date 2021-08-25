@@ -78,10 +78,10 @@ function MediaButton(props) {
   )
 }
 
-function App() {
-  return (
-    <Player />
-  );
+export default class App extends React.Component {
+  render() {
+    return (
+      <Player />
+    );
+  }
 }
-
-export default App;
