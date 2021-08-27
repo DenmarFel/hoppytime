@@ -1,15 +1,49 @@
 // import logo from './logo.svg';
 import './App.css';
 import React from 'react';
+import axios from 'axios';
+
+class PlayerForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {value: ''};
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {    
+    this.setState({value: event.target.value});  
+  }
+
+  handleSubmit(event) {
+    this.props.onVideoChange(this.state.value);
+    event.preventDefault();
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          Video Link:
+          <input type="text" value={this.state.value} onChange={this.handleChange} />
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
+    )
+  }
+}
 
 class Player extends React.Component {
   constructor(props) {
     super(props);
     this.loadVideo = this.loadVideo.bind(this);
     this.toggleVideo = this.toggleVideo.bind(this);
+    this.loadTimestamp = this.loadTimestamp.bind(this);
     this.state = {
       videoPlayer: null,
-      videoStatus: 'play'
+      videoStatus: 'play',
+      videoTimestampData: null
     };
   }
 
@@ -24,15 +58,20 @@ class Player extends React.Component {
     } else {
       this.loadVideo();
     }
+
+    this.loadPlaylist();
   };
 
   componentDidUpdate(prevProps) {
     // Load New Video if new videoId
     if (prevProps.videoId !== this.props.videoId) {
       this.state.videoPlayer.loadVideoById(this.props.videoId);
+      this.state.videoPlayer.pauseVideo();
       this.setState({
-        videoStatus: 'pause'
+        videoStatus: 'play'
       })
+
+      this.loadPlaylist();
     }
   }
 
@@ -43,6 +82,16 @@ class Player extends React.Component {
     this.setState({
       videoPlayer: videoPlayer
     })
+  }
+
+  loadPlaylist() {
+    let temp = this;
+    axios.get(`http://localhost:8080/api/v1/video?link=https://www.youtube.com/watch?v=${this.props.videoId}`)
+      .then(response => {
+        temp.setState({
+          videoTimestampData: response.data,
+        });
+      });
   }
 
   toggleVideo() {
@@ -61,10 +110,14 @@ class Player extends React.Component {
     }
   }
 
+  loadTimestamp(start) {
+    let videoPlayer = this.state.videoPlayer;
+    videoPlayer.seekTo(start);
+  }
+
   render() {
     return (
       <div id="player">
-        {this.props.videoId}
         <div id="video"></div>
         <div id="controls">
           <MediaButton 
@@ -76,6 +129,9 @@ class Player extends React.Component {
           <MediaButton 
             text='next'
             onClick={() => this.toggleVideo()} />
+          <Playlist 
+            videoTimestampData={this.state.videoTimestampData}
+            onTimestampClick={this.loadTimestamp} />
         </div>
       </div>
     )
@@ -88,34 +144,37 @@ function MediaButton(props) {
   )
 }
 
-class PlayerForm extends React.Component {
+class Playlist extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {value: ''};
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleTimeStampClick = this.handleTimeStampClick.bind(this);
   }
 
-  handleChange(event) {    
-    this.setState({value: event.target.value});  
+  handleTimeStampClick(start) {
+    this.props.onTimestampClick(start);
   }
-
-  handleSubmit(event) {
-    console.log(1);
-    this.props.onVideoChange(this.state.value);
-    event.preventDefault();
-  }
-
+  
   render() {
+    let timestamps = '';
+    if (this.props.videoTimestampData !== null) {
+      timestamps = this.props.videoTimestampData.timestamps.map(timestamp => 
+        <tr key={timestamp.title} onClick={() => this.handleTimeStampClick(timestamp.start)}>
+          <td>{timestamp.title}</td>
+          <td>{timestamp.end - timestamp.start}</td>
+        </tr>
+      );
+    }
+
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Video Link:
-          <input type="text" value={this.state.value} onChange={this.handleChange} />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
+      <div id="playlist">
+        <table>
+          <tr>
+            <th>Title</th>
+            <th>Duration</th>
+          </tr>
+          {timestamps}
+        </table>
+      </div>
     )
   }
 }
@@ -125,20 +184,19 @@ export default class App extends React.Component {
     super(props);
     this.handleVideoChange = this.handleVideoChange.bind(this);
     this.state = {
-      videoId: 'dZ47VLoL514'
+      videoId: '3jWRrafhO7M'
     }
   }
 
-  handleVideoChange(videoId) {
+  handleVideoChange(link) {
+    const url = new URL(link);
     this.setState({
-      videoId: videoId,
+      videoId: url.searchParams.get('v'),
     })
   }
 
   render() {
     const videoId = this.state.videoId;
-    console.log(3);
-    console.log(videoId);
     return (
       <div id="app">
         <PlayerForm 
