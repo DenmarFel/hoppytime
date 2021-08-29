@@ -23,12 +23,13 @@ function PlayerForm(props) {
   )
 }
 
-function Player(props) {
+function Player(props) { 
   const [videoPlayer, setVideoPlayer] = useState(null);
   const [videoStatus, setVideoStatus] = useState('play');
   const [videoTimestampData, setVideoTimestampData] = useState(null);
 
   useEffect(() => {
+    // Enables Youtube iFrame API
     if (!window.YT) {
       const tag = document.createElement('script');
       tag.src = "https://www.youtube.com/iframe_api";
@@ -39,7 +40,6 @@ function Player(props) {
     } else {
       loadVideo();
     }
-    loadPlaylist();
   }, []);
 
   useEffect(() => {
@@ -57,10 +57,11 @@ function Player(props) {
         videoId: props.videoId
       })
     )
+    loadPlaylist();
   };
 
   const loadPlaylist = () => {
-    axios.get(`http://localhost:1120/api/v1/video?link=https://www.youtube.com/watch?v=${props.videoId}`)
+    axios.get(`https://mysterious-lake-28010.herokuapp.com/api/v1/video?link=https://www.youtube.com/watch?v=${props.videoId}`)
       .then(response => setVideoTimestampData(response.data));
   };
 
