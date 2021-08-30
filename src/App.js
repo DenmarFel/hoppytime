@@ -3,6 +3,14 @@ import './App.css';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
+const getFormattedDuration = (total) => {
+  // Converts seconds to HH:MM:SS or MM:SS
+  let hours = String(Math.floor(total / 3600));
+  let minutes = String(Math.floor((total - (Number(hours) * 3600)) / 60));
+  let seconds = String(total - (Number(hours) * 3600) - (Number(minutes) * 60));
+  return hours > 0 ? `${hours}:${minutes.padStart(2, '0')}:${seconds.padStart(2, '0')}` : `${minutes}:${seconds.padStart(2, '0')}`
+}
+
 function PlayerForm(props) {
   const [value, setValue] = useState('');
 
@@ -27,42 +35,106 @@ function Player(props) {
   const [videoPlayer, setVideoPlayer] = useState(null);
   const [videoStatus, setVideoStatus] = useState('play');
   const [videoTimestampData, setVideoTimestampData] = useState(null);
+  const [currentTimestamp, setCurrentTimestamp] = useState({
+    title: '',
+    start: 0,
+    end: 0
+  });
+  const [currentTime, setCurrentTime] = useState(0);
+  const [currentTimeInterval, setCurrentTimeInterval] = useState(null);
+
 
   useEffect(() => {
     // Enables Youtube iFrame API
     if (!window.YT) {
       const tag = document.createElement('script');
       tag.src = "https://www.youtube.com/iframe_api";
-      window.onYouTubeIframeAPIReady = loadVideo;
+      window.onYouTubeIframeAPIReady = loadPlayer;
 
       const firstScriptTag = document.getElementsByTagName('script')[0];
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
     } else {
-      loadVideo();
+      loadPlayer();
     }
   }, []);
 
   useEffect(() => {
     if (videoPlayer) {
-      videoPlayer.loadVideoById(props.videoId);
-      videoPlayer.pauseVideo();
-      setVideoStatus('play');
       loadPlaylist();
     }
   }, [props.videoId]);
 
-  const loadVideo = () => {
-    setVideoPlayer(
+  const loadPlayer = () => {
+    axios.get(`https://mysterious-lake-28010.herokuapp.com/api/v1/video?link=https://www.youtube.com/watch?v=${props.videoId}`)
+    .then(response => {
+      setVideoTimestampData(response.data);
+      let timestamp = response.data.timestamps[0];
+      setCurrentTimestamp(timestamp);
       new window.YT.Player('video', {
-        videoId: props.videoId
+        videoId: props.videoId,
+        playerVars: {
+          start: timestamp.start,
+          end: timestamp.end
+        },
+        events: {
+          onReady: onPlayerReady,
+          onStateChange: onPlayerStateChange,
+        }
       })
-    )
-    loadPlaylist();
+    });
   };
+
+  const onPlayerReady = (event) => {
+    setVideoPlayer(event.target);
+  };
+
+  const onPlayerStateChange = (event) => {
+    if (event.data === window.YT.PlayerState.PLAYING) {
+      // https://stackoverflow.com/questions/55265255/react-usestate-hook-event-handler-using-initial-state
+      setCurrentTimeInterval(setInterval(() => {
+        setVideoPlayer(videoPlayer => {
+          setCurrentTimestamp(currentTimestamp => {
+            setCurrentTime(Math.floor(videoPlayer.getCurrentTime()) - currentTimestamp.start);
+            return currentTimestamp;
+          });
+          return videoPlayer;
+        });
+      }, 100));
+      
+    } else if (event.data === window.YT.PlayerState.PAUSED) {
+      setCurrentTimeInterval((currentTimeInterval) => {
+        clearInterval(currentTimeInterval);
+      });
+    }
+  }
 
   const loadPlaylist = () => {
     axios.get(`https://mysterious-lake-28010.herokuapp.com/api/v1/video?link=https://www.youtube.com/watch?v=${props.videoId}`)
-      .then(response => setVideoTimestampData(response.data));
+      .then(response => {
+        setVideoTimestampData(response.data);
+        let timestamp = response.data.timestamps[0];
+        setCurrentTimestamp(timestamp);
+        videoPlayer.loadVideoById({
+          'videoId': props.videoId,
+          'startSeconds': timestamp.start,
+          'endSeconds': timestamp.end
+        });
+      });
+    /* Response Output
+      {
+        videoId: 'String',
+        title: 'String',
+        duration: Integer,
+        timestamps: [
+          #: {
+            title: 'String',
+            start: Integer,
+            end: Integer
+          },
+          ...
+        ]
+      }
+    */
   };
 
   const toggleVideo = () => {
@@ -75,9 +147,23 @@ function Player(props) {
     }
   };
 
+  const handleTimestampSelection = (indx) => {
+    const timestamp = videoTimestampData.timestamps[indx]
+    setCurrentTimestamp(timestamp);
+    videoPlayer.loadVideoById({
+      'videoId': props.videoId,
+      'startSeconds': timestamp.start,
+      'endSeconds': timestamp.end
+    });
+    setVideoStatus('pause');
+  };
+
   return (
     <div id="player">
       <div id="video"></div>
+      <div id="status">
+        Now Playing: {currentTimestamp.title} Time: {getFormattedDuration(currentTime)} 
+      </div>
       <div id="controls">
         <MediaButton 
           text='prev'
@@ -90,7 +176,7 @@ function Player(props) {
           onClick={toggleVideo} />
         <Playlist 
           videoTimestampData={videoTimestampData}
-          onTimestampClick={(start) => videoPlayer.seekTo(start)} />
+          onTimestampClick={(indx) => handleTimestampSelection(indx)} />
       </div>
     </div>
   )
@@ -103,16 +189,16 @@ function MediaButton(props) {
 }
 
 function Playlist(props) {
-  const handleTimeStampClick = (start) => {
-    props.onTimestampClick(start);
+  const handleTimeStampClick = (indx) => {
+    props.onTimestampClick(indx);
   };
 
   let timestamps = '';
   if (props.videoTimestampData !== null) {
-    timestamps = props.videoTimestampData.timestamps.map(timestamp => 
-      <tr key={timestamp.title} onClick={() => handleTimeStampClick(timestamp.start)}>
+    timestamps = props.videoTimestampData.timestamps.map((timestamp, indx) => 
+      <tr key={timestamp.title} onClick={() => handleTimeStampClick(indx)}>
         <td>{timestamp.title}</td>
-        <td>{timestamp.end - timestamp.start}</td>
+        <td>{getFormattedDuration(timestamp.end - timestamp.start)}</td>
       </tr>
     );
   }
