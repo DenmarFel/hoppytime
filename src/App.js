@@ -34,12 +34,19 @@ function PlayerForm(props) {
 function Player(props) { 
   const [videoPlayer, setVideoPlayer] = useState(null);
   const [videoStatus, setVideoStatus] = useState('play');
-  const [videoTimestampData, setVideoTimestampData] = useState(null);
-  const [currentTimestamp, setCurrentTimestamp] = useState({
+  const [videoTimestampData, setVideoTimestampData] = useState({
+    videoId: '',
     title: '',
-    start: 0,
-    end: 0
+    duration: 0,
+    timestamps: [
+      {
+        title: '',
+        start: 0,
+        end: 0
+      },
+    ]
   });
+  const [currentTimestampIndx, setCurrentTimestampIndx] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [currentTimeInterval, setCurrentTimeInterval] = useState(null);
 
@@ -69,7 +76,7 @@ function Player(props) {
     .then(response => {
       setVideoTimestampData(response.data);
       let timestamp = response.data.timestamps[0];
-      setCurrentTimestamp(timestamp);
+      setCurrentTimestampIndx(0);
       new window.YT.Player('video', {
         videoId: props.videoId,
         playerVars: {
@@ -93,9 +100,13 @@ function Player(props) {
       // https://stackoverflow.com/questions/55265255/react-usestate-hook-event-handler-using-initial-state
       setCurrentTimeInterval(setInterval(() => {
         setVideoPlayer(videoPlayer => {
-          setCurrentTimestamp(currentTimestamp => {
-            setCurrentTime(Math.floor(videoPlayer.getCurrentTime()) - currentTimestamp.start);
-            return currentTimestamp;
+          setVideoTimestampData(videoTimestampData => {
+            setCurrentTimestampIndx(currentTimestampIndx => {
+              let currentTimestamp = videoTimestampData.timestamps[currentTimestampIndx];
+              setCurrentTime(Math.floor(videoPlayer.getCurrentTime()) - currentTimestamp.start);
+              return currentTimestampIndx;
+            });
+            return videoTimestampData;
           });
           return videoPlayer;
         });
@@ -113,28 +124,13 @@ function Player(props) {
       .then(response => {
         setVideoTimestampData(response.data);
         let timestamp = response.data.timestamps[0];
-        setCurrentTimestamp(timestamp);
+        setCurrentTimestampIndx(0);
         videoPlayer.loadVideoById({
           'videoId': props.videoId,
           'startSeconds': timestamp.start,
           'endSeconds': timestamp.end
         });
       });
-    /* Response Output
-      {
-        videoId: 'String',
-        title: 'String',
-        duration: Integer,
-        timestamps: [
-          #: {
-            title: 'String',
-            start: Integer,
-            end: Integer
-          },
-          ...
-        ]
-      }
-    */
   };
 
   const toggleVideo = () => {
@@ -148,8 +144,8 @@ function Player(props) {
   };
 
   const handleTimestampSelection = (indx) => {
-    const timestamp = videoTimestampData.timestamps[indx]
-    setCurrentTimestamp(timestamp);
+    const timestamp = videoTimestampData.timestamps[indx];
+    setCurrentTimestampIndx(indx);
     videoPlayer.loadVideoById({
       'videoId': props.videoId,
       'startSeconds': timestamp.start,
@@ -162,7 +158,7 @@ function Player(props) {
     <div id="player">
       <div id="video"></div>
       <div id="status">
-        Now Playing: {currentTimestamp.title} Time: {getFormattedDuration(currentTime)} 
+        Now Playing: {videoTimestampData.timestamps[currentTimestampIndx].title} Time: {getFormattedDuration(currentTime)} 
       </div>
       <div id="controls">
         <MediaButton 
