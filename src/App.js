@@ -1,7 +1,28 @@
 // import logo from './logo.svg';
 import './App.css';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
+
+function useInterval(callback, delay) {
+  // https://overreacted.io/making-setinterval-declarative-with-react-hooks/
+  const savedCallback = useRef();
+
+  // Remember the latest callback.
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  // Set up the interval.
+  useEffect(() => {
+    function tick() {
+      savedCallback.current();
+    }
+    if (delay !== null) {
+      let id = setInterval(tick, delay);
+      return () => clearInterval(id);
+    }
+  }, [delay]);
+}
 
 const getFormattedDuration = (total) => {
   // Converts seconds to HH:MM:SS or MM:SS
@@ -48,8 +69,6 @@ function Player(props) {
   });
   const [currentTimestampIndx, setCurrentTimestampIndx] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
-  const [currentTimeInterval, setCurrentTimeInterval] = useState(null);
-
 
   useEffect(() => {
     // Enables Youtube iFrame API
@@ -71,6 +90,18 @@ function Player(props) {
     }
   }, [props.videoId]);
 
+
+  const getTimestamp = (indx = currentTimestampIndx) => {
+    return videoTimestampData.timestamps[indx];
+  }
+
+  const updateTimer = (indx) => {
+    if (!videoPlayer) return;
+    setCurrentTime(Math.floor(videoPlayer.getCurrentTime()) - getTimestamp(indx).start);
+  }
+
+  useInterval(updateTimer, 100);
+
   const loadPlayer = () => {
     axios.get(`https://mysterious-lake-28010.herokuapp.com/api/v1/video?link=https://www.youtube.com/watch?v=${props.videoId}`)
     .then(response => {
@@ -81,11 +112,13 @@ function Player(props) {
         videoId: props.videoId,
         playerVars: {
           start: timestamp.start,
-          end: timestamp.end
+          end: timestamp.end,
+          enablejsapi: 1,
+          controls: 0,
+          autoplay: 0,
         },
         events: {
           onReady: onPlayerReady,
-          onStateChange: onPlayerStateChange,
         }
       })
     });
@@ -95,37 +128,13 @@ function Player(props) {
     setVideoPlayer(event.target);
   };
 
-  const onPlayerStateChange = (event) => {
-    if (event.data === window.YT.PlayerState.PLAYING) {
-      // https://stackoverflow.com/questions/55265255/react-usestate-hook-event-handler-using-initial-state
-      setCurrentTimeInterval(setInterval(() => {
-        setVideoPlayer(videoPlayer => {
-          setVideoTimestampData(videoTimestampData => {
-            setCurrentTimestampIndx(currentTimestampIndx => {
-              let currentTimestamp = videoTimestampData.timestamps[currentTimestampIndx];
-              setCurrentTime(Math.floor(videoPlayer.getCurrentTime()) - currentTimestamp.start);
-              return currentTimestampIndx;
-            });
-            return videoTimestampData;
-          });
-          return videoPlayer;
-        });
-      }, 100));
-      
-    } else if (event.data === window.YT.PlayerState.PAUSED) {
-      setCurrentTimeInterval((currentTimeInterval) => {
-        clearInterval(currentTimeInterval);
-      });
-    }
-  }
-
   const loadPlaylist = () => {
     axios.get(`https://mysterious-lake-28010.herokuapp.com/api/v1/video?link=https://www.youtube.com/watch?v=${props.videoId}`)
       .then(response => {
         setVideoTimestampData(response.data);
         let timestamp = response.data.timestamps[0];
         setCurrentTimestampIndx(0);
-        videoPlayer.loadVideoById({
+        videoPlayer.cueVideoById({
           'videoId': props.videoId,
           'startSeconds': timestamp.start,
           'endSeconds': timestamp.end
@@ -144,21 +153,19 @@ function Player(props) {
   };
 
   const handleTimestampSelection = (indx) => {
-    const timestamp = videoTimestampData.timestamps[indx];
     setCurrentTimestampIndx(indx);
     videoPlayer.loadVideoById({
       'videoId': props.videoId,
-      'startSeconds': timestamp.start,
-      'endSeconds': timestamp.end
+      'startSeconds': getTimestamp(indx).start,
+      'endSeconds': getTimestamp(indx).end
     });
-    setVideoStatus('pause');
   };
 
   return (
     <div id="player">
       <div id="video"></div>
       <div id="status">
-        Now Playing: {videoTimestampData.timestamps[currentTimestampIndx].title} Time: {getFormattedDuration(currentTime)} 
+        Now Playing: {getTimestamp().title} Time: {getFormattedDuration(currentTime)} 
       </div>
       <div id="controls">
         <MediaButton 
