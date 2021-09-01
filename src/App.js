@@ -95,9 +95,12 @@ function Player(props) {
     return videoTimestampData.timestamps[indx];
   }
 
-  const updateTimer = (indx) => {
+  const updateTimer = () => {
     if (!videoPlayer) return;
-    setCurrentTime(Math.floor(videoPlayer.getCurrentTime()) - getTimestamp(indx).start);
+    if (videoPlayer.getPlayerState() === window.YT.PlayerState.ENDED) {
+      handleTimestampSelection(currentTimestampIndx + 1);
+    };
+    setCurrentTime(Math.floor(videoPlayer.getCurrentTime()) - getTimestamp().start);
   }
 
   useInterval(updateTimer, 100);
@@ -152,6 +155,22 @@ function Player(props) {
     }
   };
 
+  const prevTimestamp = () => {
+    let indx = videoTimestampData.timestamps.length - 1;
+    if (currentTimestampIndx !== 0) {
+      indx = currentTimestampIndx - 1;
+    }
+    handleTimestampSelection(indx);
+  };
+
+  const nextTimestamp = () => {
+    let indx = 0;
+    if (currentTimestampIndx !== videoTimestampData.timestamps.length - 1) {
+      indx = currentTimestampIndx + 1;
+    }
+    handleTimestampSelection(indx);
+  };
+
   const handleTimestampSelection = (indx) => {
     setCurrentTimestampIndx(indx);
     videoPlayer.loadVideoById({
@@ -170,13 +189,13 @@ function Player(props) {
       <div id="controls">
         <MediaButton 
           text='prev'
-          onClick={toggleVideo} />
+          onClick={prevTimestamp} />
         <MediaButton 
           text={videoStatus}
           onClick={toggleVideo} />
         <MediaButton 
           text='next'
-          onClick={toggleVideo} />
+          onClick={nextTimestamp} />
         <Playlist 
           videoTimestampData={videoTimestampData}
           onTimestampClick={(indx) => handleTimestampSelection(indx)} />
