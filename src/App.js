@@ -24,6 +24,13 @@ function useInterval(callback, delay) {
   }, [delay]);
 }
 
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
 const getFormattedDuration = (total) => {
   // Converts seconds to HH:MM:SS or MM:SS
   let hours = String(Math.floor(total / 3600));
@@ -71,6 +78,7 @@ function Player(props) {
   const [isPlaying, setPlaying] = useState(false);
   const [isShuffle, setShuffle] = useState(false);
   const [isRepeat, setRepeat] = useState(false);
+  const [shuffledIndexes, setShuffledIndexes] = useState([]);
 
   useEffect(() => {
     // Enables Youtube iFrame API
@@ -100,11 +108,7 @@ function Player(props) {
   const updateTimer = () => {
     if (!videoPlayer) return;
     if (videoPlayer.getPlayerState() === window.YT.PlayerState.ENDED) {
-      if (isRepeat) {
-        handleTimestampSelection(currentTimestampIndx);
-      } else {
-        handleTimestampSelection(currentTimestampIndx + 1);
-      }
+      handleTimestampSelection(currentTimestampIndx + 1);
     };
     setCurrentTime(Math.floor(videoPlayer.getCurrentTime()) - getTimestamp().start);
   }
@@ -127,14 +131,10 @@ function Player(props) {
           autoplay: 0,
         },
         events: {
-          onReady: onPlayerReady,
+          onReady: (event) => setVideoPlayer(event.target),
         }
       })
     });
-  };
-
-  const onPlayerReady = (event) => {
-    setVideoPlayer(event.target);
   };
 
   const loadPlaylist = () => {
@@ -143,11 +143,12 @@ function Player(props) {
         setVideoTimestampData(response.data);
         let timestamp = response.data.timestamps[0];
         setCurrentTimestampIndx(0);
-        videoPlayer.cueVideoById({
+        videoPlayer.loadVideoById({
           'videoId': props.videoId,
           'startSeconds': timestamp.start,
           'endSeconds': timestamp.end
         });
+        setPlaying(true);
       });
   };
 
@@ -157,6 +158,11 @@ function Player(props) {
   };
 
   const toggleShuffle = () => {
+    if (!isShuffle) {
+      let shuffledIndexes = [...Array(videoTimestampData.timestamps.length).keys()];
+      shuffleArray(shuffledIndexes);
+      setShuffledIndexes(shuffledIndexes);
+    }
     setShuffle(!isShuffle);
   };
 
@@ -181,6 +187,11 @@ function Player(props) {
   };
 
   const handleTimestampSelection = (indx) => {
+    if (isRepeat) {
+      indx = currentTimestampIndx;
+    } else if (!isRepeat && isShuffle) {
+      indx = shuffledIndexes[indx];
+    }
     setCurrentTimestampIndx(indx);
     videoPlayer.loadVideoById({
       'videoId': props.videoId,
@@ -230,7 +241,6 @@ function MediaButton(props) {
       text = props.status ? 'pause' : 'play';
       break;
     case 'shuffle':
-      console.log("sdfdsf");
       text = props.status ? 'shuffling' : 'shuffle';
       break;
     case 'repeat':
