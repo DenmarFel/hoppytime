@@ -54,7 +54,6 @@ function PlayerForm(props) {
 
 function Player(props) { 
   const [videoPlayer, setVideoPlayer] = useState(null);
-  const [videoStatus, setVideoStatus] = useState('play');
   const [videoTimestampData, setVideoTimestampData] = useState({
     videoId: '',
     title: '',
@@ -69,6 +68,9 @@ function Player(props) {
   });
   const [currentTimestampIndx, setCurrentTimestampIndx] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
+  const [isPlaying, setPlaying] = useState(false);
+  const [isShuffle, setShuffle] = useState(false);
+  const [isRepeat, setRepeat] = useState(false);
 
   useEffect(() => {
     // Enables Youtube iFrame API
@@ -98,7 +100,11 @@ function Player(props) {
   const updateTimer = () => {
     if (!videoPlayer) return;
     if (videoPlayer.getPlayerState() === window.YT.PlayerState.ENDED) {
-      handleTimestampSelection(currentTimestampIndx + 1);
+      if (isRepeat) {
+        handleTimestampSelection(currentTimestampIndx);
+      } else {
+        handleTimestampSelection(currentTimestampIndx + 1);
+      }
     };
     setCurrentTime(Math.floor(videoPlayer.getCurrentTime()) - getTimestamp().start);
   }
@@ -146,16 +152,19 @@ function Player(props) {
   };
 
   const toggleVideo = () => {
-    if (videoStatus === 'play') {
-      videoPlayer.playVideo();
-      setVideoStatus('pause');
-    } else {
-      videoPlayer.pauseVideo();
-      setVideoStatus('play');
-    }
+    isPlaying ? videoPlayer.pauseVideo() : videoPlayer.playVideo();
+    setPlaying(!isPlaying);
   };
 
-  const prevTimestamp = () => {
+  const toggleShuffle = () => {
+    setShuffle(!isShuffle);
+  };
+
+  const toggleRepeat = () => {
+    setRepeat(!isRepeat);
+  };
+
+  const prevTimestamp = () => { 
     let indx = videoTimestampData.timestamps.length - 1;
     if (currentTimestampIndx !== 0) {
       indx = currentTimestampIndx - 1;
@@ -178,6 +187,7 @@ function Player(props) {
       'startSeconds': getTimestamp(indx).start,
       'endSeconds': getTimestamp(indx).end
     });
+    setPlaying(true);
   };
 
   return (
@@ -188,14 +198,23 @@ function Player(props) {
       </div>
       <div id="controls">
         <MediaButton 
-          text='prev'
+          purpose='prev'
           onClick={prevTimestamp} />
         <MediaButton 
-          text={videoStatus}
+          purpose='play'
+          status={isPlaying}
           onClick={toggleVideo} />
         <MediaButton 
-          text='next'
+          purpose='next'
           onClick={nextTimestamp} />
+        <MediaButton
+          purpose='shuffle'
+          status={isShuffle}
+          onClick={toggleShuffle} />
+        <MediaButton
+          purpose='repeat'
+          status={isRepeat}
+          onClick={toggleRepeat} />
         <Playlist 
           videoTimestampData={videoTimestampData}
           onTimestampClick={(indx) => handleTimestampSelection(indx)} />
@@ -205,8 +224,24 @@ function Player(props) {
 }
 
 function MediaButton(props) {
+  let text = '';
+  switch (props.purpose) {
+    case 'play':
+      text = props.status ? 'pause' : 'play';
+      break;
+    case 'shuffle':
+      console.log("sdfdsf");
+      text = props.status ? 'shuffling' : 'shuffle';
+      break;
+    case 'repeat':
+      text = props.status ? 'repeating' : 'repeat';
+      break;
+    default:
+      text = props.purpose;
+      break;
+  }
   return (
-    <button onClick={props.onClick}>{props.text}</button>
+    <button onClick={props.onClick}>{text}</button>
   )
 }
 
