@@ -1,5 +1,5 @@
 // import logo from './logo.svg';
-import './App.css';
+import './Css/App.css';
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 
@@ -105,8 +105,7 @@ function Video(props) {
             start: timestamp.start,
             end: timestamp.end,
             enablejsapi: 1,
-            controls: 0,
-            autoplay: 0,
+            controls: 0
           },
           events: {
             onReady: (event) => setVideoPlayer(event.target),
@@ -151,7 +150,9 @@ function Video(props) {
   useInterval(updateTimer, 100);
 
   return (
-    <div id="video"></div>
+    <div id="videoContainer">
+      <div id="video"></div>
+    </div>
   )
 };
 
@@ -222,6 +223,10 @@ function Player(props) {
         title={getTimestamp().title}
         time={getFormattedDuration(currentTime)} />
       <div id="controls">
+        <MediaButton
+          purpose='shuffle'
+          status={isShuffle}
+          onClick={toggleShuffle} />
         <MediaButton 
           purpose='prev'
           onClick={() => handleTimestampSelection(currentTimestampIndx - 1)} />
@@ -232,10 +237,6 @@ function Player(props) {
         <MediaButton 
           purpose='next'
           onClick={() => handleTimestampSelection(currentTimestampIndx + 1)} />
-        <MediaButton
-          purpose='shuffle'
-          status={isShuffle}
-          onClick={toggleShuffle} />
         <MediaButton
           purpose='repeat'
           status={isRepeat}
@@ -294,13 +295,23 @@ function Playlist(props) {
 
   return (
     <div id="playlist">
-      <table>
-        <tr>
-          <th>Title</th>
-          <th>Duration</th>
-        </tr>
-        {timestamps}
+      <table id="playlist">
+        <tbody>
+          <tr>
+            <th>Title</th>
+            <th>Duration</th>
+          </tr>
+          {timestamps}  
+        </tbody>
       </table>
+      <ul>
+        <li>
+          <div className="grid-container">
+            <div>Title</div>
+            <div>Duration</div>
+          </div>
+        </li>
+      </ul>
     </div>
   )
 }
@@ -316,7 +327,7 @@ function Modal() {
 }
 
 function App() {
-  const [videoId, setVideoId] = useState('3jWRrafhO7M');
+  const [videoId, setVideoId] = useState('Q15xiaBTqqY');
 
   const handleVideoChange = (link) => {
     setVideoId(new URL(link).searchParams.get('v'));

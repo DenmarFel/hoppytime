@@ -1,0 +1,95 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+body {
+  text-align: center;
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+}
+
+#videoContainer {
+  position: relative;
+  overflow: hidden;
+  margin: auto;
+  width: 100%;
+  padding-bottom: 56.25%;
+}
+
+#video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+@media only screen and (min-width: 768px) {
+  #videoContainer {
+    margin: auto;
+    width: 704px;
+    padding-bottom: 396px;
+  }
+} 
+
+#playlist {
+  margin-left: auto;
+  margin-right: auto;
+
+  ul {
+    list-style-type: none;
+  }
+
+  .grid-container {
+    display: grid;
+    grid-template-columns: auto auto;
+  }
+}
+
+/* New Stuff */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  width: 80%; /* Full width */
+  height: 80%; /* Full height */
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border: 3px solid #73AD21;
+}
