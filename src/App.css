@@ -36,3 +36,20 @@
     transform: rotate(360deg);
   }
 }
+
+body {
+  text-align: center;
+}
+
+/* New Stuff */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  width: 80%; /* Full width */
+  height: 80%; /* Full height */
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border: 3px solid #73AD21;
+}

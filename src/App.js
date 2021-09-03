@@ -25,6 +25,7 @@ function useInterval(callback, delay) {
 }
 
 function shuffleArray(array) {
+  //https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
   for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [array[i], array[j]] = [array[j], array[i]];
@@ -59,9 +60,103 @@ function PlayerForm(props) {
   )
 }
 
-function Player(props) { 
+function Video(props) {
   const [videoPlayer, setVideoPlayer] = useState(null);
-  const [videoTimestampData, setVideoTimestampData] = useState({
+
+  useEffect(() => {
+    // Enables Youtube iFrame API
+    if (!window.YT) {
+      const tag = document.createElement('script');
+      tag.src = "https://www.youtube.com/iframe_api";
+      window.onYouTubeIframeAPIReady = loadPlayer;
+      const firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    } else {
+      loadPlayer();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (videoPlayer) loadPlaylist();
+  }, [props.videoId]);
+
+  useEffect(() => {
+    if (videoPlayer) props.isPlaying ? videoPlayer.playVideo() : videoPlayer.pauseVideo();
+  }, [props.isPlaying]);
+
+  useEffect(() => {
+    if (videoPlayer) {
+      videoPlayer.loadVideoById({
+        'videoId': props.videoId,
+        'startSeconds': getTimestamp().start,
+        'endSeconds': getTimestamp().end
+      });
+    }
+  }, [props.currentTimestampIndx]);
+
+  const loadPlayer = () => {
+    axios.get(`https://mysterious-lake-28010.herokuapp.com/api/v1/video?link=https://www.youtube.com/watch?v=${props.videoId}`)
+      .then(response => {
+        props.setTimestampData(response.data);
+        let timestamp = response.data.timestamps[0];
+        new window.YT.Player('video', {
+          videoId: props.videoId,
+          playerVars: {
+            start: timestamp.start,
+            end: timestamp.end,
+            enablejsapi: 1,
+            controls: 0,
+            autoplay: 0,
+          },
+          events: {
+            onReady: (event) => setVideoPlayer(event.target),
+          }
+        });
+      });
+  };
+
+  const loadPlaylist = () => {
+    axios.get(`https://mysterious-lake-28010.herokuapp.com/api/v1/video?link=https://www.youtube.com/watch?v=${props.videoId}`)
+      .then(response => {
+        props.setCurrentTimestampIndx(0);
+        props.setTimestampData(response.data);
+        let timestamp = response.data.timestamps[0];
+        videoPlayer.loadVideoById({
+          'videoId': props.videoId,
+          'startSeconds': timestamp.start,
+          'endSeconds': timestamp.end
+        });
+      });
+  };
+
+  const getTimestamp = (indx = props.currentTimestampIndx) => {
+    return props.timestampData.timestamps[indx];
+  }
+
+  const updateTimer = () => {
+    if (!videoPlayer) return;
+    if (videoPlayer.getPlayerState() === window.YT.PlayerState.ENDED) {
+      if (props.isRepeat) {
+        videoPlayer.loadVideoById({
+          'videoId': props.videoId,
+          'startSeconds': getTimestamp().start,
+          'endSeconds': getTimestamp().end
+        });
+      } else {
+        props.handleTimestampSelection(props.currentTimestampIndx + 1);
+      }
+    };
+    props.setCurrentTime(Math.floor(videoPlayer.getCurrentTime()) - getTimestamp().start);
+  }
+  useInterval(updateTimer, 100);
+
+  return (
+    <div id="video"></div>
+  )
+};
+
+function Player(props) { 
+  const [timestampData, setTimestampData] = useState({
     videoId: '',
     title: '',
     duration: 0,
@@ -80,144 +175,63 @@ function Player(props) {
   const [isRepeat, setRepeat] = useState(false);
   const [shuffledIndexes, setShuffledIndexes] = useState([]);
 
-  useEffect(() => {
-    // Enables Youtube iFrame API
-    if (!window.YT) {
-      const tag = document.createElement('script');
-      tag.src = "https://www.youtube.com/iframe_api";
-      window.onYouTubeIframeAPIReady = loadPlayer;
-
-      const firstScriptTag = document.getElementsByTagName('script')[0];
-      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-    } else {
-      loadPlayer();
-    }
-  }, []);
-
-  useEffect(() => {
-    if (videoPlayer) {
-      loadPlaylist();
-    }
-  }, [props.videoId]);
-
-
   const getTimestamp = (indx = currentTimestampIndx) => {
-    return videoTimestampData.timestamps[indx];
+    return timestampData.timestamps[indx];
   }
-
-  const updateTimer = () => {
-    if (!videoPlayer) return;
-    if (videoPlayer.getPlayerState() === window.YT.PlayerState.ENDED) {
-      handleTimestampSelection(currentTimestampIndx + 1);
-    };
-    setCurrentTime(Math.floor(videoPlayer.getCurrentTime()) - getTimestamp().start);
-  }
-
-  useInterval(updateTimer, 100);
-
-  const loadPlayer = () => {
-    axios.get(`https://mysterious-lake-28010.herokuapp.com/api/v1/video?link=https://www.youtube.com/watch?v=${props.videoId}`)
-    .then(response => {
-      setVideoTimestampData(response.data);
-      let timestamp = response.data.timestamps[0];
-      setCurrentTimestampIndx(0);
-      new window.YT.Player('video', {
-        videoId: props.videoId,
-        playerVars: {
-          start: timestamp.start,
-          end: timestamp.end,
-          enablejsapi: 1,
-          controls: 0,
-          autoplay: 0,
-        },
-        events: {
-          onReady: (event) => setVideoPlayer(event.target),
-        }
-      })
-    });
-  };
-
-  const loadPlaylist = () => {
-    axios.get(`https://mysterious-lake-28010.herokuapp.com/api/v1/video?link=https://www.youtube.com/watch?v=${props.videoId}`)
-      .then(response => {
-        setVideoTimestampData(response.data);
-        let timestamp = response.data.timestamps[0];
-        setCurrentTimestampIndx(0);
-        videoPlayer.loadVideoById({
-          'videoId': props.videoId,
-          'startSeconds': timestamp.start,
-          'endSeconds': timestamp.end
-        });
-        setPlaying(true);
-      });
-  };
-
-  const toggleVideo = () => {
-    isPlaying ? videoPlayer.pauseVideo() : videoPlayer.playVideo();
-    setPlaying(!isPlaying);
-  };
 
   const toggleShuffle = () => {
     if (!isShuffle) {
-      let shuffledIndexes = [...Array(videoTimestampData.timestamps.length).keys()];
+      let shuffledIndexes = [...Array(timestampData.timestamps.length).keys()];
       shuffleArray(shuffledIndexes);
       setShuffledIndexes(shuffledIndexes);
     }
     setShuffle(!isShuffle);
   };
 
-  const toggleRepeat = () => {
-    setRepeat(!isRepeat);
-  };
-
-  const prevTimestamp = () => { 
-    let indx = videoTimestampData.timestamps.length - 1;
-    if (currentTimestampIndx !== 0) {
-      indx = currentTimestampIndx - 1;
-    }
-    handleTimestampSelection(indx);
-  };
-
-  const nextTimestamp = () => {
-    let indx = 0;
-    if (currentTimestampIndx !== videoTimestampData.timestamps.length - 1) {
-      indx = currentTimestampIndx + 1;
-    }
-    handleTimestampSelection(indx);
-  };
-
   const handleTimestampSelection = (indx) => {
+    if (indx === -1) {
+      indx = timestampData.timestamps.length - 1;
+    } else if (indx === timestampData.timestamps.length) {
+      indx = 0;
+    }
+
     if (isRepeat) {
       indx = currentTimestampIndx;
     } else if (!isRepeat && isShuffle) {
       indx = shuffledIndexes[indx];
     }
+
     setCurrentTimestampIndx(indx);
-    videoPlayer.loadVideoById({
-      'videoId': props.videoId,
-      'startSeconds': getTimestamp(indx).start,
-      'endSeconds': getTimestamp(indx).end
-    });
     setPlaying(true);
   };
 
   return (
     <div id="player">
-      <div id="video"></div>
-      <div id="status">
-        Now Playing: {getTimestamp().title} Time: {getFormattedDuration(currentTime)} 
-      </div>
+      <Video 
+        videoId={props.videoId}
+        timestampData={timestampData}
+        setTimestampData={setTimestampData}
+        setCurrentTime={setCurrentTime}
+        setCurrentTimestampIndx={setCurrentTimestampIndx}
+        handleTimestampSelection={handleTimestampSelection}
+        currentTimestampIndx={currentTimestampIndx}
+        isPlaying={isPlaying}
+        isRepeat={isRepeat}
+        />
+      <Status
+        title={getTimestamp().title}
+        time={getFormattedDuration(currentTime)} />
       <div id="controls">
         <MediaButton 
           purpose='prev'
-          onClick={prevTimestamp} />
+          onClick={() => handleTimestampSelection(currentTimestampIndx - 1)} />
         <MediaButton 
           purpose='play'
           status={isPlaying}
-          onClick={toggleVideo} />
+          onClick={() => setPlaying(!isPlaying)} />
         <MediaButton 
           purpose='next'
-          onClick={nextTimestamp} />
+          onClick={() => handleTimestampSelection(currentTimestampIndx + 1)} />
         <MediaButton
           purpose='shuffle'
           status={isShuffle}
@@ -225,11 +239,19 @@ function Player(props) {
         <MediaButton
           purpose='repeat'
           status={isRepeat}
-          onClick={toggleRepeat} />
+          onClick={() => setRepeat(!isRepeat)} />
         <Playlist 
-          videoTimestampData={videoTimestampData}
+          videoTimestampData={timestampData}
           onTimestampClick={(indx) => handleTimestampSelection(indx)} />
       </div>
+    </div>
+  )
+}
+
+function Status(props) {
+  return (
+    <div id="status">
+      Now Playing: {props.title} Time: {props.time} 
     </div>
   )
 }
@@ -283,6 +305,16 @@ function Playlist(props) {
   )
 }
 
+function Modal() {
+  return (
+    <div className="modal">
+      <div className="header"></div>
+      <div className="body"></div>
+      <div className="footer"></div>
+    </div>
+  )
+}
+
 function App() {
   const [videoId, setVideoId] = useState('3jWRrafhO7M');
 
@@ -296,6 +328,7 @@ function App() {
         onVideoChange={(link) => handleVideoChange(link)}/>
       <Player 
         videoId={videoId}/>
+      <Modal />
     </div>
   )
 }
