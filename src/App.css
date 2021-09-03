@@ -43,7 +43,7 @@ body {
 
 /* New Stuff */
 .modal {
-  display: block;
+  display: none;
   position: fixed;
   z-index: 1;
   width: 80%; /* Full width */
