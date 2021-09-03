@@ -25,6 +25,7 @@ function useInterval(callback, delay) {
 }
 
 function shuffleArray(array) {
+  //https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
   for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [array[i], array[j]] = [array[j], array[i]];
@@ -58,6 +59,15 @@ function PlayerForm(props) {
     </form>
   )
 }
+
+function Video(props) {
+  const [videoPlayer, setVideoPlayer] = useState(null);
+  // Should get videoTimestampData from props
+  
+  return (
+    <div id="video"></div>
+  )
+};
 
 function Player(props) { 
   const [videoPlayer, setVideoPlayer] = useState(null);
@@ -117,24 +127,24 @@ function Player(props) {
 
   const loadPlayer = () => {
     axios.get(`https://mysterious-lake-28010.herokuapp.com/api/v1/video?link=https://www.youtube.com/watch?v=${props.videoId}`)
-    .then(response => {
-      setVideoTimestampData(response.data);
-      let timestamp = response.data.timestamps[0];
-      setCurrentTimestampIndx(0);
-      new window.YT.Player('video', {
-        videoId: props.videoId,
-        playerVars: {
-          start: timestamp.start,
-          end: timestamp.end,
-          enablejsapi: 1,
-          controls: 0,
-          autoplay: 0,
-        },
-        events: {
-          onReady: (event) => setVideoPlayer(event.target),
-        }
-      })
-    });
+      .then(response => {
+        setVideoTimestampData(response.data);
+        let timestamp = response.data.timestamps[0];
+        setCurrentTimestampIndx(0);
+        new window.YT.Player('video', {
+          videoId: props.videoId,
+          playerVars: {
+            start: timestamp.start,
+            end: timestamp.end,
+            enablejsapi: 1,
+            controls: 0,
+            autoplay: 0,
+          },
+          events: {
+            onReady: (event) => setVideoPlayer(event.target),
+          }
+        })
+      });
   };
 
   const loadPlaylist = () => {
@@ -283,6 +293,16 @@ function Playlist(props) {
   )
 }
 
+function Modal() {
+  return (
+    <div className="modal">
+      <div className="header"></div>
+      <div className="body"></div>
+      <div className="footer"></div>
+    </div>
+  )
+}
+
 function App() {
   const [videoId, setVideoId] = useState('3jWRrafhO7M');
 
@@ -296,6 +316,7 @@ function App() {
         onVideoChange={(link) => handleVideoChange(link)}/>
       <Player 
         videoId={videoId}/>
+      <Modal />
     </div>
   )
 }
