@@ -1,7 +1,5 @@
-#app {
-  margin: auto;
-  width: 100%;
-  max-width: 768px;
+.App {
+  text-align: center;
 }
 
 .App-logo {
@@ -11,16 +9,27 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+    -webkit-animation: App-logo-spin infinite 20s linear;
+            animation: App-logo-spin infinite 20s linear;
   }
 }
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
 }
@@ -29,18 +38,32 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
+@-webkit-keyframes App-logo-spin {
   from {
-    transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
   }
   to {
-    transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
   }
 }
+
+@keyframes App-logo-spin {
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
 body {
   text-align: center;
   font-size: 16px;
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   background-color: #2E3440;
   color: #D8DEE9;
 }
@@ -49,6 +72,7 @@ body {
   padding-top: 20px;
   padding-bottom: 20px;
 }
+
 #player-form input[type=text] {
   border-style: hidden;
   padding: 10px 20px 10px 20px;
@@ -57,10 +81,11 @@ body {
   color: #D8DEE9;
   width: 80%;
   max-width: 600px;
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 1.1em;
   outline: none;
 }
+
 #player-form input[type=text]:focus {
   background-color: #434C5E;
   color: #ECEFF4;
@@ -71,7 +96,7 @@ body {
   overflow: hidden;
   margin: auto;
   width: 90%;
-  padding-bottom: 50.6%;
+  padding-bottom: 50.60%;
 }
 
 #video {
@@ -89,16 +114,21 @@ body {
     padding-bottom: 396px;
   }
 }
+
 #playlist {
   margin-left: auto;
   margin-right: auto;
 }
+
 #playlist ul {
   list-style-type: none;
 }
+
 #playlist .grid-container {
+  display: -ms-grid;
   display: grid;
-  grid-template-columns: 50% 50%;
+  -ms-grid-columns: 50% 50%;
+      grid-template-columns: 50% 50%;
 }
 
 /* New Stuff */
@@ -112,6 +142,8 @@ body {
   /* Full height */
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
   border: 3px solid #73AD21;
 }
+/*# sourceMappingURL=App.css.map */

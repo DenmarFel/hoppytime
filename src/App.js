@@ -50,12 +50,14 @@ function PlayerForm(props) {
   }
 
   return (
-    <form onSubmit={event => handleSubmit(event)}>
+    <form id="player-form" onSubmit={event => handleSubmit(event)}>
       <label>
-        Video Link:
-        <input type="text" value={value} onChange={event => setValue(event.target.value)} />
+        <input 
+          type="text" 
+          value={value} 
+          onChange={event => setValue(event.target.value)} 
+          placeholder="Enter Youtube Video" />
       </label>
-      <input type="submit" value="Submit" />
     </form>
   )
 }
@@ -221,7 +223,8 @@ function Player(props) {
         />
       <Status
         title={getTimestamp().title}
-        time={getFormattedDuration(currentTime)} />
+        currentTime={currentTime}
+        endTime={getTimestamp().end} />
       <div id="controls">
         <MediaButton
           purpose='shuffle'
@@ -252,9 +255,45 @@ function Player(props) {
 function Status(props) {
   return (
     <div id="status">
-      Now Playing: {props.title} Time: {props.time} 
+      <div>
+        {props.title}
+      </div>
+      <div>
+        {getFormattedDuration(props.currentTime)} - {getFormattedDuration(props.endTime)}
+      </div>
+      <Slider 
+        currentTime={props.currentTime}
+        endTime={props.endTime}/>
+      <input 
+        type="range" 
+        min="0"
+        max="100"
+        value="50"/>
     </div>
   )
+}
+
+function Slider(props) {
+  const [currentTime, setCurrentTime] = useState(props.currentTime);
+
+  useEffect(() => {
+    setCurrentTime(props.currentTime);
+  }, [props.currentTime]);
+
+  const handleChange = (event) => {
+    console.log(event);
+    setCurrentTime(event.target.value);
+  };
+
+  let seekSlider = (
+    <input 
+      type="range" 
+      min="0"
+      max={props.endTime}
+      value={currentTime}
+      onChange={handleChange}/>
+  )
+  return seekSlider
 }
 
 function MediaButton(props) {
@@ -286,24 +325,15 @@ function Playlist(props) {
   let timestamps = '';
   if (props.videoTimestampData !== null) {
     timestamps = props.videoTimestampData.timestamps.map((timestamp, indx) => 
-      <tr key={timestamp.title} onClick={() => handleTimeStampClick(indx)}>
-        <td>{timestamp.title}</td>
-        <td>{getFormattedDuration(timestamp.end - timestamp.start)}</td>
-      </tr>
+      <li key={timestamp.title} onClick={() => handleTimeStampClick(indx)} className="grid-container">
+        <div className="title">{timestamp.title}</div>
+        <div className="duration">{getFormattedDuration(timestamp.end - timestamp.start)}</div>
+      </li>
     );
   }
 
   return (
     <div id="playlist">
-      <table id="playlist">
-        <tbody>
-          <tr>
-            <th>Title</th>
-            <th>Duration</th>
-          </tr>
-          {timestamps}  
-        </tbody>
-      </table>
       <ul>
         <li>
           <div className="grid-container">
@@ -311,6 +341,7 @@ function Playlist(props) {
             <div>Duration</div>
           </div>
         </li>
+        {timestamps}
       </ul>
     </div>
   )
