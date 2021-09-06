@@ -278,20 +278,25 @@ function Status(props) {
 
   return (
     <div id="status">
-      <div>
+      <h1>
         {props.title}
+      </h1>
+      <div id="progress">
+        <div>
+          <span className="left">{getFormattedDuration(currentTime)}</span>
+          <span className="right">{getFormattedDuration(props.endTime - props.startTime)}</span>
+        </div>
+        <div>
+          <input 
+            type="range" 
+            min="0"
+            max={props.endTime - props.startTime}
+            value={currentTime}
+            onMouseDown={() => setAutoUpdate(false)}
+            onChange={event => setCurrentTime(event.target.value)} 
+            onMouseUp={finishManualUpdate}/>
+        </div>
       </div>
-      <div>
-        {getFormattedDuration(currentTime)} - {getFormattedDuration(props.endTime - props.startTime)}
-      </div>
-      <input 
-        type="range" 
-        min="0"
-        max={props.endTime - props.startTime}
-        value={currentTime}
-        onMouseDown={() => setAutoUpdate(false)}
-        onChange={event => setCurrentTime(event.target.value)} 
-        onMouseUp={finishManualUpdate}/>
     </div>
   )
 }
