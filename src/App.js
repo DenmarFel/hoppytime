@@ -96,6 +96,10 @@ function Video(props) {
     }
   }, [props.currentTimestampIndx]);
 
+  useEffect(() => {
+    if (videoPlayer) videoPlayer.seekTo(props.newTime);
+  }, [props.newTime]);
+
   const loadPlayer = () => {
     axios.get(`https://mysterious-lake-28010.herokuapp.com/api/v1/video?link=https://www.youtube.com/watch?v=${props.videoId}`)
       .then(response => {
@@ -173,6 +177,7 @@ function Player(props) {
   });
   const [currentTimestampIndx, setCurrentTimestampIndx] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
+  const [newTime, setNewTime] = useState(0);
   const [isPlaying, setPlaying] = useState(false);
   const [isShuffle, setShuffle] = useState(false);
   const [isRepeat, setRepeat] = useState(false);
@@ -208,23 +213,29 @@ function Player(props) {
     setPlaying(true);
   };
 
+  const handleSliderUpdate = (value) => {
+    setNewTime(Number(value) + Number(getTimestamp().start));
+  }
+
   return (
     <div id="player">
       <Video 
         videoId={props.videoId}
         timestampData={timestampData}
+        newTime={newTime}
         setTimestampData={setTimestampData}
         setCurrentTime={setCurrentTime}
         setCurrentTimestampIndx={setCurrentTimestampIndx}
         handleTimestampSelection={handleTimestampSelection}
         currentTimestampIndx={currentTimestampIndx}
         isPlaying={isPlaying}
-        isRepeat={isRepeat}
-        />
+        isRepeat={isRepeat} />
       <Status
         title={getTimestamp().title}
+        startTime={getTimestamp().start}
         currentTime={currentTime}
-        endTime={getTimestamp().end} />
+        endTime={getTimestamp().end}
+        sliderUpdate={handleSliderUpdate} />
       <div id="controls">
         <MediaButton
           purpose='shuffle'
@@ -253,47 +264,36 @@ function Player(props) {
 }
 
 function Status(props) {
+  const [currentTime, setCurrentTime] = useState(props.currentTime)
+  const [autoUpdate, setAutoUpdate] = useState(true);
+
+  useEffect(() => {
+    if (autoUpdate) setCurrentTime(props.currentTime);
+  }, [props.currentTime]);
+
+  const finishManualUpdate = () => {
+    setAutoUpdate(true);
+    props.sliderUpdate(currentTime);
+  };
+
   return (
     <div id="status">
       <div>
         {props.title}
       </div>
       <div>
-        {getFormattedDuration(props.currentTime)} - {getFormattedDuration(props.endTime)}
+        {getFormattedDuration(currentTime)} - {getFormattedDuration(props.endTime - props.startTime)}
       </div>
-      <Slider 
-        currentTime={props.currentTime}
-        endTime={props.endTime}/>
       <input 
         type="range" 
         min="0"
-        max="100"
-        value="50"/>
+        max={props.endTime - props.startTime}
+        value={currentTime}
+        onMouseDown={() => setAutoUpdate(false)}
+        onChange={event => setCurrentTime(event.target.value)} 
+        onMouseUp={finishManualUpdate}/>
     </div>
   )
-}
-
-function Slider(props) {
-  const [currentTime, setCurrentTime] = useState(props.currentTime);
-
-  useEffect(() => {
-    setCurrentTime(props.currentTime);
-  }, [props.currentTime]);
-
-  const handleChange = (event) => {
-    console.log(event);
-    setCurrentTime(event.target.value);
-  };
-
-  let seekSlider = (
-    <input 
-      type="range" 
-      min="0"
-      max={props.endTime}
-      value={currentTime}
-      onChange={handleChange}/>
-  )
-  return seekSlider
 }
 
 function MediaButton(props) {
