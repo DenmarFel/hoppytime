@@ -79,7 +79,10 @@ function Video(props) {
   }, []);
 
   useEffect(() => {
-    if (videoPlayer) loadPlaylist();
+    if (videoPlayer) {
+      loadPlaylist();
+      props.setPlaying(true);
+    }
   }, [props.videoId]);
 
   useEffect(() => {
@@ -148,7 +151,7 @@ function Video(props) {
           'endSeconds': getTimestamp().end
         });
       } else {
-        props.handleTimestampSelection(props.currentTimestampIndx + 1);
+        props.handleTimestampSelection(props.currentTimestampIndx + 1, 'ended');
       }
     };
     props.setCurrentTime(Math.floor(videoPlayer.getCurrentTime()) - getTimestamp().start);
@@ -196,16 +199,17 @@ function Player(props) {
     setShuffle(!isShuffle);
   };
 
-  const handleTimestampSelection = (indx) => {
+  const handleTimestampSelection = (indx, reason = null) => {
     if (indx === -1) {
       indx = timestampData.timestamps.length - 1;
     } else if (indx === timestampData.timestamps.length) {
       indx = 0;
     }
 
-    if (isRepeat) {
+    // Reasons: ended, chosen
+    if (reason == 'ended' && isRepeat) {
       indx = currentTimestampIndx;
-    } else if (!isRepeat && isShuffle) {
+    } else if (reason != 'chosen' && isShuffle) {
       indx = shuffledIndexes[indx];
     }
 
@@ -229,6 +233,7 @@ function Player(props) {
         handleTimestampSelection={handleTimestampSelection}
         currentTimestampIndx={currentTimestampIndx}
         isPlaying={isPlaying}
+        setPlaying={setPlaying}
         isRepeat={isRepeat} />
       <Status
         title={getTimestamp().title}
@@ -257,7 +262,7 @@ function Player(props) {
           onClick={() => setRepeat(!isRepeat)} />
         <Playlist 
           videoTimestampData={timestampData}
-          onTimestampClick={(indx) => handleTimestampSelection(indx)} />
+          onTimestampClick={(indx) => handleTimestampSelection(indx, 'chosen')} />
       </div>
     </div>
   )
@@ -328,14 +333,11 @@ function MediaButton(props) {
 }
 
 function Playlist(props) {
-  const handleTimeStampClick = (indx) => {
-    props.onTimestampClick(indx);
-  };
 
   let timestamps = '';
   if (props.videoTimestampData !== null) {
     timestamps = props.videoTimestampData.timestamps.map((timestamp, indx) => 
-      <li key={timestamp.title} onClick={() => handleTimeStampClick(indx)} className="grid-container">
+      <li key={timestamp.title} onClick={() => props.onTimestampClick(indx)} className="grid-container timestamp">
         <div className="title">{timestamp.title}</div>
         <div className="duration">{getFormattedDuration(timestamp.end - timestamp.start)}</div>
       </li>

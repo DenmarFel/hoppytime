@@ -101,10 +101,19 @@ body {
 }
 #playlist ul {
   list-style-type: none;
+  padding: 0;
 }
 #playlist .grid-container {
   display: grid;
   grid-template-columns: 50% 50%;
+}
+#playlist li {
+  border-bottom: 2px solid #434C5E;
+  padding: 12px 0px 12px 0px;
+}
+#playlist li:hover {
+  background-color: #5E81AC;
+  border-bottom: 2px solid #5E81AC;
 }
 
 /* New Stuff */

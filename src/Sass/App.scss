@@ -129,11 +129,22 @@ body {
 
   ul {
     list-style-type: none;
+    padding: 0;
   }
 
   .grid-container {
     display: grid;
     grid-template-columns: 50% 50%;
+  }
+
+  li {
+    border-bottom: 2px solid $nord2;
+    padding: 12px 0px 12px 0px;
+
+    &:hover {
+      background-color: $nord10;
+      border-bottom: 2px solid $nord10;
+    }
   }
 }
 
