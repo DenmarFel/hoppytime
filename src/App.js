@@ -282,20 +282,19 @@ function Status(props) {
         {props.title}
       </h1>
       <div id="progress">
-        <div>
-          <span className="left">{getFormattedDuration(currentTime)}</span>
-          <span className="right">{getFormattedDuration(props.endTime - props.startTime)}</span>
-        </div>
-        <div>
-          <input 
-            type="range" 
-            min="0"
-            max={props.endTime - props.startTime}
-            value={currentTime}
-            onMouseDown={() => setAutoUpdate(false)}
-            onChange={event => setCurrentTime(event.target.value)} 
-            onMouseUp={finishManualUpdate}/>
-        </div>
+        <div className="left">{getFormattedDuration(currentTime)}</div>
+        <div className="right">{getFormattedDuration(props.endTime - props.startTime)}</div>
+        <input 
+          className="slider"
+          type="range" 
+          min="0"
+          max={props.endTime - props.startTime}
+          value={currentTime}
+          onMouseDown={() => setAutoUpdate(false)}
+          onTouchStart={() => setAutoUpdate(false)}
+          onChange={event => setCurrentTime(event.target.value)} 
+          onMouseUp={finishManualUpdate}
+          onTouchEnd={finishManualUpdate}/>
       </div>
     </div>
   )
@@ -305,20 +304,26 @@ function MediaButton(props) {
   let text = '';
   switch (props.purpose) {
     case 'play':
-      text = props.status ? 'pause' : 'play';
+      text = props.status ? <i class="bi bi-pause-fill"></i> : <i class="bi bi-play-fill"></i>;
       break;
     case 'shuffle':
-      text = props.status ? 'shuffling' : 'shuffle';
+      text = props.status ? 'shuffling' : <i class="bi bi-shuffle"></i>;
       break;
     case 'repeat':
-      text = props.status ? 'repeating' : 'repeat';
+      text = props.status ? 'repeating' : <i class="bi bi-arrow-repeat"></i>;
+      break;
+    case 'next':
+      text = <i class="bi bi-skip-end-fill"></i>;
+      break;
+    case 'prev':
+      text = <i class="bi bi-skip-start-fill"></i>;
       break;
     default:
       text = props.purpose;
       break;
   }
   return (
-    <button onClick={props.onClick}>{text}</button>
+    <button className={`media-button ${props.purpose}`} onClick={props.onClick}>{text}</button>
   )
 }
 

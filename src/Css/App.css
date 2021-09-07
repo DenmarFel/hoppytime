@@ -1,3 +1,4 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css");
 body {
   text-align: center;
   font-size: 16px;
@@ -13,15 +14,16 @@ body {
 }
 
 #player-form {
-  padding-top: 20px;
-  padding-bottom: 20px;
+  margin-top: 30px;
+  margin-bottom: 45px;
 }
 #player-form input[type=text] {
-  border-style: hidden;
   padding: 10px 20px 10px 20px;
+  border-style: hidden;
   border-radius: 22px;
-  background-color: #3B4252;
+  background-color: #434C5E;
   color: #D8DEE9;
+  box-shadow: 7px 7px 10px 2px #272c36, -7px -7px 10px 2px #353c4a;
   width: 80%;
   max-width: 600px;
   font-family: "Rubik", sans-serif;
@@ -29,7 +31,7 @@ body {
   outline: none;
 }
 #player-form input[type=text]:focus {
-  background-color: #434C5E;
+  background-color: #4C566A;
   color: #ECEFF4;
 }
 
@@ -39,6 +41,7 @@ body {
   margin: auto;
   width: 90%;
   padding-bottom: 50.6%;
+  box-shadow: 25px 25px 50px 2px #272c36, -25px -25px 50px 2px #353c4a;
 }
 @media only screen and (min-width: 768px) {
   #videoContainer {
@@ -56,18 +59,40 @@ body {
   height: 100%;
 }
 
+#status {
+  margin-top: 45px;
+  margin-bottom: 45px;
+}
 #status #progress {
+  display: grid;
   margin: auto;
   width: 80%;
 }
 #status #progress .left {
-  float: left;
+  text-align: left;
 }
 #status #progress .right {
-  float: right;
+  text-align: right;
 }
-#status #progress input {
-  margin-top: 10px;
+#status #progress .slider {
+  grid-column: 1/span 2;
+  grid-row: 2;
+}
+
+#controls .media-button {
+  background-color: #434C5E;
+  border-style: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  margin-left: 12px;
+  margin-right: 12px;
+  font-size: 2em;
+  color: #ECEFF4;
+  box-shadow: 10px 10px 21px #272c36, -10px -10px 21px #353c4a;
+}
+#controls .media-button:active {
+  transform: scale(0.95);
 }
 
 #playlist {
