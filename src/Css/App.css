@@ -4,7 +4,7 @@ body {
   font-size: 16px;
   font-family: "Rubik", sans-serif;
   background-color: #2E3440;
-  color: #D8DEE9;
+  color: #E5E9F0;
 }
 
 #app {
@@ -22,7 +22,7 @@ body {
   border-style: hidden;
   border-radius: 22px;
   background-color: #434C5E;
-  color: #D8DEE9;
+  color: #ECEFF4;
   box-shadow: 7px 7px 10px 2px #272c36, -7px -7px 10px 2px #353c4a;
   width: 80%;
   max-width: 600px;
@@ -81,7 +81,7 @@ body {
 #status #progress .slider::-moz-range-track {
   background: #4C566A;
   height: 5px;
-  box-shadow: 5px 5px 21px #272c36, -5px -5px 21px #353c4a;
+  box-shadow: 5px 5px 10px 5px #272c36, -5px -5px 10px 5px #353c4a;
 }
 #status #progress .slider::-moz-range-progress {
   background: linear-gradient(135deg, #5E81AC 0%, #81A1C1 25%, #88C0D0 75%, #8FBCBB 100%);
@@ -122,9 +122,7 @@ body {
 }
 
 #playlist {
-  margin-top: 30px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 30px auto 0 auto;
 }
 #playlist ul {
   list-style-type: none;
@@ -135,11 +133,18 @@ body {
   grid-template-columns: 80% 10% 10%;
 }
 #playlist li {
-  border-bottom: 2px solid #434C5E;
+  border-bottom: 2px solid #4C566A;
   padding: 1em 0px 1em 0px;
 }
 #playlist li.playing {
-  background-color: #434C5E;
+  background-color: #5E81AC;
+  color: #ECEFF4;
+}
+#playlist li.playing .toggle .slider {
+  box-shadow: 3px 3px 6px #506e92, -3px -3px 6px #6c94c6;
+}
+#playlist li.disabled {
+  color: #4C566A;
 }
 #playlist li.timestamp:hover {
   background-color: #3B4252;
@@ -187,6 +192,7 @@ body {
   -webkit-transition: 0.4s;
   transition: 0.4s;
   border-radius: 17px;
+  box-shadow: 3px 3px 6px #272c36, -3px -3px 6px #353c4a;
 }
 #playlist li .toggle .slider:before {
   position: absolute;

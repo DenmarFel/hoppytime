@@ -8,7 +8,7 @@ body {
   font-size: 16px;
   font-family: 'Rubik', sans-serif;
   background-color: $nord0;
-  color: $nord4;
+  color: $nord5;
 }
 
 #app {
@@ -27,7 +27,7 @@ body {
     border-style: hidden;
     border-radius: 22px;
     background-color: $nord2;
-    color: $nord4;
+    color: $nord6;
     
     box-shadow:  7px 7px 10px 2px #272c36,
     -7px -7px 10px 2px #353c4a;
@@ -118,8 +118,8 @@ body {
       &::-moz-range-track {
         background: $nord3;
         height: 5px;
-        box-shadow: 5px 5px 21px #272c36,
-          -5px -5px 21px #353c4a;
+        box-shadow: 5px 5px 10px 5px #272c36,
+          -5px -5px 10px 5px #353c4a;
       }
 
       &::-moz-range-progress {
@@ -179,9 +179,7 @@ body {
 }
 
 #playlist {
-  margin-top: 30px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 30px auto 0 auto;
 
   ul {
     list-style-type: none;
@@ -194,11 +192,21 @@ body {
   }
 
   li {
-    border-bottom: 2px solid $nord2;
+    border-bottom: 2px solid $nord3;
     padding: 1em 0px 1em 0px;
 
     &.playing {
-      background-color: $nord2;
+      background-color: $nord10;
+      color: $nord6;
+
+      .toggle .slider {
+        box-shadow:  3px 3px 6px #506e92,
+          -3px -3px 6px #6c94c6;
+      }
+    }
+
+    &.disabled {
+      color: $nord3;
     }
 
     &.timestamp:hover {
@@ -254,6 +262,8 @@ body {
         -webkit-transition: .4s;
         transition: .4s;
         border-radius: 17px;
+        box-shadow:  3px 3px 6px #272c36,
+          -3px -3px 6px #353c4a;
 
         &:before {
           position: absolute;

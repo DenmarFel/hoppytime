@@ -58,7 +58,7 @@ function PlayerForm(props) {
           type="text" 
           value={value} 
           onChange={event => setValue(event.target.value)} 
-          placeholder="Enter Youtube Video" />
+          placeholder="Enter Youtube Link" />
       </label>
     </form>
   )
@@ -440,7 +440,11 @@ function Timestamp(props) {
   
   return (
     <li 
-      className={`grid-container timestamp ${props.indx == props.currentTimestampIndx ? 'playing' : ''}`} 
+      className={`
+        grid-container 
+        timestamp 
+        ${props.indx === props.currentTimestampIndx ? 'playing' : ''}
+        ${enabled ? '' : 'disabled'}`} 
       onClick={handleTimestampClick} >
       <div className="title">{props.title}</div>
       <div className="duration">{props.duration}</div>
@@ -450,7 +454,7 @@ function Timestamp(props) {
             type="checkbox" 
             checked={enabled} 
             onChange={handleTimestampToggle} />
-          <span className="slider"></span>
+          <span className="slider" title="Disable timestamp" />
         </label>
       </div>
     </li>
