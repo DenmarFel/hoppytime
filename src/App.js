@@ -410,17 +410,14 @@ function Playlist(props) {
   }
 
   return (
-    <div id="playlist">
-      <ul>
-        <li>
-          <div className="grid-container">
-            <div className="title header">Title</div>
-            <div className="duration header"><i className="bi bi-clock" title="Duration"/></div>
-          </div>
+
+      <ul id="playlist">
+        <li className="playlist-item header">
+            <div className="title">Title</div>
+            <div className="duration"><i className="bi bi-clock" title="Duration"/></div>
         </li>
         {timestamps}
       </ul>
-    </div>
   )
 }
 
@@ -441,23 +438,28 @@ function Timestamp(props) {
   return (
     <li 
       className={`
-        grid-container 
+        playlist-item
         timestamp 
         ${props.indx === props.currentTimestampIndx ? 'playing' : ''}
-        ${enabled ? '' : 'disabled'}`} 
+        ${enabled ? '' : 'disabled'}
+      `} 
       onClick={handleTimestampClick} >
       <div className="title">{props.title}</div>
       <div className="duration">{props.duration}</div>
       <div className="enable">
-        <label className="toggle">
-          <input 
-            type="checkbox" 
-            checked={enabled} 
-            onChange={handleTimestampToggle} />
-          <span className="slider" title="Disable timestamp" />
-        </label>
+        <Toggle title="Disable timestamp" checked={enabled} onChange={handleTimestampToggle} />
       </div>
     </li>
+  )
+}
+
+// Shared Component
+function Toggle(props) {
+  return (
+    <label className="toggle">
+      <input type="checkbox" checked={props.checked} onChange={props.onChange} />
+      <span className="slider" title={props.title} />
+    </label>
   )
 }
 

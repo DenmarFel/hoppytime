@@ -1,10 +1,20 @@
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css");
 body {
   text-align: center;
-  font-size: 16px;
+  font-size: 1em;
   font-family: "Rubik", sans-serif;
   background-color: #2E3440;
-  color: #E5E9F0;
+  color: #ECEFF4;
+}
+
+button {
+  background-color: #434C5E;
+  border-style: none;
+  color: #ECEFF4;
+}
+
+.disabled {
+  color: #4C566A;
 }
 
 #app {
@@ -14,8 +24,7 @@ body {
 }
 
 #player-form {
-  margin-top: 30px;
-  margin-bottom: 45px;
+  margin: 30px 0 45px 0;
 }
 #player-form input[type=text] {
   padding: 10px 20px 10px 20px;
@@ -32,7 +41,6 @@ body {
 }
 #player-form input[type=text]:focus {
   background-color: #4C566A;
-  color: #ECEFF4;
 }
 
 #videoContainer {
@@ -100,15 +108,11 @@ body {
   margin-top: 30px;
 }
 #controls .media-button {
-  background-color: #434C5E;
-  border-style: none;
   border-radius: 50%;
   width: 60px;
   height: 60px;
-  margin-left: 12px;
-  margin-right: 12px;
+  margin: 0 12px;
   font-size: 2em;
-  color: #ECEFF4;
   box-shadow: 10px 10px 21px #272c36, -10px -10px 21px #353c4a;
 }
 #controls .media-button:active {
@@ -123,78 +127,63 @@ body {
 
 #playlist {
   margin: 30px auto 0 auto;
-}
-#playlist ul {
   list-style-type: none;
   padding: 0;
 }
-#playlist .grid-container {
+#playlist .playlist-item {
+  border-bottom: 2px solid #4C566A;
+  padding: 1em 0px 1em 0px;
   display: grid;
   grid-template-columns: 80% 10% 10%;
 }
-#playlist li {
-  border-bottom: 2px solid #4C566A;
-  padding: 1em 0px 1em 0px;
-}
-#playlist li.playing {
-  background-color: #5E81AC;
-  color: #ECEFF4;
-}
-#playlist li.playing .toggle .slider {
-  box-shadow: 3px 3px 6px #506e92, -3px -3px 6px #6c94c6;
-}
-#playlist li.disabled {
-  color: #4C566A;
-}
-#playlist li.timestamp:hover {
-  background-color: #3B4252;
-  border-bottom: 2px solid #5E81AC;
-}
-#playlist li .header {
+#playlist .playlist-item.header {
   font-size: 1.25em;
 }
-#playlist li .title {
+#playlist .playlist-item.playing, #playlist .playlist-item.timestamp:hover {
+  background-color: #5E81AC;
+  border-bottom: 2px solid #5E81AC;
+}
+#playlist .playlist-item.playing .toggle .slider, #playlist .playlist-item.timestamp:hover .toggle .slider {
+  box-shadow: 3px 3px 6px #506e92, -3px -3px 6px #6c94c6;
+}
+#playlist .playlist-item .title {
   text-align: left;
   padding-left: 20px;
 }
-#playlist li .duration {
+#playlist .playlist-item .duration {
   text-align: right;
   padding-right: 20px;
 }
-#playlist li .toggle {
-  position: relative;
-  display: inline-block;
-  width: 40px;
-  height: 20px;
+#playlist .playlist-item .toggle {
   /* The slider */
 }
-#playlist li .toggle input[type=checkbox] {
+#playlist .playlist-item .toggle input[type=checkbox] {
   opacity: 0;
   width: 0;
   height: 0;
 }
-#playlist li .toggle input[type=checkbox]:checked + .slider {
+#playlist .playlist-item .toggle input[type=checkbox]:checked + .slider {
   background-color: #88C0D0;
 }
-#playlist li .toggle input[type=checkbox]:checked + .slider:before {
-  -webkit-transform: translateX(21px);
-  -ms-transform: translateX(21px);
+#playlist .playlist-item .toggle input[type=checkbox]:checked + .slider:before {
   transform: translateX(21px);
 }
-#playlist li .toggle .slider {
-  position: absolute;
+#playlist .playlist-item .toggle .slider {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
   cursor: pointer;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   background-color: #4C566A;
-  -webkit-transition: 0.4s;
-  transition: 0.4s;
+  transition: 0.3s;
   border-radius: 17px;
   box-shadow: 3px 3px 6px #272c36, -3px -3px 6px #353c4a;
 }
-#playlist li .toggle .slider:before {
+#playlist .playlist-item .toggle .slider:before {
   position: absolute;
   content: "";
   height: 14px;
@@ -202,8 +191,7 @@ body {
   left: 3px;
   bottom: 3px;
   background-color: #3B4252;
-  -webkit-transition: 0.4s;
-  transition: 0.4s;
+  transition: 0.3s;
   border-radius: 50%;
 }
 
