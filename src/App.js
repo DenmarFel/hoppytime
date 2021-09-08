@@ -32,12 +32,14 @@ function shuffleArray(array) {
   }
 }
 
-const getFormattedDuration = (total) => {
+function getFormattedDuration(total) {
   // Converts seconds to HH:MM:SS or MM:SS
   let hours = String(Math.floor(total / 3600));
   let minutes = String(Math.floor((total - (Number(hours) * 3600)) / 60));
   let seconds = String(total - (Number(hours) * 3600) - (Number(minutes) * 60));
-  return hours > 0 ? `${hours}:${minutes.padStart(2, '0')}:${seconds.padStart(2, '0')}` : `${minutes}:${seconds.padStart(2, '0')}`
+
+  if (hours > 0) return `${hours}:${minutes.padStart(2, '0')}:${seconds.padStart(2, '0')}`;
+  return `${minutes}:${seconds.padStart(2, '0')}`;
 }
 
 function PlayerForm(props) {
@@ -114,7 +116,9 @@ function Video(props) {
             start: timestamp.start,
             end: timestamp.end,
             enablejsapi: 1,
-            controls: 0
+            controls: 0,
+            modestbranding: 1,
+            rel: 0
           },
           events: {
             onReady: (event) => setVideoPlayer(event.target),
@@ -185,6 +189,7 @@ function Player(props) {
   const [isShuffle, setShuffle] = useState(false);
   const [isRepeat, setRepeat] = useState(false);
   const [shuffledIndexes, setShuffledIndexes] = useState([]);
+  const [disabledIndexes, setDisabledIndexes] = useState([]);
 
   const getTimestamp = (indx = currentTimestampIndx) => {
     return timestampData.timestamps[indx];
@@ -207,10 +212,30 @@ function Player(props) {
     }
 
     // Reasons: ended, chosen
-    if (reason == 'ended' && isRepeat) {
+    if (reason === 'ended' && isRepeat) {
       indx = currentTimestampIndx;
-    } else if (reason != 'chosen' && isShuffle) {
+    } else if (reason !== 'chosen' && isShuffle) {
       indx = shuffledIndexes[indx];
+    }
+
+    if (disabledIndexes.length === timestampData.timestamps.length) {
+      setPlaying(false);
+      return;
+    }
+
+    if (reason !== 'chosen' && disabledIndexes.includes(indx)) {
+      if (isShuffle) {
+        let shuffledIndexes = [...Array(timestampData.timestamps.length).keys()];
+        shuffleArray(shuffledIndexes);
+        setShuffledIndexes(shuffledIndexes);
+      }
+      if (reason === 'next' || reason === 'ended') {
+        handleTimestampSelection(indx + 1, reason);
+        return;
+      } else {
+        handleTimestampSelection(indx - 1, reason);
+        return;
+      }
     }
 
     setCurrentTimestampIndx(indx);
@@ -220,6 +245,16 @@ function Player(props) {
   const handleSliderUpdate = (value) => {
     setNewTime(Number(value) + Number(getTimestamp().start));
   }
+
+  const handleTimestampToggle = (indx, enabled) => {
+    let disabledIndexesCopy = disabledIndexes;
+    if (enabled) {
+      disabledIndexesCopy.splice(disabledIndexesCopy.indexOf(indx), 1);
+    } else {
+      disabledIndexesCopy.push(indx);
+    }
+    setDisabledIndexes(disabledIndexesCopy);
+  };
 
   return (
     <div id="player">
@@ -248,22 +283,24 @@ function Player(props) {
           onClick={toggleShuffle} />
         <MediaButton 
           purpose='prev'
-          onClick={() => handleTimestampSelection(currentTimestampIndx - 1)} />
+          onClick={() => handleTimestampSelection(currentTimestampIndx - 1, 'prev')} />
         <MediaButton 
           purpose='play'
           status={isPlaying}
           onClick={() => setPlaying(!isPlaying)} />
         <MediaButton 
           purpose='next'
-          onClick={() => handleTimestampSelection(currentTimestampIndx + 1)} />
+          onClick={() => handleTimestampSelection(currentTimestampIndx + 1, 'next')} />
         <MediaButton
           purpose='repeat'
           status={isRepeat}
           onClick={() => setRepeat(!isRepeat)} />
-        <Playlist 
-          videoTimestampData={timestampData}
-          onTimestampClick={(indx) => handleTimestampSelection(indx, 'chosen')} />
       </div>
+      <Playlist 
+          currentTimestampIndx={currentTimestampIndx}
+          videoTimestampData={timestampData}
+          onTimestampClick={(indx) => handleTimestampSelection(indx, 'chosen')} 
+          onTimestampToggle={(indx, reason) => handleTimestampToggle(indx, reason)} />
     </div>
   )
 }
@@ -283,9 +320,9 @@ function Status(props) {
 
   return (
     <div id="status">
-      <h1>
+      <h2>
         {props.title}
-      </h1>
+      </h2>
       <div id="progress">
         <div className="left">{getFormattedDuration(currentTime)}</div>
         <div className="right">{getFormattedDuration(props.endTime - props.startTime)}</div>
@@ -306,29 +343,53 @@ function Status(props) {
 }
 
 function MediaButton(props) {
+  let title = '';
   let text = '';
   switch (props.purpose) {
     case 'play':
-      text = props.status ? <i class="bi bi-pause-fill"></i> : <i class="bi bi-play-fill"></i>;
+      if (props.status) {
+        title = 'Pause';
+        text = <i className="bi bi-pause-fill" />;
+      } else {
+        title = 'Play';
+        text = <i className="bi bi-play-fill" />;
+      }
       break;
     case 'shuffle':
-      text = props.status ? 'shuffling' : <i class="bi bi-shuffle"></i>;
+      if (props.status) {
+        title = 'Disable shuffle';
+        text = <i className="bi bi-shuffle enabled" />;
+      } else {
+        title = 'Enable shuffle';
+        text = <i className="bi bi-shuffle" />;
+      }
       break;
     case 'repeat':
-      text = props.status ? 'repeating' : <i class="bi bi-arrow-repeat"></i>;
+      if (props.status) {
+        title = 'Disable repeat';
+        text = <i className="bi bi-arrow-repeat enabled" />;
+      } else {
+        title = 'Enable repeat';
+        text = <i className="bi bi-arrow-repeat" />;
+      }
       break;
     case 'next':
-      text = <i class="bi bi-skip-end-fill"></i>;
+      title = 'Next';
+      text = <i className="bi bi-skip-end-fill" />;
       break;
     case 'prev':
-      text = <i class="bi bi-skip-start-fill"></i>;
+      title = 'Previous';
+      text = <i className="bi bi-skip-start-fill" />;
       break;
     default:
       text = props.purpose;
       break;
   }
   return (
-    <button className={`media-button ${props.purpose}`} onClick={props.onClick}>{text}</button>
+    <button 
+      className={`media-button ${props.purpose}`} 
+      onClick={props.onClick} 
+      title={title}>{text}</button>
   )
 }
 
@@ -337,10 +398,14 @@ function Playlist(props) {
   let timestamps = '';
   if (props.videoTimestampData !== null) {
     timestamps = props.videoTimestampData.timestamps.map((timestamp, indx) => 
-      <li key={timestamp.title} onClick={() => props.onTimestampClick(indx)} className="grid-container timestamp">
-        <div className="title">{timestamp.title}</div>
-        <div className="duration">{getFormattedDuration(timestamp.end - timestamp.start)}</div>
-      </li>
+      <Timestamp 
+        key={timestamp.title}
+        onTimestampClick={() => props.onTimestampClick(indx)} 
+        indx={indx}
+        title={timestamp.title}
+        duration={getFormattedDuration(timestamp.end - timestamp.start)}
+        onTimestampToggle={props.onTimestampToggle}
+        currentTimestampIndx={props.currentTimestampIndx}/>
     );
   }
 
@@ -349,13 +414,46 @@ function Playlist(props) {
       <ul>
         <li>
           <div className="grid-container">
-            <div>Title</div>
-            <div>Duration</div>
+            <div className="title header">Title</div>
+            <div className="duration header"><i className="bi bi-clock" title="Duration"/></div>
           </div>
         </li>
         {timestamps}
       </ul>
     </div>
+  )
+}
+
+function Timestamp(props) {
+  const [enabled, setEnabled] = useState(true);
+
+  const handleTimestampClick = (event) => {
+    if (!event.target.closest('.toggle'))  {
+      props.onTimestampClick(props.indx);
+      setEnabled(true);
+    }
+  }
+  const handleTimestampToggle = () => {
+    props.onTimestampToggle(props.indx, !enabled);
+    setEnabled(!enabled);
+  }
+  
+  return (
+    <li 
+      className={`grid-container timestamp ${props.indx == props.currentTimestampIndx ? 'playing' : ''}`} 
+      onClick={handleTimestampClick} >
+      <div className="title">{props.title}</div>
+      <div className="duration">{props.duration}</div>
+      <div className="enable">
+        <label className="toggle">
+          <input 
+            type="checkbox" 
+            checked={enabled} 
+            onChange={handleTimestampToggle} />
+          <span className="slider"></span>
+        </label>
+      </div>
+    </li>
   )
 }
 
@@ -370,7 +468,7 @@ function Modal() {
 }
 
 function App() {
-  const [videoId, setVideoId] = useState('Q15xiaBTqqY');
+  const [videoId, setVideoId] = useState('D-ya6U-pbWo');
 
   const handleVideoChange = (link) => {
     setVideoId(new URL(link).searchParams.get('v'));
