@@ -1,6 +1,12 @@
 // import logo from './logo.svg';
 import './Css/App.css';
 import React, { useEffect, useState, useRef } from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 import axios from 'axios';
 
 function useInterval(callback, delay) {
@@ -52,15 +58,17 @@ function PlayerForm(props) {
   }
 
   return (
-    <form onSubmit={event => handleSubmit(event)}>
-      <label>
-        <input 
-          type="text" 
-          value={value} 
-          onChange={event => setValue(event.target.value)} 
-          placeholder="Enter Youtube Link" />
-      </label>
-    </form>
+    <div id="player-form">
+      <form onSubmit={event => handleSubmit(event)}>
+        <label>
+          <input 
+            type="text" 
+            value={value} 
+            onChange={event => setValue(event.target.value)} 
+            placeholder="Enter Youtube Link" />
+        </label>
+      </form>
+    </div>
   )
 }
 
@@ -488,8 +496,20 @@ function Toggle(props) {
   )
 }
 
+
 function App() {
   const [videoId, setVideoId] = useState('TURbeWK2wwg');
+  const [isNavOpened, setNavOpened] = useState(false);
+  const ref = useRef()
+  useEffect(() => {
+    const checkIfClickedOutside = e => {
+      if (isNavOpened && ref.current && !ref.current.contains(e.target)) {
+        setNavOpened(false);
+      }
+    }
+    document.addEventListener("mousedown", checkIfClickedOutside)
+    return () => document.removeEventListener("mousedown", checkIfClickedOutside);
+  }, [isNavOpened]);
 
   const handleVideoChange = (link) => {
     setVideoId(new URL(link).searchParams.get('v'));
@@ -497,19 +517,39 @@ function App() {
 
   return (
     <div id="app">
-      <div id="top">
+      {isNavOpened && <div id="overlay"></div>}
+      <Router>
+        <nav className={`${isNavOpened ? 'open' : ''}`} ref={ref}>
+          <ul onClick={() => setNavOpened(false)}>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/ideas">Ideas</Link>
+            </li>
+            <li>
+              <Link to="/coffee">Buy Me Coffee</Link>
+            </li>
+          </ul>
+        </nav>
         <div id="nav-toggle">
-          <button><i class="bi bi-list"></i></button>
+          <button onClick={() => setNavOpened(!isNavOpened)}><i class="bi bi-list"></i></button>
         </div>
-        <div id="player-form">
-          <PlayerForm onVideoChange={(link) => handleVideoChange(link)}/>
-        </div>
-      </div>
-      <div id="content">
-        <div id="left-content"></div>
-        <Player videoId={videoId}/>
-        <div id="right-content"></div>
-      </div>
+        <PlayerForm onVideoChange={(link) => handleVideoChange(link)}/>
+        <main>
+          <Switch>
+            <Route path="/ideas">
+              <h1>Ideas</h1>
+            </Route>
+            <Route path="/coffee">
+              <h1>Buy me coffee</h1>
+            </Route>
+            <Route path="/">
+              <Player videoId={videoId}/>
+            </Route>
+          </Switch>
+        </main>
+      </Router>
     </div>
   )
 }

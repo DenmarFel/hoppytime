@@ -1,6 +1,9 @@
 @import "../../node_modules/nord/src/sass/nord.scss";
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css");
 
+//Sizes
+
+
 //Box Shadows
 $nord0light: #272c36;
 $nord0dark: #353c4a;
@@ -25,28 +28,92 @@ button {
   font-size: 2em;
   box-shadow: 10px 10px 21px $nord0light,
     -10px -10px 21px $nord0dark;
+
+  &:hover {
+    background-color: $nord3;
+  }
 }
 
 .disabled {
   color: $nord3;
 }
 
-#top {
+#app {
   margin: auto;
-  width: 100%;
-  max-width: 768px;
-  padding: 15px 0 45px 0;
+  max-width: 1280px;
 
-  @media only screen and (max-width: 899px) {
+  @media only screen and (max-width: 900px) {
     display: grid;
     grid-template-columns: 80px auto;
+    grid-template-areas: "navToggle search"
+                         "main main";
+  }
+
+  @media only screen and (min-width: 900px) {
+    display: grid;
+    grid-template-columns: auto 768px auto;
+    grid-template-areas: ". search ."
+                         ". main .";
+  }
+
+  @media only screen and (min-width: 1280px) {
+    display: grid;
+    grid-template-columns: 256px 768px auto;
+    grid-template-areas: "sideNav search ."
+                         "sideNav main .";
   }
 }
 
-#nav-toggle {
+#overlay {
+  position: fixed;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: rgba(59, 66, 82, 0.9);
+  z-index: 2;
+}
 
-  @media only screen and (min-width: 900px) {
+nav {
+  grid-area: sideNav;
+  background-color: $nord0;
+  padding-top: 27.5px;
+
+  text-align: left;
+  
+  @media only screen and (max-width: 1280px) {
+    display: none;
+  }
+
+  &.open {
+    display: block;
+    height: 100vh;
+    width: 256px;
     position: fixed;
+    top: 0;
+    z-index: 3;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  a {
+    color: $nord6;
+  }
+}
+
+main {
+  padding: 30px 0;
+  grid-area: main;
+}
+
+#nav-toggle {
+  grid-area: navToggle;
+  padding-top: 20px;
+  
+  @media only screen and (min-width: 900px) {
+    position: absolute;
     left: 15px;
   }
 
@@ -56,7 +123,9 @@ button {
 }
 
 #player-form {
-  padding-top: 7.5px;
+  grid-area: search;
+  padding-top: 27.5px;
+  padding-bottom: 7.5px;
 
   input[type=text] {
     box-sizing: border-box;
@@ -79,41 +148,6 @@ button {
     &:focus {
       background-color: $nord3;
     }
-  }
-}
-
-#content {
-  margin: auto;
-  width: 100%;
-  max-width: 1280px;
-
-  @media only screen and (min-width: 1280px) {
-    display: grid;
-    grid-template-columns: 256px 768px 256px;
-  }
-}
-
-#left-content {
-  width: 100%;
-  background-color: blue;
-
-  @media only screen and (max-width: 1280px) {
-    display: none;
-  }
-}
-
-#player {
-  margin: auto;
-  width: 100%;
-  max-width: 768px;
-}
-
-#right-content {
-  width: 100%;
-  background-color: red;
-
-  @media only screen and (max-width: 1280px) {
-    display: none;
   }
 }
 
@@ -226,10 +260,6 @@ button {
 
     &:active {
       transform: scale(0.95);
-    }
-
-    &:hover {
-      background-color: $nord3;
     }
 
     .enabled {

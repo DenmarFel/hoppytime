@@ -17,27 +17,88 @@ button {
   font-size: 2em;
   box-shadow: 10px 10px 21px #272c36, -10px -10px 21px #353c4a;
 }
+button:hover {
+  background-color: #4C566A;
+}
 
 .disabled {
   color: #4C566A;
 }
 
-#top {
+#app {
   margin: auto;
-  width: 100%;
-  max-width: 768px;
-  padding: 15px 0 45px 0;
+  max-width: 1280px;
 }
-@media only screen and (max-width: 899px) {
-  #top {
+@media only screen and (max-width: 900px) {
+  #app {
     display: grid;
     grid-template-columns: 80px auto;
+    grid-template-areas: "navToggle search" "main main";
+  }
+}
+@media only screen and (min-width: 900px) {
+  #app {
+    display: grid;
+    grid-template-columns: auto 768px auto;
+    grid-template-areas: ". search ." ". main .";
+  }
+}
+@media only screen and (min-width: 1280px) {
+  #app {
+    display: grid;
+    grid-template-columns: 256px 768px auto;
+    grid-template-areas: "sideNav search ." "sideNav main .";
   }
 }
 
+#overlay {
+  position: fixed;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: rgba(59, 66, 82, 0.9);
+  z-index: 2;
+}
+
+nav {
+  grid-area: sideNav;
+  background-color: #2E3440;
+  padding-top: 27.5px;
+  text-align: left;
+}
+@media only screen and (max-width: 1280px) {
+  nav {
+    display: none;
+  }
+}
+nav.open {
+  display: block;
+  height: 100vh;
+  width: 256px;
+  position: fixed;
+  top: 0;
+  z-index: 3;
+}
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+nav a {
+  color: #ECEFF4;
+}
+
+main {
+  padding: 30px 0;
+  grid-area: main;
+}
+
+#nav-toggle {
+  grid-area: navToggle;
+  padding-top: 20px;
+}
 @media only screen and (min-width: 900px) {
   #nav-toggle {
-    position: fixed;
+    position: absolute;
     left: 15px;
   }
 }
@@ -48,7 +109,9 @@ button {
 }
 
 #player-form {
-  padding-top: 7.5px;
+  grid-area: search;
+  padding-top: 27.5px;
+  padding-bottom: 7.5px;
 }
 #player-form input[type=text] {
   box-sizing: border-box;
@@ -65,44 +128,6 @@ button {
 }
 #player-form input[type=text]:focus {
   background-color: #4C566A;
-}
-
-#content {
-  margin: auto;
-  width: 100%;
-  max-width: 1280px;
-}
-@media only screen and (min-width: 1280px) {
-  #content {
-    display: grid;
-    grid-template-columns: 256px 768px 256px;
-  }
-}
-
-#left-content {
-  width: 100%;
-  background-color: blue;
-}
-@media only screen and (max-width: 1280px) {
-  #left-content {
-    display: none;
-  }
-}
-
-#player {
-  margin: auto;
-  width: 100%;
-  max-width: 768px;
-}
-
-#right-content {
-  width: 100%;
-  background-color: red;
-}
-@media only screen and (max-width: 1280px) {
-  #right-content {
-    display: none;
-  }
 }
 
 #videoContainer {
@@ -191,9 +216,6 @@ button {
 }
 #controls .media-button:active {
   transform: scale(0.95);
-}
-#controls .media-button:hover {
-  background-color: #4C566A;
 }
 #controls .media-button .enabled {
   color: #88C0D0;
