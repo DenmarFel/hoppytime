@@ -9,38 +9,100 @@ body {
 
 button {
   background-color: #434C5E;
-  border-style: none;
   color: #ECEFF4;
+  border-style: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 2em;
+  box-shadow: 10px 10px 21px #272c36, -10px -10px 21px #353c4a;
 }
 
 .disabled {
   color: #4C566A;
 }
 
-#app {
+#top {
   margin: auto;
   width: 100%;
   max-width: 768px;
+  padding: 15px 0 45px 0;
+}
+@media only screen and (max-width: 899px) {
+  #top {
+    display: grid;
+    grid-template-columns: 80px auto;
+  }
+}
+
+@media only screen and (min-width: 900px) {
+  #nav-toggle {
+    position: fixed;
+    left: 15px;
+  }
+}
+@media only screen and (min-width: 1280px) {
+  #nav-toggle {
+    display: none;
+  }
 }
 
 #player-form {
-  margin: 30px 0 45px 0;
+  padding-top: 7.5px;
 }
 #player-form input[type=text] {
+  box-sizing: border-box;
   padding: 10px 20px 10px 20px;
   border-style: hidden;
   border-radius: 22px;
   background-color: #434C5E;
   color: #ECEFF4;
   box-shadow: 7px 7px 10px 2px #272c36, -7px -7px 10px 2px #353c4a;
-  width: 80%;
-  max-width: 600px;
+  width: 95%;
   font-family: "Rubik", sans-serif;
   font-size: 1.1em;
   outline: none;
 }
 #player-form input[type=text]:focus {
   background-color: #4C566A;
+}
+
+#content {
+  margin: auto;
+  width: 100%;
+  max-width: 1280px;
+}
+@media only screen and (min-width: 1280px) {
+  #content {
+    display: grid;
+    grid-template-columns: 256px 768px 256px;
+  }
+}
+
+#left-content {
+  width: 100%;
+  background-color: blue;
+}
+@media only screen and (max-width: 1280px) {
+  #left-content {
+    display: none;
+  }
+}
+
+#player {
+  margin: auto;
+  width: 100%;
+  max-width: 768px;
+}
+
+#right-content {
+  width: 100%;
+  background-color: red;
+}
+@media only screen and (max-width: 1280px) {
+  #right-content {
+    display: none;
+  }
 }
 
 #videoContainer {
@@ -85,6 +147,23 @@ button {
   grid-column: 1/span 2;
   grid-row: 2;
   background-color: inherit;
+  -webkit-appearance: none;
+  cursor: pointer;
+  border: none;
+}
+#status #progress .slider::-webkit-slider-runnable-track {
+  margin-top: 5px;
+  background: linear-gradient(135deg, #5E81AC 0%, #81A1C1 25%, #88C0D0 75%, #8FBCBB 100%);
+  height: 5px;
+  box-shadow: 5px 5px 10px 5px #272c36, -5px -5px 10px 5px #353c4a;
+}
+#status #progress .slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 1.25em;
+  width: 1.25em;
+  border-radius: 50%;
+  margin-top: -5px;
+  background: #ECEFF4;
 }
 #status #progress .slider::-moz-range-track {
   background: #4C566A;
@@ -98,7 +177,7 @@ button {
 #status #progress .slider::-moz-range-thumb {
   height: 1.25em;
   width: 1.25em;
-  background: #D8DEE9;
+  background: #ECEFF4;
   border-radius: 50%;
   border: none;
   box-shadow: 5px 5px 7px #272c36, -5px -5px 7px #353c4a;
@@ -108,12 +187,7 @@ button {
   margin-top: 30px;
 }
 #controls .media-button {
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
   margin: 0 12px;
-  font-size: 2em;
-  box-shadow: 10px 10px 21px #272c36, -10px -10px 21px #353c4a;
 }
 #controls .media-button:active {
   transform: scale(0.95);
@@ -134,7 +208,8 @@ button {
   border-bottom: 2px solid #4C566A;
   padding: 1em 0px 1em 0px;
   display: grid;
-  grid-template-columns: 80% 10% 10%;
+  grid-template-columns: 70% 15% 15%;
+  margin: auto 0;
 }
 #playlist .playlist-item.header {
   font-size: 1.25em;
@@ -147,14 +222,17 @@ button {
   box-shadow: 3px 3px 6px #506e92, -3px -3px 6px #6c94c6;
 }
 #playlist .playlist-item .title {
+  margin: auto 0;
   text-align: left;
   padding-left: 20px;
 }
 #playlist .playlist-item .duration {
+  margin: auto 0;
   text-align: right;
   padding-right: 20px;
 }
 #playlist .playlist-item .toggle {
+  margin: auto 0;
   /* The slider */
 }
 #playlist .playlist-item .toggle input[type=checkbox] {
@@ -174,7 +252,7 @@ button {
   width: 40px;
   height: 20px;
   cursor: pointer;
-  top: 0;
+  top: 2px;
   left: 0;
   right: 0;
   bottom: 0;
@@ -193,19 +271,4 @@ button {
   background-color: #3B4252;
   transition: 0.3s;
   border-radius: 50%;
-}
-
-/* New Stuff */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  width: 80%;
-  /* Full width */
-  height: 80%;
-  /* Full height */
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  border: 3px solid #73AD21;
 }

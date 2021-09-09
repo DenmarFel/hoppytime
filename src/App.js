@@ -52,7 +52,7 @@ function PlayerForm(props) {
   }
 
   return (
-    <form id="player-form" onSubmit={event => handleSubmit(event)}>
+    <form onSubmit={event => handleSubmit(event)}>
       <label>
         <input 
           type="text" 
@@ -61,6 +61,168 @@ function PlayerForm(props) {
           placeholder="Enter Youtube Link" />
       </label>
     </form>
+  )
+}
+
+function Player(props) { 
+  const [timestampData, setTimestampData] = useState({
+    videoId: '',
+    title: '',
+    duration: 0,
+    timestamps: [
+      {
+        title: '',
+        start: 0,
+        end: 0
+      },
+    ]
+  });
+  const [currentTimestampIndx, setCurrentTimestampIndx] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [newTime, setNewTime] = useState(0);
+  const [isPlaying, setPlaying] = useState(false);
+  const [isShuffle, setShuffle] = useState(false);
+  const [isRepeat, setRepeat] = useState(false);
+  const [shuffledIndexes, setShuffledIndexes] = useState([]);
+  const [disabledIndexes, setDisabledIndexes] = useState([]);
+
+  // useEffect(() => {
+  //   console.log(navigator);
+  //   console.log(navigator.mediaSession.setActionHandler);
+  //   if ('mediaSession' in navigator) {
+  //     navigator.mediaSession.metadata = new window.MediaMetadata({
+  //       title: 'Sample Audio',
+  //       artist: 'John Doe',
+  //       album: 'Sample Album',
+  //       artwork: [
+  //         { src: 'https://dummyimage.com/96x96',   sizes: '96x96',   type: 'image/png' },
+  //         { src: 'https://dummyimage.com/128x128', sizes: '128x128', type: 'image/png' },
+  //         { src: 'https://dummyimage.com/192x192', sizes: '192x192', type: 'image/png' },
+  //         { src: 'https://dummyimage.com/256x256', sizes: '256x256', type: 'image/png' },
+  //         { src: 'https://dummyimage.com/384x384', sizes: '384x384', type: 'image/png' },
+  //         { src: 'https://dummyimage.com/512x512', sizes: '512x512', type: 'image/png' },
+  //       ]
+  //     });
+  //     navigator.mediaSession.setActionHandler('play', function() {
+  //       console.log('> User clicked "Next Track" icon.');
+  //     });
+  //   }
+  //   // navigator.mediaSession.metadata = new MediaMetadata();
+
+  // }, []);
+
+  const getTimestamp = (indx = currentTimestampIndx) => {
+    return timestampData.timestamps[indx];
+  }
+
+  const toggleShuffle = () => {
+    if (!isShuffle) {
+      let shuffledIndexes = [...Array(timestampData.timestamps.length).keys()];
+      shuffleArray(shuffledIndexes);
+      setShuffledIndexes(shuffledIndexes);
+    }
+    setShuffle(!isShuffle);
+  };
+
+  const handleTimestampSelection = (indx, reason = null) => {
+    if (indx === -1) {
+      indx = timestampData.timestamps.length - 1;
+    } else if (indx === timestampData.timestamps.length) {
+      indx = 0;
+    }
+
+    // Reasons: ended, chosen, next, prev
+    if (reason === 'ended' && isRepeat) {
+      indx = currentTimestampIndx;
+    } else if (reason !== 'chosen' && isShuffle) {
+      indx = shuffledIndexes[indx];
+    }
+
+    if (disabledIndexes.length === timestampData.timestamps.length) {
+      setPlaying(false);
+      return;
+    }
+
+    if (reason !== 'chosen' && disabledIndexes.includes(indx)) {
+      if (isShuffle) {
+        let shuffledIndexes = [...Array(timestampData.timestamps.length).keys()];
+        shuffleArray(shuffledIndexes);
+        setShuffledIndexes(shuffledIndexes);
+      }
+      if (reason === 'next' || reason === 'ended') {
+        handleTimestampSelection(indx + 1, reason);
+        return;
+      } else {
+        handleTimestampSelection(indx - 1, reason);
+        return;
+      }
+    }
+
+    setCurrentTimestampIndx(indx);
+    setPlaying(true);
+  };
+
+  const handleSliderUpdate = (value) => {
+    setNewTime(Number(value) + Number(getTimestamp().start));
+    setPlaying(true);
+  }
+
+  const handleTimestampToggle = (indx, enabled) => {
+    let disabledIndexesCopy = disabledIndexes;
+    if (enabled) {
+      disabledIndexesCopy.splice(disabledIndexesCopy.indexOf(indx), 1);
+    } else {
+      disabledIndexesCopy.push(indx);
+    }
+    setDisabledIndexes(disabledIndexesCopy);
+  };
+
+  return (
+    <div id="player">
+      <Video 
+        videoId={props.videoId}
+        timestampData={timestampData}
+        newTime={newTime}
+        setTimestampData={setTimestampData}
+        setCurrentTime={setCurrentTime}
+        setCurrentTimestampIndx={setCurrentTimestampIndx}
+        handleTimestampSelection={handleTimestampSelection}
+        currentTimestampIndx={currentTimestampIndx}
+        isPlaying={isPlaying}
+        setPlaying={setPlaying}
+        isRepeat={isRepeat} />
+      <Status
+        title={getTimestamp().title}
+        startTime={getTimestamp().start}
+        currentTime={currentTime}
+        endTime={getTimestamp().end}
+        sliderUpdate={handleSliderUpdate} />
+      <div id="controls">
+        <MediaButton
+          purpose='shuffle'
+          status={isShuffle}
+          onClick={toggleShuffle} />
+        <MediaButton 
+          purpose='prev'
+          onClick={() => handleTimestampSelection(currentTimestampIndx - 1, 'prev')} />
+        <MediaButton 
+          purpose='play'
+          status={isPlaying}
+          onClick={() => setPlaying(!isPlaying)} />
+        <MediaButton 
+          purpose='next'
+          onClick={() => handleTimestampSelection(currentTimestampIndx + 1, 'next')} />
+        <MediaButton
+          purpose='repeat'
+          status={isRepeat}
+          onClick={() => setRepeat(!isRepeat)} />
+      </div>
+      <Playlist 
+          currentTimestampIndx={currentTimestampIndx}
+          videoTimestampData={timestampData}
+          onTimestampClick={(indx) => handleTimestampSelection(indx, 'chosen')} 
+          onTimestampToggle={(indx, reason) => handleTimestampToggle(indx, reason)} />
+    </div>
   )
 }
 
@@ -169,142 +331,6 @@ function Video(props) {
   )
 };
 
-function Player(props) { 
-  const [timestampData, setTimestampData] = useState({
-    videoId: '',
-    title: '',
-    duration: 0,
-    timestamps: [
-      {
-        title: '',
-        start: 0,
-        end: 0
-      },
-    ]
-  });
-  const [currentTimestampIndx, setCurrentTimestampIndx] = useState(0);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [newTime, setNewTime] = useState(0);
-  const [isPlaying, setPlaying] = useState(false);
-  const [isShuffle, setShuffle] = useState(false);
-  const [isRepeat, setRepeat] = useState(false);
-  const [shuffledIndexes, setShuffledIndexes] = useState([]);
-  const [disabledIndexes, setDisabledIndexes] = useState([]);
-
-  const getTimestamp = (indx = currentTimestampIndx) => {
-    return timestampData.timestamps[indx];
-  }
-
-  const toggleShuffle = () => {
-    if (!isShuffle) {
-      let shuffledIndexes = [...Array(timestampData.timestamps.length).keys()];
-      shuffleArray(shuffledIndexes);
-      setShuffledIndexes(shuffledIndexes);
-    }
-    setShuffle(!isShuffle);
-  };
-
-  const handleTimestampSelection = (indx, reason = null) => {
-    if (indx === -1) {
-      indx = timestampData.timestamps.length - 1;
-    } else if (indx === timestampData.timestamps.length) {
-      indx = 0;
-    }
-
-    // Reasons: ended, chosen
-    if (reason === 'ended' && isRepeat) {
-      indx = currentTimestampIndx;
-    } else if (reason !== 'chosen' && isShuffle) {
-      indx = shuffledIndexes[indx];
-    }
-
-    if (disabledIndexes.length === timestampData.timestamps.length) {
-      setPlaying(false);
-      return;
-    }
-
-    if (reason !== 'chosen' && disabledIndexes.includes(indx)) {
-      if (isShuffle) {
-        let shuffledIndexes = [...Array(timestampData.timestamps.length).keys()];
-        shuffleArray(shuffledIndexes);
-        setShuffledIndexes(shuffledIndexes);
-      }
-      if (reason === 'next' || reason === 'ended') {
-        handleTimestampSelection(indx + 1, reason);
-        return;
-      } else {
-        handleTimestampSelection(indx - 1, reason);
-        return;
-      }
-    }
-
-    setCurrentTimestampIndx(indx);
-    setPlaying(true);
-  };
-
-  const handleSliderUpdate = (value) => {
-    setNewTime(Number(value) + Number(getTimestamp().start));
-  }
-
-  const handleTimestampToggle = (indx, enabled) => {
-    let disabledIndexesCopy = disabledIndexes;
-    if (enabled) {
-      disabledIndexesCopy.splice(disabledIndexesCopy.indexOf(indx), 1);
-    } else {
-      disabledIndexesCopy.push(indx);
-    }
-    setDisabledIndexes(disabledIndexesCopy);
-  };
-
-  return (
-    <div id="player">
-      <Video 
-        videoId={props.videoId}
-        timestampData={timestampData}
-        newTime={newTime}
-        setTimestampData={setTimestampData}
-        setCurrentTime={setCurrentTime}
-        setCurrentTimestampIndx={setCurrentTimestampIndx}
-        handleTimestampSelection={handleTimestampSelection}
-        currentTimestampIndx={currentTimestampIndx}
-        isPlaying={isPlaying}
-        setPlaying={setPlaying}
-        isRepeat={isRepeat} />
-      <Status
-        title={getTimestamp().title}
-        startTime={getTimestamp().start}
-        currentTime={currentTime}
-        endTime={getTimestamp().end}
-        sliderUpdate={handleSliderUpdate} />
-      <div id="controls">
-        <MediaButton
-          purpose='shuffle'
-          status={isShuffle}
-          onClick={toggleShuffle} />
-        <MediaButton 
-          purpose='prev'
-          onClick={() => handleTimestampSelection(currentTimestampIndx - 1, 'prev')} />
-        <MediaButton 
-          purpose='play'
-          status={isPlaying}
-          onClick={() => setPlaying(!isPlaying)} />
-        <MediaButton 
-          purpose='next'
-          onClick={() => handleTimestampSelection(currentTimestampIndx + 1, 'next')} />
-        <MediaButton
-          purpose='repeat'
-          status={isRepeat}
-          onClick={() => setRepeat(!isRepeat)} />
-      </div>
-      <Playlist 
-          currentTimestampIndx={currentTimestampIndx}
-          videoTimestampData={timestampData}
-          onTimestampClick={(indx) => handleTimestampSelection(indx, 'chosen')} 
-          onTimestampToggle={(indx, reason) => handleTimestampToggle(indx, reason)} />
-    </div>
-  )
-}
-
 function Status(props) {
   const [currentTime, setCurrentTime] = useState(props.currentTime)
   const [autoUpdate, setAutoUpdate] = useState(true);
@@ -410,14 +436,13 @@ function Playlist(props) {
   }
 
   return (
-
-      <ul id="playlist">
-        <li className="playlist-item header">
-            <div className="title">Title</div>
-            <div className="duration"><i className="bi bi-clock" title="Duration"/></div>
-        </li>
-        {timestamps}
-      </ul>
+    <ul id="playlist">
+      <li className="playlist-item header">
+          <div className="title">Title</div>
+          <div className="duration"><i className="bi bi-clock" title="Duration"/></div>
+      </li>
+      {timestamps}
+    </ul>
   )
 }
 
@@ -463,18 +488,8 @@ function Toggle(props) {
   )
 }
 
-function Modal() {
-  return (
-    <div className="modal">
-      <div className="header"></div>
-      <div className="body"></div>
-      <div className="footer"></div>
-    </div>
-  )
-}
-
 function App() {
-  const [videoId, setVideoId] = useState('D-ya6U-pbWo');
+  const [videoId, setVideoId] = useState('TURbeWK2wwg');
 
   const handleVideoChange = (link) => {
     setVideoId(new URL(link).searchParams.get('v'));
@@ -482,11 +497,19 @@ function App() {
 
   return (
     <div id="app">
-      <PlayerForm 
-        onVideoChange={(link) => handleVideoChange(link)}/>
-      <Player 
-        videoId={videoId}/>
-      <Modal />
+      <div id="top">
+        <div id="nav-toggle">
+          <button><i class="bi bi-list"></i></button>
+        </div>
+        <div id="player-form">
+          <PlayerForm onVideoChange={(link) => handleVideoChange(link)}/>
+        </div>
+      </div>
+      <div id="content">
+        <div id="left-content"></div>
+        <Player videoId={videoId}/>
+        <div id="right-content"></div>
+      </div>
     </div>
   )
 }

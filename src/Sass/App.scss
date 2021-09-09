@@ -15,24 +15,51 @@ body {
 
 button {
   background-color: $nord2;
-  border-style: none;
   color: $nord6;
+
+  border-style: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+
+  font-size: 2em;
+  box-shadow: 10px 10px 21px $nord0light,
+    -10px -10px 21px $nord0dark;
 }
 
 .disabled {
   color: $nord3;
 }
 
-#app {
+#top {
   margin: auto;
   width: 100%;
   max-width: 768px;
+  padding: 15px 0 45px 0;
+
+  @media only screen and (max-width: 899px) {
+    display: grid;
+    grid-template-columns: 80px auto;
+  }
+}
+
+#nav-toggle {
+
+  @media only screen and (min-width: 900px) {
+    position: fixed;
+    left: 15px;
+  }
+
+  @media only screen and (min-width: 1280px) {
+    display: none;
+  }
 }
 
 #player-form {
-  margin: 30px 0 45px 0;
+  padding-top: 7.5px;
 
   input[type=text] {
+    box-sizing: border-box;
     padding: 10px 20px 10px 20px;
     border-style: hidden;
     border-radius: 22px;
@@ -42,8 +69,7 @@ button {
     box-shadow:  7px 7px 10px 2px $nord0light,
     -7px -7px 10px 2px $nord0dark;
 
-    width: 80%;
-    max-width: 600px;
+    width: 95%;
 
     font-family: 'Rubik', sans-serif;
     font-size: 1.1em;
@@ -53,6 +79,41 @@ button {
     &:focus {
       background-color: $nord3;
     }
+  }
+}
+
+#content {
+  margin: auto;
+  width: 100%;
+  max-width: 1280px;
+
+  @media only screen and (min-width: 1280px) {
+    display: grid;
+    grid-template-columns: 256px 768px 256px;
+  }
+}
+
+#left-content {
+  width: 100%;
+  background-color: blue;
+
+  @media only screen and (max-width: 1280px) {
+    display: none;
+  }
+}
+
+#player {
+  margin: auto;
+  width: 100%;
+  max-width: 768px;
+}
+
+#right-content {
+  width: 100%;
+  background-color: red;
+
+  @media only screen and (max-width: 1280px) {
+    display: none;
   }
 }
 
@@ -102,25 +163,31 @@ button {
       grid-row: 2;
 
       background-color: inherit;
-      // -webkit-appearance: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+      border: none;
 
-      // &:focus {
-      //   outline: none;
-      // }
 
-      // &::-webkit-slider-runnable-track {
-      //   background: $nord3;
-      //   height: 5px;
-      // }
+      &::-webkit-slider-runnable-track {
+        margin-top: 5px;
+        background: linear-gradient(135deg, 
+          $nord10 0%, 
+          $nord9 25%, 
+          $nord8 75%, 
+          $nord7 100%);
+        height: 5px;
+        box-shadow: 5px 5px 10px 5px $nord0light,
+          -5px -5px 10px 5px $nord0dark;
+      }
 
-      // &::-webkit-progress-bar {
-      //   background:linear-gradient(133deg, 
-      //     $nord10 0%, 
-      //     $nord9 25%, 
-      //     $nord8 75%, 
-      //     $nord7 100%);
-      //   height: 5px;
-      // }
+      &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        height: 1.25em;
+        width: 1.25em;
+        border-radius: 50%;
+        margin-top: -5px;
+        background: $nord6;
+    }
 
       &::-moz-range-track {
         background: $nord3;
@@ -141,10 +208,9 @@ button {
       &::-moz-range-thumb {
         height: 1.25em;
         width: 1.25em;
-        background: $nord4;
+        background: $nord6;
         border-radius: 50%;
         border: none;
-
         box-shadow: 5px 5px 7px $nord0light,
           -5px -5px 7px $nord0dark;
        }
@@ -156,15 +222,7 @@ button {
   margin-top: 30px;
 
   .media-button {
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
     margin: 0 12px;
-
-    font-size: 2em;
-
-    box-shadow: 10px 10px 21px $nord0light,
-    -10px -10px 21px $nord0dark;
 
     &:active {
       transform: scale(0.95);
@@ -189,7 +247,8 @@ button {
     border-bottom: 2px solid $nord3;
     padding: 1em 0px 1em 0px;
     display: grid;
-    grid-template-columns: 80% 10% 10%;
+    grid-template-columns: 70% 15% 15%;
+    margin: auto 0;
 
     &.header {
       font-size: 1.25em;
@@ -206,16 +265,19 @@ button {
     }
 
     .title {
+      margin: auto 0;
       text-align: left;
       padding-left: 20px;
     }
 
     .duration {
+      margin: auto 0;
       text-align: right;
       padding-right: 20px;
     }
 
     .toggle {
+      margin: auto 0;
       input[type=checkbox] {
         opacity: 0;
         width: 0;
@@ -237,7 +299,7 @@ button {
         width: 40px;
         height: 20px;
         cursor: pointer;
-        top: 0;
+        top: 2px;
         left: 0;
         right: 0;
         bottom: 0;
@@ -261,17 +323,4 @@ button {
       }
     }
   }
-}
-
-/* New Stuff */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  width: 80%; /* Full width */
-  height: 80%; /* Full height */
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  border: 3px solid #73AD21;
 }
