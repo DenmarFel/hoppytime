@@ -5,7 +5,8 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  useHistory
 } from "react-router-dom";
 import axios from 'axios';
 
@@ -50,8 +51,9 @@ function getFormattedDuration(total) {
 
 function PlayerForm(props) {
   const [value, setValue] = useState('');
-
+  const history = useHistory();
   const handleSubmit = (event) => {
+    history.push('/');
     props.onVideoChange(value);
     setValue('');
     event.preventDefault();
@@ -501,6 +503,7 @@ function App() {
   const [videoId, setVideoId] = useState('TURbeWK2wwg');
   const [isNavOpened, setNavOpened] = useState(false);
   const ref = useRef()
+
   useEffect(() => {
     const checkIfClickedOutside = e => {
       if (isNavOpened && ref.current && !ref.current.contains(e.target)) {
@@ -521,15 +524,10 @@ function App() {
       <Router>
         <nav className={`${isNavOpened ? 'open' : ''}`} ref={ref}>
           <ul onClick={() => setNavOpened(false)}>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/ideas">Ideas</Link>
-            </li>
-            <li>
-              <Link to="/coffee">Buy Me Coffee</Link>
-            </li>
+            <Link to="/"><li><i class="bi bi-house"></i> Home</li></Link>
+            <Link to="/ideas"><li><i class="bi bi-lightbulb"></i> Ideas</li></Link>
+            <Link to="/ideas"><li><i class="bi bi-github"></i> Github</li></Link>
+            <Link to="/coffee"><li><i class="bi bi-cup"></i> Buy Me Coffee</li></Link>
           </ul>
         </nav>
         <div id="nav-toggle">

@@ -71,12 +71,17 @@ button {
   height: 100%;
   background: rgba(59, 66, 82, 0.9);
   z-index: 2;
+  backdrop-filter: blur(3px);
 }
 
 nav {
   grid-area: sideNav;
   background-color: $nord0;
-  padding-top: 27.5px;
+  position: fixed;
+  padding: 27.5px 15px 27.5px 15px;
+
+  border-bottom-right-radius: 20px;
+  font-size: 1.25em;
 
   text-align: left;
   
@@ -96,10 +101,21 @@ nav {
   ul {
     list-style-type: none;
     padding: 0;
+    margin: auto;
+  }
+
+  li {
+    padding: 15px 15px;
+    border-radius: 30px;
+
+    &:hover {
+      background-color: $nord1;
+    }
   }
 
   a {
     color: $nord6;
+    text-decoration: none;
   }
 }
 
