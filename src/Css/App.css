@@ -8,6 +8,7 @@ body {
 }
 
 button {
+  padding: 0;
   background-color: #434C5E;
   color: #ECEFF4;
   border-style: none;

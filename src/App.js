@@ -278,25 +278,23 @@ function Video(props) {
   }, [props.newTime]);
 
   const loadPlayer = () => {
-    axios.get(`https://mysterious-lake-28010.herokuapp.com/api/v1/video?link=https://www.youtube.com/watch?v=${props.videoId}`)
-      .then(response => {
-        props.setTimestampData(response.data);
-        let timestamp = response.data.timestamps[0];
-        new window.YT.Player('video', {
-          videoId: props.videoId,
-          playerVars: {
-            start: timestamp.start,
-            end: timestamp.end,
-            enablejsapi: 1,
-            controls: 0,
-            modestbranding: 1,
-            rel: 0
-          },
-          events: {
-            onReady: (event) => setVideoPlayer(event.target),
-          }
-        });
-      });
+    new window.YT.Player('video', {
+      playerVars: {
+        enablejsapi: 1,
+        controls: 0,
+        modestbranding: 1,
+        rel: 0,
+        playsinline: 1,
+        autoplay: 1,
+      },
+      events: {
+        onReady: onPlayerReady,
+      }
+    });
+  };
+
+  const onPlayerReady = (event) => {
+    setVideoPlayer(event.target);
   };
 
   const loadPlaylist = () => {
@@ -500,7 +498,7 @@ function Toggle(props) {
 
 
 function App() {
-  const [videoId, setVideoId] = useState('TURbeWK2wwg');
+  const [videoId, setVideoId] = useState('');
   const [isNavOpened, setNavOpened] = useState(false);
   const ref = useRef()
 
