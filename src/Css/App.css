@@ -21,9 +21,33 @@ button {
 button:hover {
   background-color: #4C566A;
 }
+button:active {
+  transform: scale(0.95);
+}
+
+input[type=text] {
+  box-sizing: border-box;
+  padding: 10px 20px 10px 20px;
+  border-style: hidden;
+  border-radius: 22px;
+  background-color: #434C5E;
+  color: #ECEFF4;
+  box-shadow: 7px 7px 10px 2px #272c36, -7px -7px 10px 2px #353c4a;
+  width: 95%;
+  font-family: "Rubik", sans-serif;
+  font-size: 1.1em;
+  outline: none;
+}
+input[type=text]:focus {
+  background-color: #4C566A;
+}
 
 .disabled {
   color: #4C566A;
+}
+
+.enabled {
+  color: #88C0D0;
 }
 
 #app {
@@ -34,7 +58,7 @@ button:hover {
   #app {
     display: grid;
     grid-template-columns: 80px auto;
-    grid-template-areas: "navToggle search" "main main";
+    grid-template-areas: "navMenuBtn search" "main main";
   }
 }
 @media only screen and (min-width: 900px) {
@@ -106,18 +130,18 @@ main {
   grid-area: main;
 }
 
-#nav-toggle {
-  grid-area: navToggle;
+#nav-menu-btn {
+  grid-area: navMenuBtn;
   padding-top: 20px;
 }
 @media only screen and (min-width: 900px) {
-  #nav-toggle {
+  #nav-menu-btn {
     position: absolute;
     left: 15px;
   }
 }
 @media only screen and (min-width: 1280px) {
-  #nav-toggle {
+  #nav-menu-btn {
     display: none;
   }
 }
@@ -127,21 +151,9 @@ main {
   padding-top: 27.5px;
   padding-bottom: 7.5px;
 }
-#player-form input[type=text] {
-  box-sizing: border-box;
-  padding: 10px 20px 10px 20px;
-  border-style: hidden;
-  border-radius: 22px;
-  background-color: #434C5E;
-  color: #ECEFF4;
-  box-shadow: 7px 7px 10px 2px #272c36, -7px -7px 10px 2px #353c4a;
-  width: 95%;
-  font-family: "Rubik", sans-serif;
-  font-size: 1.1em;
-  outline: none;
-}
-#player-form input[type=text]:focus {
-  background-color: #4C566A;
+
+#player.display-none {
+  display: none;
 }
 
 #videoContainer {
@@ -222,17 +234,28 @@ main {
   box-shadow: 5px 5px 7px #272c36, -5px -5px 7px #353c4a;
 }
 
-#controls {
-  margin-top: 30px;
+#controls #media-buttons {
+  max-width: 400px;
+  margin: 20px auto;
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
+  grid-gap: 10px;
 }
-#controls .media-button {
-  margin: 0 12px;
+#controls #media-buttons .media-btn-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%;
+  /* = width for a 1:1 aspect ratio */
 }
-#controls .media-button:active {
-  transform: scale(0.95);
-}
-#controls .media-button .enabled {
-  color: #88C0D0;
+#controls #media-buttons .media-btn {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  max-height: 60px;
+  max-width: 60px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 #playlist {
