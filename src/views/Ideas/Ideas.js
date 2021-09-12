@@ -13,7 +13,7 @@ export default function Ideas(props) {
 		<div id="ideas">
 			<h1>Ideas</h1>
 			<div onClick={() => useSuggestedVideo('https://www.youtube.com/watch?v=TURbeWK2wwg')}>
-				Mixup a memorized lofi-playlist: 4 A.M Study Session 📚 - [lofi hip hop/chill beats]
+				Mixup a memorized lofi-playlist: 4 A.M Study Session  - [lofi hip hop/chill beats]
 			</div>
 			<div onClick={() => useSuggestedVideo('https://www.youtube.com/watch?v=W5AZeNGB6Ds&t=1406s')}>
 				Listen to music from your favorite video game: Zelda Music To Relax/Study/Work/Game
