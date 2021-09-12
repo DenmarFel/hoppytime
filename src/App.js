@@ -28,12 +28,13 @@ export default function App() {
 
   const handleVideoChange = (link) => {
     if (!link) return;
-    
+
     let url = new URL(link);
     if (url.hostname === 'www.youtube.com') {
       setVideoId(url.searchParams.get('v'));
     } else if (url.hostname === 'youtu.be') {
-      setVideoId(url.pathname);
+      // alert(url.pathname)
+      setVideoId(url.pathname.replace('/',''));
     }
   };
 
