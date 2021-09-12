@@ -27,8 +27,14 @@ export default function App() {
   }, [isNavOpened]);
 
   const handleVideoChange = (link) => {
-    let videoId = link ? new URL(link).searchParams.get('v') : null;
-    setVideoId(videoId);
+    if (!link) return;
+    
+    let url = new URL(link);
+    if (url.hostname === 'www.youtube.com') {
+      setVideoId(url.searchParams.get('v'));
+    } else if (url.hostname === 'youtu.be') {
+      setVideoId(url.pathname);
+    }
   };
 
   return (

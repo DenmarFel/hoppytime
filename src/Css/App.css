@@ -331,3 +331,14 @@ main {
   transition: 0.3s;
   border-radius: 50%;
 }
+
+#player-instructions {
+  text-align: left;
+}
+
+#ideas {
+  text-align: left;
+}
+#ideas div {
+  padding-bottom: 20px;
+}

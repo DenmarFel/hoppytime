@@ -41,11 +41,20 @@ export default function Video(props) {
 				autoplay: 1,
 			},
 			events: {
-				onReady: event => setVideoPlayer(event.target)
+				onReady: event => setVideoPlayer(event.target),
+				onStateChange: onPlayerStateChange,
 			}
 		});
 		props.setPlaying(true);
 	};
+
+	const onPlayerStateChange = (event) => {
+		if (event.data === window.YT.PlayerState.PLAYING) {
+			props.setPlaying(true);
+		} else if (event.data === window.YT.PlayerState.PAUSED) {
+			props.setPlaying(false);
+		}
+	}
 
 	const loadPlaylist = () => {
 		if (!videoPlayer) return;
