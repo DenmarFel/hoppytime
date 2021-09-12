@@ -334,10 +334,12 @@ main {
 
 #player-instructions {
   text-align: left;
+  padding: 20px;
 }
 
 #ideas {
   text-align: left;
+  padding: 20px;
 }
 #ideas div {
   padding-bottom: 20px;
