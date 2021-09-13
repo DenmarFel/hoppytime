@@ -164,7 +164,7 @@ export default function Player(props) {
 			<div id="player-instructions">
 				<h1>Instructions</h1>
 				<p>Hello friends! I have no idea how I am gonna draft these instructions yet. For now just copy link to a Youtube video (preferably one with timestamps) and paste it in the field above.</p>
-				<p>If no video comes to mind, check out the Suggestions page and just click on any of the videos there. </p>
+				<p>If no video comes to mind, check out the Ideas page and just click on any of the videos there. </p>
 				<p>This project is currently called: Timestamp Player</p>
 				<p>I honestly hate the name so please suggest some better ones. Bonus points if that domain name is available :)</p>
 

@@ -2,24 +2,26 @@
 body {
   text-align: center;
   font-size: 1em;
-  font-family: "Rubik", sans-serif;
+  font-family: "Poppins", sans-serif;
   background-color: #2E3440;
   color: #ECEFF4;
 }
 
 button {
   padding: 0;
-  background-color: #434C5E;
+  background-color: #3B4252;
   color: #ECEFF4;
   border-style: none;
   border-radius: 50%;
   width: 60px;
   height: 60px;
   font-size: 2em;
-  box-shadow: 10px 10px 21px #272c36, -10px -10px 21px #353c4a;
+  box-shadow: 6px 6px 10px rgba(37, 42, 51, 0.8), -6px -6px 10px rgba(55, 62, 77, 0.5), inset 2px 2px 2px rgba(71, 79, 98, 0.5), inset -2px -2px 2px rgba(47, 53, 66, 0.8);
+  cursor: pointer;
 }
 button:hover {
-  background-color: #4C566A;
+  background-color: #434C5E;
+  box-shadow: 6px 6px 10px rgba(55, 62, 77, 0.5), -6px -6px 10px rgba(37, 42, 51, 0.8), inset 2px 2px 2px rgba(47, 53, 66, 0.8), inset -2px -2px 2px rgba(71, 79, 98, 0.5);
 }
 button:active {
   transform: scale(0.95);
@@ -32,7 +34,7 @@ input[type=text] {
   border-radius: 22px;
   background-color: #434C5E;
   color: #ECEFF4;
-  box-shadow: 7px 7px 10px 2px #272c36, -7px -7px 10px 2px #353c4a;
+  box-shadow: 6px 6px 10px rgba(37, 42, 51, 0.8), -6px -6px 10px rgba(55, 62, 77, 0.5);
   width: 95%;
   font-family: "Rubik", sans-serif;
   font-size: 1.1em;
@@ -119,6 +121,7 @@ nav li {
 }
 nav li:hover {
   background-color: #3B4252;
+  box-shadow: 6px 6px 10px rgba(37, 42, 51, 0.8), -6px -6px 10px rgba(55, 62, 77, 0.5), inset 2px 2px 2px rgba(71, 79, 98, 0.5), inset -2px -2px 2px rgba(47, 53, 66, 0.8);
 }
 nav a {
   color: #ECEFF4;
@@ -162,7 +165,8 @@ main {
   margin: auto;
   width: 90%;
   padding-bottom: 50.6%;
-  box-shadow: 25px 25px 50px 2px #272c36, -25px -25px 50px 2px #353c4a;
+  border-radius: 20px;
+  box-shadow: 6px 6px 10px rgba(37, 42, 51, 0.8), -6px -6px 10px rgba(55, 62, 77, 0.5);
 }
 @media only screen and (min-width: 768px) {
   #videoContainer {
@@ -178,6 +182,7 @@ main {
   left: 0;
   width: 100%;
   height: 100%;
+  border-radius: 20px;
 }
 
 #status {
@@ -206,7 +211,7 @@ main {
   margin-top: 5px;
   background: linear-gradient(135deg, #5E81AC 0%, #81A1C1 25%, #88C0D0 75%, #8FBCBB 100%);
   height: 5px;
-  box-shadow: 5px 5px 10px 5px #272c36, -5px -5px 10px 5px #353c4a;
+  box-shadow: 6px 6px 10px rgba(37, 42, 51, 0.8), -6px -6px 10px rgba(55, 62, 77, 0.5);
 }
 #status #progress .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
@@ -219,7 +224,7 @@ main {
 #status #progress .slider::-moz-range-track {
   background: #4C566A;
   height: 5px;
-  box-shadow: 5px 5px 10px 5px #272c36, -5px -5px 10px 5px #353c4a;
+  box-shadow: 6px 6px 10px rgba(37, 42, 51, 0.8), -6px -6px 10px rgba(55, 62, 77, 0.5);
 }
 #status #progress .slider::-moz-range-progress {
   background: linear-gradient(135deg, #5E81AC 0%, #81A1C1 25%, #88C0D0 75%, #8FBCBB 100%);
@@ -231,7 +236,7 @@ main {
   background: #ECEFF4;
   border-radius: 50%;
   border: none;
-  box-shadow: 5px 5px 7px #272c36, -5px -5px 7px #353c4a;
+  box-shadow: 6px 6px 10px rgba(37, 42, 51, 0.8), -6px -6px 10px rgba(55, 62, 77, 0.5);
 }
 
 #controls #media-buttons {
@@ -261,24 +266,28 @@ main {
 #playlist {
   margin: 30px auto 0 auto;
   list-style-type: none;
-  padding: 0;
+  padding: 0 20px;
+  color: #ECEFF4;
 }
 #playlist .playlist-item {
-  border-bottom: 2px solid #4C566A;
-  padding: 1em 0px 1em 0px;
+  padding: 1.25em 0.5em;
   display: grid;
   grid-template-columns: 70% 15% 15%;
-  margin: auto 0;
+  margin: 22.5px 0;
+}
+#playlist .playlist-item.timestamp {
+  box-shadow: 6px 6px 10px rgba(37, 42, 51, 0.8), -6px -6px 10px rgba(55, 62, 77, 0.5), inset 3px 3px 3px rgba(71, 79, 98, 0.5), inset -3px -3px 3px rgba(47, 53, 66, 0.8);
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: #3B4252;
 }
 #playlist .playlist-item.header {
   font-size: 1.25em;
+  border-bottom: 2px solid #4C566A;
 }
 #playlist .playlist-item.playing, #playlist .playlist-item.timestamp:hover {
   background-color: #5E81AC;
-  border-bottom: 2px solid #5E81AC;
-}
-#playlist .playlist-item.playing .toggle .slider, #playlist .playlist-item.timestamp:hover .toggle .slider {
-  box-shadow: 3px 3px 6px #506e92, -3px -3px 6px #6c94c6;
+  box-shadow: inset 3px 3px 3px #719bce, inset -3px -3px 3px #4b678a;
 }
 #playlist .playlist-item .title {
   margin: auto 0;
@@ -290,46 +299,33 @@ main {
   text-align: right;
   padding-right: 20px;
 }
-#playlist .playlist-item .toggle {
-  margin: auto 0;
-  /* The slider */
-}
 #playlist .playlist-item .toggle input[type=checkbox] {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-#playlist .playlist-item .toggle input[type=checkbox]:checked + .slider {
-  background-color: #88C0D0;
-}
-#playlist .playlist-item .toggle input[type=checkbox]:checked + .slider:before {
-  transform: translateX(21px);
-}
-#playlist .playlist-item .toggle .slider {
+  cursor: pointer;
+  vertical-align: middle;
+  margin: auto 0;
   position: relative;
-  display: inline-block;
+  -webkit-appearance: none;
+  outline: none;
   width: 40px;
   height: 20px;
-  cursor: pointer;
-  top: 2px;
-  left: 0;
-  right: 0;
-  bottom: 0;
   background-color: #4C566A;
-  transition: 0.3s;
-  border-radius: 17px;
-  box-shadow: 3px 3px 6px #272c36, -3px -3px 6px #353c4a;
+  border-radius: 50px;
 }
-#playlist .playlist-item .toggle .slider:before {
-  position: absolute;
+#playlist .playlist-item .toggle input[type=checkbox]:after {
   content: "";
-  height: 14px;
-  width: 14px;
+  position: absolute;
+  top: 3px;
   left: 3px;
-  bottom: 3px;
-  background-color: #3B4252;
-  transition: 0.3s;
+  background: #3B4252;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
+}
+#playlist .playlist-item .toggle input[type=checkbox]:checked {
+  background-color: #88C0D0;
+}
+#playlist .playlist-item .toggle input[type=checkbox]:checked:after {
+  left: 22px;
 }
 
 #player-instructions {

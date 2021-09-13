@@ -49,10 +49,10 @@ export default function Video(props) {
 	};
 
 	const onPlayerStateChange = (event) => {
-		if (event.data === window.YT.PlayerState.PLAYING) {
-			props.setPlaying(true);
-		} else if (event.data === window.YT.PlayerState.PAUSED) {
+		if (event.data === window.YT.PlayerState.PAUSED) {
 			props.setPlaying(false);
+		} else {
+			props.setPlaying(true);
 		}
 	}
 

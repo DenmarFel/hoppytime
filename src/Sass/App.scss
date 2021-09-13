@@ -5,20 +5,22 @@
 
 
 //Box Shadows
-$nord0light: #272c36;
-$nord0dark: #353c4a;
+$nord0dark: rgba(37, 42, 51, 0.8);
+$nord0light: rgba(55, 62, 77, 0.5);
+$nord1light: rgba(71, 79, 98, 0.5);
+$nord1dark: rgba(47, 53, 66, 0.8);
 
 body {
   text-align: center;
   font-size: 1em;
-  font-family: 'Rubik', sans-serif;
+  font-family: 'Poppins', sans-serif;
   background-color: $nord0;
   color: $nord6;
 }
 
 button {
   padding: 0;
-  background-color: $nord2;
+  background-color: $nord1;
   color: $nord6;
 
   border-style: none;
@@ -27,11 +29,18 @@ button {
   height: 60px;
 
   font-size: 2em;
-  box-shadow: 10px 10px 21px $nord0light,
-    -10px -10px 21px $nord0dark;
+  box-shadow:  6px 6px 10px $nord0dark,
+  -6px -6px 10px $nord0light,
+  inset 2px 2px 2px $nord1light,
+  inset -2px -2px 2px $nord1dark;
+  cursor: pointer;
 
   &:hover {
-    background-color: $nord3;
+    background-color: $nord2;
+    box-shadow:  6px 6px 10px $nord0light,
+    -6px -6px 10px $nord0dark,
+    inset 2px 2px 2px $nord1dark,
+    inset -2px -2px 2px $nord1light;
   }
 
   &:active {
@@ -47,8 +56,8 @@ input[type=text] {
   background-color: $nord2;
   color: $nord6;
   
-  box-shadow:  7px 7px 10px 2px $nord0light,
-  -7px -7px 10px 2px $nord0dark;
+  box-shadow:  6px 6px 10px $nord0dark,
+  -6px -6px 10px $nord0light;
 
   width: 95%;
 
@@ -142,6 +151,10 @@ nav {
 
     &:hover {
       background-color: $nord1;
+      box-shadow:  6px 6px 10px $nord0dark,
+      -6px -6px 10px $nord0light,
+      inset 2px 2px 2px $nord1light,
+      inset -2px -2px 2px $nord1dark;;
     }
   }
 
@@ -188,9 +201,10 @@ main {
   margin: auto;
   width: 90%;
   padding-bottom: 50.60%;
+  border-radius: 20px;
 
-  box-shadow:  25px 25px 50px 2px $nord0light,
-  -25px -25px 50px 2px $nord0dark;
+  box-shadow:  6px 6px 10px $nord0dark,
+  -6px -6px 10px $nord0light;
 
   @media only screen and (min-width: 768px) {
     margin: auto;
@@ -205,6 +219,7 @@ main {
   left: 0;
   width: 100%;
   height: 100%;
+  border-radius: 20px;
 }
 
 #status {
@@ -241,8 +256,8 @@ main {
           $nord8 75%, 
           $nord7 100%);
         height: 5px;
-        box-shadow: 5px 5px 10px 5px $nord0light,
-          -5px -5px 10px 5px $nord0dark;
+        box-shadow:  6px 6px 10px $nord0dark,
+        -6px -6px 10px $nord0light;
       }
 
       &::-webkit-slider-thumb {
@@ -257,8 +272,8 @@ main {
       &::-moz-range-track {
         background: $nord3;
         height: 5px;
-        box-shadow: 5px 5px 10px 5px $nord0light,
-          -5px -5px 10px 5px $nord0dark;
+        box-shadow:  6px 6px 10px $nord0dark,
+        -6px -6px 10px $nord0light;
       }
 
       &::-moz-range-progress {
@@ -276,8 +291,8 @@ main {
         background: $nord6;
         border-radius: 50%;
         border: none;
-        box-shadow: 5px 5px 7px $nord0light,
-          -5px -5px 7px $nord0dark;
+        box-shadow:  6px 6px 10px $nord0dark,
+        -6px -6px 10px $nord0light;
        }
     }
   }
@@ -315,27 +330,35 @@ main {
 #playlist {
   margin: 30px auto 0 auto;
   list-style-type: none;
-  padding: 0;
+  padding: 0 20px;
+  color: $nord6;
 
   .playlist-item {
-    border-bottom: 2px solid $nord3;
-    padding: 1em 0px 1em 0px;
+    padding: 1.25em 0.5em;
     display: grid;
     grid-template-columns: 70% 15% 15%;
-    margin: auto 0;
+    margin: 22.5px 0;
+
+    &.timestamp {
+      box-shadow:  6px 6px 10px $nord0dark,
+      -6px -6px 10px $nord0light,
+      inset 3px 3px 3px $nord1light,
+      inset -3px -3px 3px $nord1dark;
+      border-radius: 10px;
+      cursor: pointer;
+      background-color: $nord1;
+    }
 
     &.header {
       font-size: 1.25em;
+      border-bottom: 2px solid $nord3;
     }
 
     &.playing, &.timestamp:hover {
       background-color: $nord10;
-      border-bottom: 2px solid $nord10;
+      box-shadow: inset 3px 3px 3px #719bce,
+      inset -3px -3px 3px #4b678a;
 
-      .toggle .slider {
-        box-shadow:  3px 3px 6px #506e92,
-          -3px -3px 6px #6c94c6;
-      }
     }
 
     .title {
@@ -351,48 +374,40 @@ main {
     }
 
     .toggle {
-      margin: auto 0;
       input[type=checkbox] {
-        opacity: 0;
-        width: 0;
-        height: 0;
+        cursor: pointer;
+        vertical-align: middle;
+        margin: auto 0;
+        position: relative;
+        -webkit-appearance: none;
+        outline: none;
+        width: 40px;
+        height: 20px;
+        background-color: $nord3;
+        border-radius: 50px;
+        // box-shadow: inset -20px 0 0 0 #fff;
 
-        &:checked + .slider {
+        &:after {
+          content: "";
+          position: absolute;
+          top: 3px;
+          left: 3px;
+          background: $nord1;
+          width: 14px;
+          height: 14px;
+          border-radius: 50%;
+          // box-shadow: 2px 4px 6px rgba(0,0,0,0.2);
+        }
+
+        &:checked {
+          // box-shadow: inset 20px 0 0 0 #4ed164;
+          // border-color: #4ed164;
           background-color: $nord8;
         }
 
-        &:checked + .slider:before {
-          transform: translateX(21px);
-        }
-      }
-
-      /* The slider */
-      .slider {
-        position: relative;
-        display: inline-block;
-        width: 40px;
-        height: 20px;
-        cursor: pointer;
-        top: 2px;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: $nord3;
-        transition: .3s;
-        border-radius: 17px;
-        box-shadow:  3px 3px 6px $nord0light,
-          -3px -3px 6px $nord0dark;
-
-        &:before {
-          position: absolute;
-          content: "";
-          height: 14px;
-          width: 14px;
-          left: 3px;
-          bottom: 3px;
-          background-color: $nord1;
-          transition: .3s;
-          border-radius: 50%;
+        &:checked:after {
+          left: 22px;
+          // box-shadow: -2px 4px 3px rgba(0,0,0,0.05);
         }
       }
     }
