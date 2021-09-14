@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
 } from "react-router-dom";
 import NavLinks from './views/Navigation/NavLinks';
 import NavMenuBtn from './views/Navigation/NavMenuBtn';
@@ -12,7 +12,12 @@ import Player from './views/Player/Player';
 import Ideas from './views/Ideas/Ideas';
 import PlayerInstructions from './views/Player/PlayerInstructions';
 
+function useQuery() {
+  return new URLSearchParams(window.location.search);
+}
+
 export default function App() {
+  let query = useQuery();
   const [isNavOpened, setNavOpened] = useState(false);
   const navLinksRef = useRef();
 
@@ -41,7 +46,7 @@ export default function App() {
             <Route path="/coffee">
               <h1>Buy me coffee</h1>
             </Route>
-            <Route path="/player/:videoId" render={props => <Player videoId={props.match.params.videoId} />} />
+            <Route path="/player/:videoId" render={props => <Player videoId={props.match.params.videoId} tourEnabled={new URLSearchParams(window.location.search).get("tourEnabled")} />} />
             <Route path="/">
               <PlayerInstructions />
             </Route>

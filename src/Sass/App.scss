@@ -18,6 +18,40 @@ body {
   color: $nord6;
 }
 
+.customTour {
+  & .introjs-tooltiptext {
+    font-family: 'Poppins', sans-serif !important;
+    text-align: left;
+  }
+  
+  & .introjs-tooltiptext * {
+    font-family: 'Poppins', sans-serif !important;
+    text-align: left;
+  }
+
+  &.introjs-tooltip {
+    background-color: $nord1 !important;
+  }
+
+  & .introjs-arrow {
+    &.top {
+      border-bottom-color: $nord1 !important;
+    }
+
+    &.right {
+      border-left-color: $nord1 !important;
+    }
+
+    &.bottom {
+      border-top-color: $nord1 !important;
+    }
+
+    &.left {
+      border-right-color: $nord1 !important;
+    }
+  }
+}
+
 button {
   padding: 0;
   background-color: $nord1;
@@ -197,7 +231,7 @@ main {
   }
 }
 
-#videoContainer {
+#video-container {
   position: relative;
   overflow: hidden;
   margin: auto;
@@ -377,7 +411,7 @@ main {
 
     .enable {
       margin: 0 auto;
-      
+
       input[type=checkbox] {
         cursor: pointer;
         vertical-align: middle;

@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Link } from "react-router-dom";
 export default function PlayerInstructions(props) {
 
 	return (
@@ -9,7 +9,7 @@ export default function PlayerInstructions(props) {
 			<p>If no video comes to mind, check out the Ideas page and just click on any of the videos there. </p>
 			<p>This project is currently called: Timestamp Player</p>
 			<p>I honestly hate the name so please suggest some better ones. Bonus points if that domain name is available :)</p>
-
+			<Link to="player/lIsT3fQfwdU?tourEnabled=true"> Start tour </Link>
 			<h2>Known Bugs</h2>
 			<ul>
 				<li>Unpredictable behavior when all timestamps are disabled</li>

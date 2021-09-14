@@ -7,6 +7,30 @@ body {
   color: #ECEFF4;
 }
 
+.customTour .introjs-tooltiptext {
+  font-family: "Poppins", sans-serif !important;
+  text-align: left;
+}
+.customTour .introjs-tooltiptext * {
+  font-family: "Poppins", sans-serif !important;
+  text-align: left;
+}
+.customTour.introjs-tooltip {
+  background-color: #3B4252 !important;
+}
+.customTour .introjs-arrow.top {
+  border-bottom-color: #3B4252 !important;
+}
+.customTour .introjs-arrow.right {
+  border-left-color: #3B4252 !important;
+}
+.customTour .introjs-arrow.bottom {
+  border-top-color: #3B4252 !important;
+}
+.customTour .introjs-arrow.left {
+  border-right-color: #3B4252 !important;
+}
+
 button {
   padding: 0;
   background-color: #3B4252;
@@ -161,7 +185,7 @@ main {
   display: none;
 }
 
-#videoContainer {
+#video-container {
   position: relative;
   overflow: hidden;
   margin: auto;
@@ -171,7 +195,7 @@ main {
   box-shadow: 6px 6px 10px rgba(37, 42, 51, 0.8), -6px -6px 10px rgba(55, 62, 77, 0.5);
 }
 @media only screen and (min-width: 768px) {
-  #videoContainer {
+  #video-container {
     margin: auto;
     width: 704px;
     padding-bottom: 396px;
