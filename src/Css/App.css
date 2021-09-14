@@ -19,9 +19,11 @@ button {
   box-shadow: 6px 6px 10px rgba(37, 42, 51, 0.8), -6px -6px 10px rgba(55, 62, 77, 0.5), inset 2px 2px 2px rgba(71, 79, 98, 0.5), inset -2px -2px 2px rgba(47, 53, 66, 0.8);
   cursor: pointer;
 }
-button:hover {
-  background-color: #434C5E;
-  box-shadow: 6px 6px 10px rgba(55, 62, 77, 0.5), -6px -6px 10px rgba(37, 42, 51, 0.8), inset 2px 2px 2px rgba(47, 53, 66, 0.8), inset -2px -2px 2px rgba(71, 79, 98, 0.5);
+@media (hover) {
+  button:hover {
+    background-color: #434C5E;
+    box-shadow: 6px 6px 10px rgba(55, 62, 77, 0.5), -6px -6px 10px rgba(37, 42, 51, 0.8), inset 2px 2px 2px rgba(47, 53, 66, 0.8), inset -2px -2px 2px rgba(71, 79, 98, 0.5);
+  }
 }
 button:active {
   transform: scale(0.95);
@@ -299,7 +301,10 @@ main {
   text-align: right;
   padding-right: 20px;
 }
-#playlist .playlist-item .toggle input[type=checkbox] {
+#playlist .playlist-item .enable {
+  margin: 0 auto;
+}
+#playlist .playlist-item .enable input[type=checkbox] {
   cursor: pointer;
   vertical-align: middle;
   margin: auto 0;
@@ -311,7 +316,7 @@ main {
   background-color: #4C566A;
   border-radius: 50px;
 }
-#playlist .playlist-item .toggle input[type=checkbox]:after {
+#playlist .playlist-item .enable input[type=checkbox]:after {
   content: "";
   position: absolute;
   top: 3px;
@@ -321,10 +326,10 @@ main {
   height: 14px;
   border-radius: 50%;
 }
-#playlist .playlist-item .toggle input[type=checkbox]:checked {
+#playlist .playlist-item .enable input[type=checkbox]:checked {
   background-color: #88C0D0;
 }
-#playlist .playlist-item .toggle input[type=checkbox]:checked:after {
+#playlist .playlist-item .enable input[type=checkbox]:checked:after {
   left: 22px;
 }
 

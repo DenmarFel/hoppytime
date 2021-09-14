@@ -35,12 +35,14 @@ button {
   inset -2px -2px 2px $nord1dark;
   cursor: pointer;
 
-  &:hover {
-    background-color: $nord2;
-    box-shadow:  6px 6px 10px $nord0light,
-    -6px -6px 10px $nord0dark,
-    inset 2px 2px 2px $nord1dark,
-    inset -2px -2px 2px $nord1light;
+  @media (hover) {
+    &:hover {
+      background-color: $nord2;
+      box-shadow:  6px 6px 10px $nord0light,
+      -6px -6px 10px $nord0dark,
+      inset 2px 2px 2px $nord1dark,
+      inset -2px -2px 2px $nord1light;
+    }
   }
 
   &:active {
@@ -373,7 +375,9 @@ main {
       padding-right: 20px;
     }
 
-    .toggle {
+    .enable {
+      margin: 0 auto;
+      
       input[type=checkbox] {
         cursor: pointer;
         vertical-align: middle;
@@ -385,7 +389,6 @@ main {
         height: 20px;
         background-color: $nord3;
         border-radius: 50px;
-        // box-shadow: inset -20px 0 0 0 #fff;
 
         &:after {
           content: "";
@@ -396,18 +399,14 @@ main {
           width: 14px;
           height: 14px;
           border-radius: 50%;
-          // box-shadow: 2px 4px 6px rgba(0,0,0,0.2);
         }
 
         &:checked {
-          // box-shadow: inset 20px 0 0 0 #4ed164;
-          // border-color: #4ed164;
           background-color: $nord8;
         }
 
         &:checked:after {
           left: 22px;
-          // box-shadow: -2px 4px 3px rgba(0,0,0,0.05);
         }
       }
     }

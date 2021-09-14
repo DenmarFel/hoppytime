@@ -10,9 +10,9 @@ import NavMenuBtn from './views/Navigation/NavMenuBtn';
 import PlayerForm from './views/Navigation/PlayerForm';
 import Player from './views/Player/Player';
 import Ideas from './views/Ideas/Ideas';
+import PlayerInstructions from './views/Player/PlayerInstructions';
 
 export default function App() {
-  const [videoId, setVideoId] = useState(null);
   const [isNavOpened, setNavOpened] = useState(false);
   const navLinksRef = useRef();
 
@@ -26,35 +26,24 @@ export default function App() {
     return () => document.removeEventListener("mousedown", checkIfClickedOutside);
   }, [isNavOpened]);
 
-  const handleVideoChange = (link) => {
-    if (!link) return;
-
-    let url = new URL(link);
-    if (url.hostname === 'www.youtube.com') {
-      setVideoId(url.searchParams.get('v'));
-    } else if (url.hostname === 'youtu.be') {
-      // alert(url.pathname)
-      setVideoId(url.pathname.replace('/',''));
-    }
-  };
-
   return (
     <div id="app">
       {isNavOpened && <div id="overlay"></div>}
       <Router>
         <NavLinks onClick={() => setNavOpened(false)} isNavOpened={isNavOpened} navLinksRef={navLinksRef}/>
         <NavMenuBtn onClick={() => setNavOpened(!isNavOpened)} />
-        <PlayerForm onVideoChange={handleVideoChange} />
+        <PlayerForm />
         <main>
           <Switch>
             <Route path="/ideas">
-              <Ideas onVideoChange={handleVideoChange} />
+              <Ideas />
             </Route>
             <Route path="/coffee">
               <h1>Buy me coffee</h1>
             </Route>
+            <Route path="/player/:videoId" render={props => <Player videoId={props.match.params.videoId} />} />
             <Route path="/">
-              <Player videoId={videoId} onVideoChange={handleVideoChange} />
+              <PlayerInstructions />
             </Route>
           </Switch>
         </main>

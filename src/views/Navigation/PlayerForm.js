@@ -6,8 +6,16 @@ export default function PlayerForm(props) {
 	const history = useHistory();
 	
 	const handleSubmit = (event) => {
-		history.push('/');
-		props.onVideoChange(value);
+		let url = new URL(value);
+		let videoId = '';
+
+    if (url.hostname === 'www.youtube.com') {
+      videoId = url.searchParams.get('v');
+    } else if (url.hostname === 'youtu.be') {
+      videoId = url.pathname.replace('/','');
+    }
+
+		history.push('/player/' + videoId);
 		setValue('');
 		event.preventDefault();
 	}
