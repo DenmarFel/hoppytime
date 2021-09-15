@@ -10,6 +10,7 @@ import NavMenuBtn from './views/Navigation/NavMenuBtn';
 import PlayerForm from './views/Navigation/PlayerForm';
 import Player from './views/Player/Player';
 import Ideas from './views/Ideas/Ideas';
+import History from './views/History/History';
 import PlayerInstructions from './views/Player/PlayerInstructions';
 
 function useQuery() {
@@ -43,8 +44,8 @@ export default function App() {
             <Route path="/ideas">
               <Ideas />
             </Route>
-            <Route path="/coffee">
-              <h1>Buy me coffee</h1>
+            <Route path="/history">
+              <History />
             </Route>
             <Route path="/player/:videoId" render={props => <Player videoId={props.match.params.videoId} tourEnabled={new URLSearchParams(window.location.search).get("tourEnabled")} />} />
             <Route path="/">

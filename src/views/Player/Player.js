@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Steps, Hints } from "intro.js-react";
-import 'intro.js/introjs.css';
 import axios from 'axios';
 
-import { shuffleArray } from '../../utils/helpers';
+import { pushHistory, shuffleArray } from '../../utils/helpers';
 
+import Tour from './Tour';
 import Video from './Video';
 import Status from './Controls/Status';
 import MediaButton from './Controls/MediaButton';
@@ -38,6 +37,7 @@ export default function Player(props) {
 			.then(response => {
 				setCurrentTimestampIndx(0);
 				setTimestampData(response.data);
+				pushHistory([response.data.videoId, response.data.title]);
 			});
 	}, [props.videoId])
 
@@ -107,49 +107,10 @@ export default function Player(props) {
 		setDisabledIndexes(disabledIndexesCopy);
 	};
 
-	const [stepsEnabled, setStepsEnabled] = useState(props.tourEnabled);
-	const [steps, setSteps] = useState([
-		{
-			element: "#player-form",
-			intro: "Paste a Youtube link here to create a timestamp player for that video."
-		},
-		{
-			element: "#video-container",
-			intro: "Your video choice will be embedded here.",
-		}, 
-		{
-			element: "#playlist",
-			intro: 
-				<div>
-					Timestamps will be displayed like songs in a playlist.
-					<ul>
-						<li>Click on any timestamp to play it.</li>
-						<li>Disable a timestamp by using the toggle on the right.</li>
-					</ul>
-				</div>
-		}, 
-		{
-			element: "#controls",
-			intro: "Control the timestamp player like any other music player."
-		}
-	]);
-
-	const [introJsOptions, setIntroJsOptions] = useState({
-		tooltipClass: "customTour",
-		scrollToElement: true
-	});
-	
 	if (props.videoId) {
 		return (
 			<div id="player">
-				<Steps 
-					enabled={stepsEnabled}
-					steps={steps}
-					initialStep={0}
-					onExit={() => {
-							setStepsEnabled(false);
-					}}
-					options={introJsOptions} />
+				<Tour tourEnabled={props.tourEnabled} />
 				<Video 
 					videoId={props.videoId}
 					timestampData={timestampData}
