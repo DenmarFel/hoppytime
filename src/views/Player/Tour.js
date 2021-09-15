@@ -4,7 +4,11 @@ import 'intro.js/introjs.css';
 
 export default function Tour(props) {
 	const [stepsEnabled, setStepsEnabled] = useState(props.tourEnabled);
+
 	const [steps, setSteps] = useState([
+
+	const [steps] = useState([
+
 		{
 			element: "#player-form",
 			intro: "Paste a Youtube link here to create a timestamp player for that video."
@@ -30,10 +34,6 @@ export default function Tour(props) {
 		}
 	]);
 
-	const [introJsOptions, setIntroJsOptions] = useState({
-		tooltipClass: "customTour",
-		scrollToElement: true
-	});
 
 	return (
 		<Steps 
@@ -43,6 +43,10 @@ export default function Tour(props) {
 			onExit={() => {
 					setStepsEnabled(false);
 			}}
-			options={introJsOptions} />
+
+			options={{
+				tooltipClass: "customTour",
+				scrollToElement: true
+			}} />
 	)
 }
