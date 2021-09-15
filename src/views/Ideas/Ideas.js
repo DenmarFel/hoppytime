@@ -27,19 +27,6 @@ function Idea(props) {
 export default function Ideas(props) {
 	const history = useHistory();
 
-	const useSuggestedVideo = (link) => {
-		let url = new URL(link);
-		let videoId = '';
-
-    if (url.hostname === 'www.youtube.com') {
-      videoId = url.searchParams.get('v');
-    } else if (url.hostname === 'youtu.be') {
-      videoId = url.pathname.replace('/','');
-    }
-
-		history.push('/player/' + videoId);
-	}
-
 	const lofiIdeas = [
 		{
 			link: 'https://www.youtube.com/watch?v=lIsT3fQfwdU',
