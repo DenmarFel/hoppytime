@@ -49,48 +49,70 @@ export default function Player(props) {
 
 	const toggleShuffle = () => {
 		if (!isShuffle) {
-			let shuffledIndexes = [...Array(timestampData.timestamps.length).keys()];
-			shuffleArray(shuffledIndexes);
-			setShuffledIndexes(shuffledIndexes);
+			setShuffledIndexes(generateShuffledIndexes());
 		}
 		setShuffle(!isShuffle);
 	};
 
+	const generateShuffledIndexes = () => {
+		let shuffledIndexes = [...Array(timestampData.timestamps.length).keys()];
+		shuffleArray(shuffledIndexes);
+		return shuffledIndexes;
+	};
+
 	const handleTimestampSelection = (indx, reason = null) => {
+		if (reason === 'chosen') {
+			setCurrentTimestampIndx(indx);
+		}
+
 		if (indx === -1) {
 			indx = timestampData.timestamps.length - 1;
 		} else if (indx === timestampData.timestamps.length) {
 			indx = 0;
 		}
 
-		// Reasons: ended, chosen, next, prev
-		if (reason === 'ended' && isRepeat) {
-			indx = currentTimestampIndx;
-		} else if (reason !== 'chosen' && isShuffle) {
-			indx = shuffledIndexes[indx];
-		}
-
-		if (disabledIndexes.length === timestampData.timestamps.length) {
-			setPlaying(false);
-			return;
-		}
-
-		if (reason !== 'chosen' && disabledIndexes.includes(indx)) {
-			if (isShuffle) {
-				let shuffledIndexes = [...Array(timestampData.timestamps.length).keys()];
-				shuffleArray(shuffledIndexes);
-				setShuffledIndexes(shuffledIndexes);
-			}
-			if (reason === 'next' || reason === 'ended') {
-				handleTimestampSelection(indx + 1, reason);
-				return;
+		if (reason === 'ended') {
+			if (isRepeat) {
+				setCurrentTimestampIndx(currentTimestampIndx);
+			} else if (!isRepeat && isShuffle) {
+				let tempShuffledIndexes = shuffledIndexes;
+				while (disabledIndexes.includes(tempShuffledIndexes[0])) {
+					tempShuffledIndexes.shift();
+					if (tempShuffledIndexes.length === 0) {
+						tempShuffledIndexes = generateShuffledIndexes();
+					}
+				}
+				setCurrentTimestampIndx(tempShuffledIndexes[0]);
+				tempShuffledIndexes.shift();
+				if (tempShuffledIndexes.length === 0) {
+					tempShuffledIndexes = generateShuffledIndexes();
+				}
+				setShuffledIndexes(tempShuffledIndexes);
 			} else {
-				handleTimestampSelection(indx - 1, reason);
-				return;
+				setCurrentTimestampIndx(indx);
 			}
 		}
 
-		setCurrentTimestampIndx(indx);
+		if (reason === 'prev' || reason === 'next') {
+			if (isShuffle) {
+				let tempShuffledIndexes = shuffledIndexes;
+				while (disabledIndexes.includes(tempShuffledIndexes[0])) {
+					tempShuffledIndexes.shift();
+					if (tempShuffledIndexes.length === 0) {
+						tempShuffledIndexes = generateShuffledIndexes();
+					}
+				}
+				setCurrentTimestampIndx(tempShuffledIndexes[0]);
+				tempShuffledIndexes.shift();
+				if (tempShuffledIndexes.length === 0) {
+					tempShuffledIndexes = generateShuffledIndexes();
+				}
+				setShuffledIndexes(tempShuffledIndexes);
+			} else {
+				setCurrentTimestampIndx(indx);
+			}
+		}
+
 		setPlaying(true);
 	};
 
