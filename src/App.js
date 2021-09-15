@@ -13,12 +13,7 @@ import Ideas from './views/Ideas/Ideas';
 import History from './views/History/History';
 import PlayerInstructions from './views/Player/PlayerInstructions';
 
-function useQuery() {
-  return new URLSearchParams(window.location.search);
-}
-
 export default function App() {
-  let query = useQuery();
   const [isNavOpened, setNavOpened] = useState(false);
   const navLinksRef = useRef();
 
