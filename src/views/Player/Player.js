@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-import { shuffleArray } from '../../utils/helpers';
+import { pushHistory, shuffleArray } from '../../utils/helpers';
 
+import Tour from './Tour';
 import Video from './Video';
 import Status from './Controls/Status';
 import MediaButton from './Controls/MediaButton';
@@ -36,6 +37,7 @@ export default function Player(props) {
 			.then(response => {
 				setCurrentTimestampIndx(0);
 				setTimestampData(response.data);
+				pushHistory([response.data.videoId, response.data.title]);
 			});
 	}, [props.videoId])
 
@@ -108,6 +110,7 @@ export default function Player(props) {
 	if (props.videoId) {
 		return (
 			<div id="player">
+				<Tour tourEnabled={props.tourEnabled} />
 				<Video 
 					videoId={props.videoId}
 					timestampData={timestampData}
@@ -119,7 +122,8 @@ export default function Player(props) {
 					currentTimestampIndx={currentTimestampIndx}
 					isPlaying={isPlaying}
 					setPlaying={setPlaying}
-					isRepeat={isRepeat} />
+					isRepeat={isRepeat} 
+					tourEnabled={props.tourEnabled}/>
 				<div id="controls">
 					<Status
 						timestamp={getTimestamp()}

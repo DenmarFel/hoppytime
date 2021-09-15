@@ -9,6 +9,8 @@ $nord0dark: rgba(37, 42, 51, 0.8);
 $nord0light: rgba(55, 62, 77, 0.5);
 $nord1light: rgba(71, 79, 98, 0.5);
 $nord1dark: rgba(47, 53, 66, 0.8);
+$nord11light: rgba(220, 112, 122, 1);
+$nord11dark: rgba(162, 82, 90, 1);
 
 body {
   text-align: center;
@@ -16,6 +18,78 @@ body {
   font-family: 'Poppins', sans-serif;
   background-color: $nord0;
   color: $nord6;
+}
+
+a, a:hover, a:focus, a:active {
+  text-decoration: none;
+  color: inherit;
+}
+
+.customTour {
+  &.introjs-tooltip {
+    background-color: $nord1 !important;
+  }
+
+  & .introjs-arrow {
+    &.top {
+      border-bottom-color: $nord1 !important;
+    }
+
+    &.right {
+      border-left-color: $nord1 !important;
+    }
+
+    &.bottom {
+      border-top-color: $nord1 !important;
+    }
+
+    &.left {
+      border-right-color: $nord1 !important;
+    }
+  }
+
+  & .introjs-skipbutton {
+    color: $nord4;
+  }
+
+  & .introjs-tooltiptext {
+    font-family: 'Poppins', sans-serif !important;
+    text-align: left;
+  }
+  
+  & .introjs-tooltiptext * {
+    font-family: 'Poppins', sans-serif !important;
+    text-align: left;
+  }
+
+  & .introjs-bullets ul li a {
+    background: $nord4 !important;
+  }
+
+  & .introjs-tooltipbuttons {
+    border-top: none;
+  }
+
+  & .introjs-button {
+    border: none;
+    border-radius: 0.5em;
+    background-color: $nord3;
+    text-shadow: none;
+    color: $nord6;
+
+    &.introjs-disabled {
+      color: $nord1;
+    }
+
+    &.introjs-disabled {
+      color: $nord1;
+    }
+
+    &:hover,&:focus{
+      background-color: $nord10;
+      color: $nord6;
+    }
+  }
 }
 
 button {
@@ -197,7 +271,7 @@ main {
   }
 }
 
-#videoContainer {
+#video-container {
   position: relative;
   overflow: hidden;
   margin: auto;
@@ -329,39 +403,41 @@ main {
   }
 }
 
-#playlist {
+.list {
+  padding: 0 20px;
   margin: 30px auto 0 auto;
   list-style-type: none;
-  padding: 0 20px;
   color: $nord6;
+}
 
+.list-item {
+  padding: 1.25em 0.5em;
+  box-shadow:  6px 6px 10px $nord0dark,
+  -6px -6px 10px $nord0light,
+  inset 3px 3px 3px $nord1light,
+  inset -3px -3px 3px $nord1dark;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: $nord1;
+  margin: 22.5px 0;
+}
+
+.playing, .list-item:hover {
+  background-color: $nord10;
+  box-shadow: inset 3px 3px 3px #719bce,
+  inset -3px -3px 3px #4b678a;
+}
+
+#playlist {
   .playlist-item {
-    padding: 1.25em 0.5em;
     display: grid;
     grid-template-columns: 70% 15% 15%;
-    margin: 22.5px 0;
-
-    &.timestamp {
-      box-shadow:  6px 6px 10px $nord0dark,
-      -6px -6px 10px $nord0light,
-      inset 3px 3px 3px $nord1light,
-      inset -3px -3px 3px $nord1dark;
-      border-radius: 10px;
-      cursor: pointer;
-      background-color: $nord1;
-    }
 
     &.header {
       font-size: 1.25em;
       border-bottom: 2px solid $nord3;
     }
 
-    &.playing, &.timestamp:hover {
-      background-color: $nord10;
-      box-shadow: inset 3px 3px 3px #719bce,
-      inset -3px -3px 3px #4b678a;
-
-    }
 
     .title {
       margin: auto 0;
@@ -377,7 +453,7 @@ main {
 
     .enable {
       margin: 0 auto;
-      
+
       input[type=checkbox] {
         cursor: pointer;
         vertical-align: middle;
@@ -414,8 +490,30 @@ main {
 }
 
 #player-instructions {
-  text-align: left;
-  padding: 20px;
+  // text-align: left;
+  height: 100vh;
+  padding: 10vh 3vh 0 3vh;
+
+  .get-started {
+    padding-top: 25px;
+
+    h3 {
+      padding-bottom: 10px;
+    }
+
+    a {
+      color: $nord6;
+      font-weight: bold;
+      font-size: 1.25em;
+      padding: 15px 30px;
+      background: linear-gradient(135deg, 
+        $nord10 0%, 
+        $nord9 25%, 
+        $nord8 75%, 
+        $nord7 100%);
+      border-radius: 30px;
+    }
+  }
 }
 
 #ideas {
@@ -425,4 +523,12 @@ main {
     padding-bottom: 20px;
   }
   padding: 20px;
+}
+
+.red-list-item {
+  background-color: $nord11;
+  box-shadow: 6px 6px 10px $nord0dark,
+    -6px -6px 10px $nord0light,
+    inset 3px 3px 3px $nord11light,
+    inset -3px -3px 3px $nord11dark;
 }

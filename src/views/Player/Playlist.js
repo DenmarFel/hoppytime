@@ -3,7 +3,7 @@ import Timestamp from './Timestamp';
 
 export default function Playlist(props) {
 	return (
-		<ul id="playlist">
+		<ul id="playlist" className="list">
 			<li className="playlist-item header">
 					<div className="title">Title</div>
 					<div className="duration"><i className="bi bi-clock" title="Duration"/></div>

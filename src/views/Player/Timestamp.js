@@ -21,7 +21,7 @@ export default function Timestamp(props) {
 		<li 
 			className={`
 				playlist-item
-				timestamp 
+				list-item 
 				${props.indx === props.currentTimestampIndx ? 'playing' : ''}
 				${enabled ? '' : 'disabled'}
 			`} 

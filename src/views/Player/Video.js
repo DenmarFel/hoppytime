@@ -38,14 +38,14 @@ export default function Video(props) {
 				modestbranding: 1,
 				rel: 0,
 				playsinline: 1,
-				autoplay: 1,
+				autoplay: props.tourEnabled ? 0 : 1,
 			},
 			events: {
 				onReady: event => setVideoPlayer(event.target),
 				onStateChange: onPlayerStateChange,
 			}
 		});
-		props.setPlaying(true);
+		props.setPlaying(props.tourEnabled ? false : true);
 	};
 
 	const onPlayerStateChange = (event) => {
@@ -88,7 +88,7 @@ export default function Video(props) {
 	useInterval(updateTimer, 100);
 
 	return (
-		<div id="videoContainer">
+		<div id="video-container" data-intro="hello world!">
 			<div id="video"></div>
 		</div>
 	)
