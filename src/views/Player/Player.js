@@ -10,6 +10,7 @@ import MediaButton from './Controls/MediaButton';
 import Playlist from './Playlist';
 
 export default function Player(props) { 
+	const [timestampsLoaded, setTimestampsLoaded] = useState(false);
 	const [timestampData, setTimestampData] = useState({
 		videoId: '',
 		title: '',
@@ -22,7 +23,7 @@ export default function Player(props) {
 			},
 		]
 	});
-	const [currentTimestampIndx, setCurrentTimestampIndx] = useState(0);
+	const [currentTimestampIndx, setCurrentTimestampIndx] = useState(-1);
 	const [currentTime, setCurrentTime] = useState(0);
 	const [newTime, setNewTime] = useState(0);
 	const [isPlaying, setPlaying] = useState(false);
@@ -38,6 +39,7 @@ export default function Player(props) {
 				setCurrentTimestampIndx(0);
 				setTimestampData(response.data);
 				pushHistory([response.data.videoId, response.data.title]);
+				setTimestampsLoaded(true);
 			});
 	}, [props.videoId])
 
@@ -107,7 +109,7 @@ export default function Player(props) {
 		setDisabledIndexes(disabledIndexesCopy);
 	};
 
-	if (props.videoId) {
+	if (timestampsLoaded) {
 		return (
 			<div id="player">
 				<Tour tourEnabled={props.tourEnabled} />
@@ -157,5 +159,7 @@ export default function Player(props) {
 						onTimestampToggle={(indx, reason) => handleTimestampToggle(indx, reason)} />
 			</div>
 		)
-	} 
+	} else {
+		return <div>Loading...</div>
+	}
 }

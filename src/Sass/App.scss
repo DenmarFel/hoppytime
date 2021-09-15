@@ -411,7 +411,6 @@ main {
 }
 
 .list-item {
-  padding: 1.25em 0.5em;
   box-shadow:  6px 6px 10px $nord0dark,
   -6px -6px 10px $nord0light,
   inset 3px 3px 3px $nord1light,
@@ -420,6 +419,7 @@ main {
   cursor: pointer;
   background-color: $nord1;
   margin: 22.5px 0;
+  padding: 1.25em 0.5em;
 }
 
 .playing, .list-item:hover {
@@ -436,6 +436,8 @@ main {
     &.header {
       font-size: 1.25em;
       border-bottom: 2px solid $nord3;
+      margin: 22.5px 0;
+      padding: 1.25em 0.5em;
     }
 
 

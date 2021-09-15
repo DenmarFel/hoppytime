@@ -33,6 +33,8 @@ export default function Video(props) {
 		new window.YT.Player('video', {
 			videoId: props.videoId,
 			playerVars: {
+				start: getTimestamp().start,
+				end: getTimestamp().end,
 				enablejsapi: 1,
 				controls: 0,
 				modestbranding: 1,
@@ -58,12 +60,18 @@ export default function Video(props) {
 
 	const loadPlaylist = () => {
 		if (!videoPlayer) return;
-		videoPlayer.loadVideoById({
+		let params = {
 			'videoId': props.videoId,
 			'startSeconds': getTimestamp().start,
 			'endSeconds': getTimestamp().end
-		});
-		props.setPlaying(true);
+		}
+		// if (props.tourEnabled) {
+		// 	videoPlayer.cueVideoById(params);
+		// 	props.setPlaying(false);
+		// } else {
+			videoPlayer.loadVideoById(params);
+			props.setPlaying(true);
+		// }
 	};
 
 	const getTimestamp = (indx = props.currentTimestampIndx) => {
