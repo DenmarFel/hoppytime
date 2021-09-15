@@ -25,8 +25,6 @@ function Idea(props) {
 } 
 
 export default function Ideas(props) {
-	const history = useHistory();
-
 	const lofiIdeas = [
 		{
 			link: 'https://www.youtube.com/watch?v=lIsT3fQfwdU',
