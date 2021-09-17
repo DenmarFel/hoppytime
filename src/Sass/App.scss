@@ -61,6 +61,14 @@ $nord11dark: rgba(162, 82, 90, 1);
     inset -3px -3px 3px $nord11dark;
 }
 
+.circular-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+
+  font-size: 2em;
+}
+
 // HTML Elements
 
 * {
@@ -153,14 +161,10 @@ input[type=text] {
 }
 
 button {
-  padding: 0;
   background: $nord1;
   color: $nord6;
   border-style: none;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  font-size: 2em;
+  font-size: 1em;
   box-shadow:  6px 6px 10px $nord0dark,
   -6px -6px 10px $nord0light,
   inset 2px 2px 2px $nord1light,

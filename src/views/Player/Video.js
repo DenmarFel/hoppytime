@@ -5,15 +5,8 @@ export default function Video(props) {
 	const [videoPlayer, setVideoPlayer] = useState(null);
 
 	useEffect(() => {
-		// Enables Youtube iFrame API
-		if (!window.YT) {
-			const tag = document.createElement('script');
-			tag.src = "https://www.youtube.com/iframe_api";
-			window.onYouTubeIframeAPIReady = loadYTPlayer;
-			const firstScriptTag = document.getElementsByTagName('script')[0];
-			firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-		} else {
-			loadYTPlayer();
+		if (window.localStorage["youtube-consent"] === "true") {
+			loadYTIframeAPI();
 		}
 	}, []);
 
@@ -28,6 +21,23 @@ export default function Video(props) {
 	useEffect(() => {
 		if (videoPlayer) videoPlayer.seekTo(props.newTime);
 	}, [props.newTime]);
+
+	const enableYTConsent = () => {
+		window.localStorage["youtube-consent"] === "true";
+		loadYTIframeAPI();
+	}
+
+	const loadYTIframeAPI = () => {
+		if (!window.YT) {
+			const tag = document.createElement('script');
+			tag.src = "https://www.youtube.com/iframe_api";
+			window.onYouTubeIframeAPIReady = loadYTPlayer;
+			const firstScriptTag = document.getElementsByTagName('script')[0];
+			firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+		} else {
+			loadYTPlayer();
+		}
+	};
 
 	const loadYTPlayer = () => {
 		new window.YT.Player('video', {
@@ -93,7 +103,9 @@ export default function Video(props) {
 
 	return (
 		<div id="video-container" data-intro="hello world!">
-			<div id="video"></div>
+			<div id="video">
+				<button onClick={enableYTConsent}>Enable Youtube</button>
+			</div>
 		</div>
 	)
 };

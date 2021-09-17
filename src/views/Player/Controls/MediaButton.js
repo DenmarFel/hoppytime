@@ -47,7 +47,7 @@ export default function MediaButton(props) {
 	return (
 		<div className="media-btn-container">
 			<button 
-				className={`media-btn ${props.purpose}`} 
+				className={`media-btn circular-btn ${props.purpose}`} 
 				onClick={props.onClick} 
 				title={title}>{text}</button>
 		</div>
