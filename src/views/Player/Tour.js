@@ -30,7 +30,6 @@ export default function Tour(props) {
 		}
 	]);
 
-
 	return (
 		<Steps 
 			enabled={stepsEnabled}

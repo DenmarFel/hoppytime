@@ -109,8 +109,16 @@ export default function Player(props) {
 				}
 				setShuffledIndexes(tempShuffledIndexes);
 			} else {
+				while (disabledIndexes.includes(indx)) {
+					if (reason === 'prev') {
+						indx--
+					} else {
+						indx++
+					}
+				}
 				setCurrentTimestampIndx(indx);
 			}
+
 		}
 
 		setPlaying(true);

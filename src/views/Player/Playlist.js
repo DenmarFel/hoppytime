@@ -5,8 +5,8 @@ export default function Playlist(props) {
 	return (
 		<ul id="playlist" className="list">
 			<li className="playlist-item header">
-					<div className="title">Title</div>
-					<div className="duration"><i className="bi bi-clock" title="Duration"/></div>
+					<div className="title text-left">Title</div>
+					<div className="duration text-right"><i className="bi bi-clock" title="Duration"/></div>
 			</li>
 			{props.timestampData.timestamps.map((timestamp, indx) => 
 				<Timestamp 

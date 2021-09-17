@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 export default function PlayerInstructions(props) {
 
 	return (
-    <div id="player-instructions">
+    <div id="player-instructions" className="text-center">
 			<div className="intro">
 				<h1>**name placeholder**</h1>
 				<p>

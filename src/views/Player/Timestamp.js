@@ -26,8 +26,8 @@ export default function Timestamp(props) {
 				${enabled ? '' : 'disabled'}
 			`} 
 			onClick={handleTimestampClick} >
-			<div className="title">{props.title}</div>
-			<div className="duration">{getFormattedDuration(props.duration)}</div>
+			<div className="title text-left">{props.title}</div>
+			<div className="duration text-right">{getFormattedDuration(props.duration)}</div>
 			<div className="enable">
 				<Toggle title="Disable timestamp" checked={enabled} onChange={handleTimestampToggle} />
 			</div>

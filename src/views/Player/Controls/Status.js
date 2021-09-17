@@ -15,11 +15,11 @@ export default function Status(props) {
 	};
 
 	return (
-		<div id="status">
+		<div id="status" className="text-center">
 			<h2>{props.timestamp.title}</h2>
 			<div id="progress">
-				<div className="left">{getFormattedDuration(currentTime)}</div>
-				<div className="right">{getFormattedDuration(props.timestamp.end - props.timestamp.start)}</div>
+				<div className="text-left">{getFormattedDuration(currentTime)}</div>
+				<div className="text-right">{getFormattedDuration(props.timestamp.end - props.timestamp.start)}</div>
 				<input 
 					className="slider"
 					type="range" 

@@ -15,7 +15,7 @@ export default function History(props) {
 	}
 
 	return (
-		<div>
+		<div id="history" className="text-center">
 			<h1>History</h1>
 			<ul className="list">
 				<li className="list-item red-list-item" onClick={handleClearHistory}>Clear History</li>

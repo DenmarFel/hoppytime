@@ -1,9 +1,6 @@
 @import "../../node_modules/nord/src/sass/nord.scss";
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css");
 
-//Sizes
-
-
 //Box Shadows
 $nord0dark: rgba(37, 42, 51, 0.8);
 $nord0light: rgba(55, 62, 77, 0.5);
@@ -12,12 +9,114 @@ $nord1dark: rgba(47, 53, 66, 0.8);
 $nord11light: rgba(220, 112, 122, 1);
 $nord11dark: rgba(162, 82, 90, 1);
 
-body {
-  text-align: center;
-  font-size: 1em;
-  font-family: 'Poppins', sans-serif;
-  background-color: $nord0;
+// Shared
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-center {
+  text-align: center
+}
+
+.list {
+  padding: 0 20px;
+  margin: 30px auto 0 auto;
   color: $nord6;
+  list-style-type: none;
+}
+
+.list-item {
+  padding: 20px 10px;
+  margin: 22.5px 0;
+  border-radius: 20px;
+
+  background: $nord1;
+  box-shadow:  6px 6px 10px $nord0dark,
+  -6px -6px 10px $nord0light,
+  inset 3px 3px 3px $nord1light,
+  inset -3px -3px 3px $nord1dark;
+
+  cursor: pointer;
+
+  &:hover, &.playing {
+    background: $nord10;
+    box-shadow: inset 3px 3px 3px #719bce,
+    inset -3px -3px 3px #4b678a;
+  }
+
+  &.disabled {
+    color: $nord3;
+  }
+}
+
+.red-list-item {
+  background: $nord11;
+  box-shadow: 6px 6px 10px $nord0dark,
+    -6px -6px 10px $nord0light,
+    inset 3px 3px 3px $nord11light,
+    inset -3px -3px 3px $nord11dark;
+}
+
+// HTML Elements
+
+* {
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: $nord0;
+  color: $nord6;
+}
+
+nav {
+  position: fixed;
+  grid-area: sideNav;
+  padding: 27.5px 15px 27.5px 15px;
+  border-bottom-right-radius: 20px;
+  background: $nord0;
+  font-size: 1.25em;
+  text-align: left;
+  
+  @media only screen and (max-width: 1280px) {
+    display: none;
+  }
+
+  &.open {
+    position: fixed;
+    z-index: 3;
+    top: 0;
+    display: block;
+    width: 256px;
+    height: 100vh;
+  }
+
+  ul {
+    padding: 0;
+    margin: auto;
+    list-style-type: none;
+  }
+
+  li {
+    padding: 15px 15px;
+    border-radius: 20px;
+
+    &:hover {
+      background: $nord1;
+      box-shadow:  6px 6px 10px $nord0dark,
+      -6px -6px 10px $nord0light,
+      inset 2px 2px 2px $nord1light,
+      inset -2px -2px 2px $nord1dark;;
+    }
+  }
+}
+
+main {
+  padding: 30px;
+  grid-area: main;
 }
 
 a, a:hover, a:focus, a:active {
@@ -25,9 +124,71 @@ a, a:hover, a:focus, a:active {
   color: inherit;
 }
 
+input[type=text] {
+  box-sizing: border-box;
+  width: 95%;
+  padding: 10px 20px 10px 20px;
+  border-style: hidden;
+  border-radius: 20px;
+  background: $nord2;
+  color: $nord6;
+  box-shadow:  6px 6px 10px $nord0dark,
+  -6px -6px 10px $nord0light;
+
+  font-size: 1.1em;
+
+  outline: none;
+
+  &:focus {
+    background: $nord3;
+  }
+}
+
+button {
+  padding: 0;
+  background: $nord1;
+  color: $nord6;
+  border-style: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 2em;
+  box-shadow:  6px 6px 10px $nord0dark,
+  -6px -6px 10px $nord0light,
+  inset 2px 2px 2px $nord1light,
+  inset -2px -2px 2px $nord1dark;
+  cursor: pointer;
+
+  @media (hover) {
+    &:hover {
+      background: $nord2;
+      box-shadow:  6px 6px 10px $nord0light,
+      -6px -6px 10px $nord0dark,
+      inset 2px 2px 2px $nord1dark,
+      inset -2px -2px 2px $nord1light;
+    }
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &.enabled {
+    color: $nord8
+  }
+}
+
+// View/Component Specific
+
+// Tour
 .customTour {
+  & * {
+    font-family: 'Poppins', sans-serif !important;
+    text-align: left;
+  }
+
   &.introjs-tooltip {
-    background-color: $nord1 !important;
+    background: $nord1;
   }
 
   & .introjs-arrow {
@@ -49,17 +210,7 @@ a, a:hover, a:focus, a:active {
   }
 
   & .introjs-skipbutton {
-    color: $nord4;
-  }
-
-  & .introjs-tooltiptext {
-    font-family: 'Poppins', sans-serif !important;
-    text-align: left;
-  }
-  
-  & .introjs-tooltiptext * {
-    font-family: 'Poppins', sans-serif !important;
-    text-align: left;
+    color: $nord6;
   }
 
   & .introjs-bullets ul li a {
@@ -72,8 +223,8 @@ a, a:hover, a:focus, a:active {
 
   & .introjs-button {
     border: none;
-    border-radius: 0.5em;
-    background-color: $nord3;
+    border-radius: 20px;
+    background: $nord3;
     text-shadow: none;
     color: $nord6;
 
@@ -81,83 +232,17 @@ a, a:hover, a:focus, a:active {
       color: $nord1;
     }
 
-    &.introjs-disabled {
-      color: $nord1;
-    }
-
-    &:hover,&:focus{
-      background-color: $nord10;
+    &:hover, &:focus{
+      background: $nord10;
       color: $nord6;
     }
   }
 }
 
-button {
-  padding: 0;
-  background-color: $nord1;
-  color: $nord6;
-
-  border-style: none;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-
-  font-size: 2em;
-  box-shadow:  6px 6px 10px $nord0dark,
-  -6px -6px 10px $nord0light,
-  inset 2px 2px 2px $nord1light,
-  inset -2px -2px 2px $nord1dark;
-  cursor: pointer;
-
-  @media (hover) {
-    &:hover {
-      background-color: $nord2;
-      box-shadow:  6px 6px 10px $nord0light,
-      -6px -6px 10px $nord0dark,
-      inset 2px 2px 2px $nord1dark,
-      inset -2px -2px 2px $nord1light;
-    }
-  }
-
-  &:active {
-    transform: scale(0.95);
-  }
-}
-
-input[type=text] {
-  box-sizing: border-box;
-  padding: 10px 20px 10px 20px;
-  border-style: hidden;
-  border-radius: 22px;
-  background-color: $nord2;
-  color: $nord6;
-  
-  box-shadow:  6px 6px 10px $nord0dark,
-  -6px -6px 10px $nord0light;
-
-  width: 95%;
-
-  font-family: 'Rubik', sans-serif;
-  font-size: 1.1em;
-
-  outline: none;
-
-  &:focus {
-    background-color: $nord3;
-  }
-}
-
-.disabled {
-  color: $nord3;
-}
-
-.enabled {
-  color: $nord8
-}
-
+// App
 #app {
-  margin: auto;
   max-width: 1280px;
+  margin: auto;
 
   @media only screen and (max-width: 900px) {
     display: grid;
@@ -181,68 +266,15 @@ input[type=text] {
   }
 }
 
+// Nav View
 #overlay {
   position: fixed;
+  z-index: 2;
   display: block;
   width: 100%;
   height: 100%;
   background: rgba(59, 66, 82, 0.9);
-  z-index: 2;
   backdrop-filter: blur(3px);
-}
-
-nav {
-  grid-area: sideNav;
-  background-color: $nord0;
-  position: fixed;
-  padding: 27.5px 15px 27.5px 15px;
-
-  border-bottom-right-radius: 20px;
-  font-size: 1.25em;
-
-  text-align: left;
-  
-  @media only screen and (max-width: 1280px) {
-    display: none;
-  }
-
-  &.open {
-    display: block;
-    height: 100vh;
-    width: 256px;
-    position: fixed;
-    top: 0;
-    z-index: 3;
-  }
-
-  ul {
-    list-style-type: none;
-    padding: 0;
-    margin: auto;
-  }
-
-  li {
-    padding: 15px 15px;
-    border-radius: 30px;
-
-    &:hover {
-      background-color: $nord1;
-      box-shadow:  6px 6px 10px $nord0dark,
-      -6px -6px 10px $nord0light,
-      inset 2px 2px 2px $nord1light,
-      inset -2px -2px 2px $nord1dark;;
-    }
-  }
-
-  a {
-    color: $nord6;
-    text-decoration: none;
-  }
-}
-
-main {
-  padding: 30px 0;
-  grid-area: main;
 }
 
 #nav-menu-btn {
@@ -261,31 +293,24 @@ main {
 
 #player-form {
   grid-area: search;
-  padding-top: 27.5px;
-  padding-bottom: 7.5px;
+  padding: 27.5px 0 7.5px 0;
 }
 
-#player {
-  &.display-none {
-    display: none;
-  }
-}
-
+// Video Component
 #video-container {
   position: relative;
   overflow: hidden;
-  margin: auto;
   width: 90%;
   padding-bottom: 50.60%;
   border-radius: 20px;
-
+  margin: auto;
   box-shadow:  6px 6px 10px $nord0dark,
   -6px -6px 10px $nord0light;
 
   @media only screen and (min-width: 768px) {
-    margin: auto;
     width: 704px;
     padding-bottom: 396px;
+    margin: auto;
   }
 }
 
@@ -298,75 +323,66 @@ main {
   border-radius: 20px;
 }
 
+// Status Component
 #status {
   margin-top: 45px;
-  
+
   #progress {
     display: grid;
-    margin: auto;
     width: 80%;
-
-    .left {
-      text-align: left;
-    }
-
-    .right {
-      text-align: right;
-    }
+    margin: auto;
 
     .slider {
       grid-column: 1 / span 2;
       grid-row: 2;
-
-      background-color: inherit;
+      border: none;
+      background: inherit;
       -webkit-appearance: none;
       cursor: pointer;
-      border: none;
-
 
       &::-webkit-slider-runnable-track {
+        height: 5px;
         margin-top: 5px;
         background: linear-gradient(135deg, 
           $nord10 0%, 
           $nord9 25%, 
           $nord8 75%, 
           $nord7 100%);
-        height: 5px;
         box-shadow:  6px 6px 10px $nord0dark,
         -6px -6px 10px $nord0light;
       }
 
       &::-webkit-slider-thumb {
         -webkit-appearance: none;
-        height: 1.25em;
         width: 1.25em;
+        height: 1.25em;
         border-radius: 50%;
         margin-top: -5px;
         background: $nord6;
     }
 
       &::-moz-range-track {
-        background: $nord3;
         height: 5px;
+        background: $nord3;
         box-shadow:  6px 6px 10px $nord0dark,
         -6px -6px 10px $nord0light;
       }
 
       &::-moz-range-progress {
+        height: 5px;
         background:linear-gradient(135deg, 
           $nord10 0%, 
           $nord9 25%, 
           $nord8 75%, 
           $nord7 100%);
-        height: 5px;
       }
 
       &::-moz-range-thumb {
         height: 1.25em;
         width: 1.25em;
-        background: $nord6;
         border-radius: 50%;
         border: none;
+        background: $nord6;
         box-shadow:  6px 6px 10px $nord0dark,
         -6px -6px 10px $nord0light;
        }
@@ -374,124 +390,94 @@ main {
   }
 }
 
-#controls {
+// MediaButtons Component
+#media-buttons {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
+  grid-gap: 10px;
+  max-width: 400px;
+  margin: 20px auto;
+  
+  .media-btn-container {
+    position: relative;
+    width: 100%;
+    padding-bottom : 100%; /* = width for a 1:1 aspect ratio */
+  }
 
-  #media-buttons {
-    
-    max-width: 400px;
-    margin: 20px auto;
-    display: grid;
-    grid-template-columns: auto auto auto auto auto;
-    grid-gap: 10px;
-    
-    .media-btn-container {
-      position: relative;
-      width: 100%;
-      padding-bottom : 100%; /* = width for a 1:1 aspect ratio */
-    }
-
-    .media-btn {
-      position: absolute;
-      height: 100%;
-      width: 100%;
-      max-height: 60px;
-      max-width: 60px;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
+  .media-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    max-width: 60px;
+    max-height: 60px;
   }
 }
 
-.list {
-  padding: 0 20px;
-  margin: 30px auto 0 auto;
-  list-style-type: none;
-  color: $nord6;
-}
+// Playlist Component
+.playlist-item {
+  display: grid;
+  grid-template-columns: 70% 15% 15%;
 
-.list-item {
-  box-shadow:  6px 6px 10px $nord0dark,
-  -6px -6px 10px $nord0light,
-  inset 3px 3px 3px $nord1light,
-  inset -3px -3px 3px $nord1dark;
-  border-radius: 10px;
-  cursor: pointer;
-  background-color: $nord1;
-  margin: 22.5px 0;
-  padding: 1.25em 0.5em;
-}
+  &.header {
+    padding: 1.25em 0.5em;
+    border-bottom: 2px solid $nord3;
+    margin: 22.5px 0;
+    font-size: 1.25em;
+  }
 
-.playing, .list-item:hover {
-  background-color: $nord10;
-  box-shadow: inset 3px 3px 3px #719bce,
-  inset -3px -3px 3px #4b678a;
-}
+  .title {
+    margin: auto 0;
+    padding-left: 20px;
+  }
 
-#playlist {
-  .playlist-item {
-    display: grid;
-    grid-template-columns: 70% 15% 15%;
+  .duration {
+    margin: auto 0;
+    padding-right: 20px;
+  }
 
-    &.header {
-      font-size: 1.25em;
-      border-bottom: 2px solid $nord3;
-      margin: 22.5px 0;
-      padding: 1.25em 0.5em;
-    }
+  .enable {
+    margin: 0 auto;
 
-    .title {
+    input[type=checkbox] {
+      position: relative;
+      -webkit-appearance: none;
+      vertical-align: middle;
+      width: 40px;
+      height: 20px;
+      border-radius: 20px;
       margin: auto 0;
-      text-align: left;
-      padding-left: 20px;
-    }
+      background: $nord3;
+      cursor: pointer;
+      outline: none;
 
-    .duration {
-      margin: auto 0;
-      text-align: right;
-      padding-right: 20px;
-    }
+      &:after {
+        content: "";
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        background: $nord1;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+      }
 
-    .enable {
-      margin: 0 auto;
+      &:checked {
+        background: $nord8;
+      }
 
-      input[type=checkbox] {
-        cursor: pointer;
-        vertical-align: middle;
-        margin: auto 0;
-        position: relative;
-        -webkit-appearance: none;
-        outline: none;
-        width: 40px;
-        height: 20px;
-        background-color: $nord3;
-        border-radius: 50px;
-
-        &:after {
-          content: "";
-          position: absolute;
-          top: 3px;
-          left: 3px;
-          background: $nord1;
-          width: 14px;
-          height: 14px;
-          border-radius: 50%;
-        }
-
-        &:checked {
-          background-color: $nord8;
-        }
-
-        &:checked:after {
-          left: 22px;
-        }
+      &:checked:after {
+        left: 22px;
       }
     }
   }
 }
 
+// Player Instructions View
 #player-instructions {
-  padding: 10vh 3vh 0 3vh;
+  padding-top: 10%;
 
   .get-started {
     padding-top: 25px;
@@ -501,33 +487,16 @@ main {
     }
 
     a {
-      color: $nord6;
-      font-weight: bold;
-      font-size: 1.25em;
       padding: 15px 30px;
+      border-radius: 20px;
       background: linear-gradient(135deg, 
         $nord10 0%, 
         $nord9 25%, 
         $nord8 75%, 
         $nord7 100%);
-      border-radius: 30px;
+        color: $nord6;
+      font-weight: bold;
+      font-size: 1.25em;
     }
   }
-}
-
-#ideas {
-  text-align: left;
-
-  div {
-    padding-bottom: 20px;
-  }
-  padding: 20px;
-}
-
-.red-list-item {
-  background-color: $nord11;
-  box-shadow: 6px 6px 10px $nord0dark,
-    -6px -6px 10px $nord0light,
-    inset 3px 3px 3px $nord11light,
-    inset -3px -3px 3px $nord11dark;
 }
