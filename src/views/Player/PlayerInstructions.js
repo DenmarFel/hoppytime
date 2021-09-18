@@ -7,8 +7,8 @@ export default function PlayerInstructions(props) {
 			<div className="intro">
 				<h1>**name placeholder**</h1>
 				<p>
-					Breakdown Youtube videos with timestamps into playable sections. For 
-					lo-fi playlists, movie soundtracks, lecture videos, and more, use 
+					Hop around Youtube videos with timestamps! For lo-fi 
+					playlists, movie soundtracks, lecture videos, and more, use 
 					**name placeholder** to shuffle, skip, and repeat content of your
 					choice! 
 				</p>

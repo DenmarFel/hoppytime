@@ -36,18 +36,15 @@ export default function App() {
         <PlayerForm />
         <main>
           <Switch>
-            <Route path="/ideas">
-              <Ideas />
-            </Route>
-            <Route path="/history">
-              <History />
-            </Route>
+            <Route path="/ideas"><Ideas /></Route>
+            <Route path="/history"><History /></Route>
             <Route path="/player/:videoId" render={props => <Player videoId={props.match.params.videoId} tourEnabled={new URLSearchParams(window.location.search).get("tourEnabled")} />} />
-            <Route path="/">
-              <PlayerInstructions />
-            </Route>
+            <Route path="/"><PlayerInstructions /></Route>
           </Switch>
         </main>
+        <footer>
+          Made with love by Denmar Feliciano
+        </footer>
       </Router>
     </div>
   )

@@ -32,6 +32,7 @@ export default function Video(props) {
 	const loadYTPlayer = () => {
 		new window.YT.Player('video', {
 			videoId: props.videoId,
+			host: 'https://www.youtube-nocookie.com',
 			playerVars: {
 				start: getTimestamp().start,
 				end: getTimestamp().end,
@@ -65,13 +66,8 @@ export default function Video(props) {
 			'startSeconds': getTimestamp().start,
 			'endSeconds': getTimestamp().end
 		}
-		// if (props.tourEnabled) {
-		// 	videoPlayer.cueVideoById(params);
-		// 	props.setPlaying(false);
-		// } else {
-			videoPlayer.loadVideoById(params);
-			props.setPlaying(true);
-		// }
+		videoPlayer.loadVideoById(params);
+		props.setPlaying(true);
 	};
 
 	const getTimestamp = (indx = props.currentTimestampIndx) => {

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from "react-router-dom";
 import { loadHistory, clearHistory } from '../../utils/helpers';
 
-export default function History(props) {
+export default function History() {
 	const [history, setHistory] = useState(loadHistory());
 
 	const items = history.reverse().map(item => 

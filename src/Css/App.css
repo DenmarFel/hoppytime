@@ -85,8 +85,16 @@ nav li:hover {
 }
 
 main {
-  padding: 30px;
+  padding: 30px 30px 45px 30px;
   grid-area: main;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 45px;
+  background: #3B4252;
 }
 
 a, a:hover, a:focus, a:active {
@@ -131,7 +139,7 @@ button {
 button:active {
   transform: scale(0.95);
 }
-button.enabled {
+button .enabled {
   color: #88C0D0;
 }
 
@@ -179,28 +187,29 @@ button.enabled {
 }
 
 #app {
+  position: relative;
+  display: grid;
+  grid-template-rows: max-content;
+  min-height: 100vh;
   max-width: 1280px;
   margin: auto;
 }
 @media only screen and (max-width: 900px) {
   #app {
-    display: grid;
     grid-template-columns: 80px auto;
     grid-template-areas: "navMenuBtn search" "main main";
   }
 }
 @media only screen and (min-width: 900px) {
   #app {
-    display: grid;
     grid-template-columns: auto 768px auto;
     grid-template-areas: ". search ." ". main .";
   }
 }
 @media only screen and (min-width: 1280px) {
   #app {
-    display: grid;
     grid-template-columns: 256px 768px auto;
-    grid-template-areas: "sideNav search ." "sideNav main .";
+    grid-template-areas: ". search ." "sideNav main .";
   }
 }
 
@@ -384,7 +393,7 @@ button.enabled {
 }
 
 #player-instructions {
-  padding-top: 10%;
+  padding-top: 10vh;
 }
 #player-instructions .get-started {
   padding-top: 25px;
