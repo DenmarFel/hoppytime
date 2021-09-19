@@ -43,7 +43,7 @@ export default function App() {
           </Switch>
         </main>
         <footer>
-          Made with love by Denmar Feliciano
+          Made with <i className="bi bi-heart-fill" /> in Southern California
         </footer>
       </Router>
     </div>

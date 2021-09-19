@@ -142,7 +142,7 @@ nav {
 }
 
 main {
-  padding: 30px 30px 45px 30px;
+  padding: 30px 30px 100px 30px;
   grid-area: main;
 }
 
@@ -150,8 +150,15 @@ footer {
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 45px;
-  background: $nord1;
+  height: 100px;
+  padding-top: 20px;
+  border-top: 1px solid $nord3;
+  margin-top: 300px;
+  box-sizing: border-box;
+
+  i {
+    color: $nord11;
+  }
 }
 
 a, a:hover, a:focus, a:active {
@@ -361,7 +368,7 @@ button {
 
 #video-notice {
   padding: 30px;
-  overflow: scroll;
+  overflow: auto;
 
   button {
     border-radius: 20px;
