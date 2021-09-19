@@ -22,8 +22,9 @@ export default function Video(props) {
 		if (videoPlayer) videoPlayer.seekTo(props.newTime);
 	}, [props.newTime]);
 
-	const enableYTConsent = () => {
-		window.localStorage["youtube-consent"] === "true";
+	const enableYTConsent = (event) => {
+		event.preventDefault();
+		window.localStorage["youtube-consent"] = "true";
 		loadYTIframeAPI();
 	}
 
@@ -104,7 +105,17 @@ export default function Video(props) {
 	return (
 		<div id="video-container" data-intro="hello world!">
 			<div id="video">
-				<button onClick={enableYTConsent}>Enable Youtube</button>
+				{ window.localStorage["youtube-consent"] !== "true" && 
+					<form id="video-notice" className="text-center" onSubmit={enableYTConsent}>
+						<p>
+							Content from YouTube is embedded here. As YouTube may collect 
+							personal data and track your viewing behaviour, the video will only 
+							load after you consent to their use of cookies and similar 
+							technologies as described in their <a href="https://www.youtube.com/t/privacy">privacy policy</a>.
+						</p>
+						<button type="submit" autoFocus>Allow content from Youtube</button>
+					</form>
+				}
 			</div>
 		</div>
 	)

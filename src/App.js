@@ -43,7 +43,8 @@ export default function App() {
           </Switch>
         </main>
         <footer>
-          Made with love by Denmar Feliciano
+          <p>© 2021 HoppyTime. All rights reserved.</p> 
+          <p>Made in Southern California with love. <i className="bi bi-heart-fill" /></p>
         </footer>
       </Router>
     </div>

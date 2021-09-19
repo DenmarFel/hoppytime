@@ -8,12 +8,11 @@ function Idea(props) {
 		let url = new URL(link);
 		let videoId = '';
 
-    if (url.hostname === 'www.youtube.com') {
-      videoId = url.searchParams.get('v');
-    } else if (url.hostname === 'youtu.be') {
-      videoId = url.pathname.replace('/','');
-    }
-
+		if (url.hostname === 'www.youtube.com') {
+			videoId = url.searchParams.get('v');
+		} else if (url.hostname === 'youtu.be') {
+			videoId = url.pathname.replace('/','');
+		}
 		history.push('/player/' + videoId);
 	}
 
@@ -31,8 +30,8 @@ export default function Ideas(props) {
 			videoTitle: 'Tibeauthetraveler x Lawrence Walther - Scenery [lofi hip hop/relaxing beats]'
 		},
 		{
-			link: 'https://www.youtube.com/watch?v=f02mOEt11OQ&t=2028s',
-			videoTitle: 'code-fi / lofi beats to code/relax to'
+			link: 'https://www.youtube.com/watch?v=_ITiwPMUzho',
+			videoTitle: '3 AM Coding Session - Lofi Hip Hop Mix [Study & Coding Beats]'
 		},
 		{
 			link: 'https://www.youtube.com/watch?v=EIm4HvDgQCM',

@@ -90,22 +90,44 @@ nav li:hover {
   background: #3B4252;
   box-shadow: 6px 6px 10px rgba(37, 42, 51, 0.8), -6px -6px 10px rgba(55, 62, 77, 0.5), inset 2px 2px 2px rgba(71, 79, 98, 0.5), inset -2px -2px 2px rgba(47, 53, 66, 0.8);
 }
+nav a, nav a:hover, nav a:focus, nav a:active {
+  text-decoration: none;
+}
+nav .nav-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+nav .nav-logo img {
+  padding-right: 10px;
+}
+nav .nav-logo h3 {
+  margin: 0;
+}
 
 main {
-  padding: 30px 30px 45px 30px;
   grid-area: main;
+  padding: 30px 30px 140px 30px;
 }
 
 footer {
   position: absolute;
+  left: 0;
+  right: 0;
   bottom: 0;
-  width: 100%;
-  height: 45px;
-  background: #3B4252;
+  width: 90%;
+  height: 100px;
+  padding: 10px;
+  border-top: 1px solid #4C566A;
+  margin: auto;
+  text-align: center;
+}
+footer i {
+  color: #BF616A;
 }
 
 a, a:hover, a:focus, a:active {
-  text-decoration: none;
   color: inherit;
 }
 
@@ -228,6 +250,9 @@ button .enabled {
 
 #nav-menu-btn {
   grid-area: navMenuBtn;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding-top: 20px;
 }
 @media only screen and (min-width: 900px) {
@@ -244,6 +269,8 @@ button .enabled {
 
 #player-form {
   grid-area: search;
+  display: flex;
+  justify-content: center;
   padding: 27.5px 0 7.5px 0;
 }
 
@@ -268,9 +295,22 @@ button .enabled {
   position: absolute;
   top: 0;
   left: 0;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
   width: 100%;
   height: 100%;
   border-radius: 20px;
+}
+
+#video-notice {
+  padding: 30px;
+  overflow: auto;
+}
+#video-notice button {
+  border-radius: 20px;
+  padding: 10px;
+  font-size: 1.1em;
 }
 
 #status {
@@ -404,11 +444,18 @@ button .enabled {
 #player-instructions .get-started h3 {
   padding-bottom: 10px;
 }
-#player-instructions .get-started a {
+#player-instructions .get-started a div {
+  display: inline-block;
   padding: 15px 30px;
   border-radius: 20px;
   background: linear-gradient(135deg, #5E81AC 0%, #81A1C1 25%, #88C0D0 75%, #8FBCBB 100%);
-  color: #ECEFF4;
   font-weight: bold;
   font-size: 1.25em;
+}
+#player-instructions .get-started a, #player-instructions .get-started a a:hover, #player-instructions .get-started a a:focus, #player-instructions .get-started a a:active {
+  text-decoration: none;
+}
+
+#history a, #history a:hover, #history a:focus, #history a:active {
+  text-decoration: none;
 }

@@ -120,23 +120,50 @@ nav {
       inset -2px -2px 2px $nord1dark;;
     }
   }
+
+  a, a:hover, a:focus, a:active {
+    text-decoration: none;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+
+    img {
+      padding-right: 10px;
+    }
+
+    h3 {
+      margin: 0
+    }
+  }
 }
 
 main {
-  padding: 30px 30px 45px 30px;
   grid-area: main;
+  padding: 30px 30px 140px 30px;
 }
 
 footer {
   position: absolute;
+  left: 0;
+  right: 0;
   bottom: 0;
-  width: 100%;
-  height: 45px;
-  background: $nord1;
+  width: 90%;
+  height: 100px;
+  padding: 10px;
+  border-top: 1px solid $nord3;
+  margin: auto;
+  text-align: center;
+
+  i {
+    color: $nord11;
+  }
 }
 
 a, a:hover, a:focus, a:active {
-  text-decoration: none;
   color: inherit;
 }
 
@@ -292,6 +319,9 @@ button {
 
 #nav-menu-btn {
   grid-area: navMenuBtn;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding-top: 20px;
   
   @media only screen and (min-width: 900px) {
@@ -306,6 +336,8 @@ button {
 
 #player-form {
   grid-area: search;
+  display: flex;
+  justify-content: center;
   padding: 27.5px 0 7.5px 0;
 }
 
@@ -331,9 +363,23 @@ button {
   position: absolute;
   top: 0;
   left: 0;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
   width: 100%;
   height: 100%;
   border-radius: 20px;
+}
+
+#video-notice {
+  padding: 30px;
+  overflow: auto;
+
+  button {
+    border-radius: 20px;
+    padding: 10px;
+    font-size: 1.1em;
+  }
 }
 
 // Status Component
@@ -500,16 +546,29 @@ button {
     }
 
     a {
-      padding: 15px 30px;
-      border-radius: 20px;
-      background: linear-gradient(135deg, 
-        $nord10 0%, 
-        $nord9 25%, 
-        $nord8 75%, 
-        $nord7 100%);
-        color: $nord6;
-      font-weight: bold;
-      font-size: 1.25em;
+      div {
+        display: inline-block;
+        padding: 15px 30px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, 
+          $nord10 0%, 
+          $nord9 25%, 
+          $nord8 75%, 
+          $nord7 100%);
+        font-weight: bold;
+        font-size: 1.25em;
+      }
+
+      &, a:hover, a:focus, a:active {
+        text-decoration: none;
+      }
     }
+  }
+}
+
+// History View
+#history {
+  a, a:hover, a:focus, a:active {
+    text-decoration: none;
   }
 }
