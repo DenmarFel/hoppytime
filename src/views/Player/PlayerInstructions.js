@@ -5,11 +5,11 @@ export default function PlayerInstructions(props) {
 	return (
     <div id="player-instructions" className="text-center">
 			<div className="intro">
-				<h1>**name placeholder**</h1>
+				<h1>HoppyTime</h1>
 				<p>
 					Hop around Youtube videos with timestamps! For lo-fi 
 					playlists, movie soundtracks, lecture videos, and more, use 
-					**name placeholder** to shuffle, skip, and repeat content of your
+					HoppyTime to shuffle, skip, and repeat content of your
 					choice! 
 				</p>
 			</div>

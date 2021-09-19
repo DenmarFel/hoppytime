@@ -90,6 +90,21 @@ nav li:hover {
   background: #3B4252;
   box-shadow: 6px 6px 10px rgba(37, 42, 51, 0.8), -6px -6px 10px rgba(55, 62, 77, 0.5), inset 2px 2px 2px rgba(71, 79, 98, 0.5), inset -2px -2px 2px rgba(47, 53, 66, 0.8);
 }
+nav a, nav a:hover, nav a:focus, nav a:active {
+  text-decoration: none;
+}
+nav .nav-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+nav .nav-logo img {
+  padding-right: 10px;
+}
+nav .nav-logo h3 {
+  margin: 0;
+}
 
 main {
   padding: 30px 30px 45px 30px;
@@ -105,7 +120,6 @@ footer {
 }
 
 a, a:hover, a:focus, a:active {
-  text-decoration: none;
   color: inherit;
 }
 
@@ -244,6 +258,8 @@ button .enabled {
 
 #player-form {
   grid-area: search;
+  display: flex;
+  justify-content: center;
   padding: 27.5px 0 7.5px 0;
 }
 
@@ -268,9 +284,22 @@ button .enabled {
   position: absolute;
   top: 0;
   left: 0;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
   width: 100%;
   height: 100%;
   border-radius: 20px;
+}
+
+#video-notice {
+  padding: 30px;
+  overflow: scroll;
+}
+#video-notice button {
+  border-radius: 20px;
+  padding: 10px;
+  font-size: 1.1em;
 }
 
 #status {
@@ -411,4 +440,11 @@ button .enabled {
   color: #ECEFF4;
   font-weight: bold;
   font-size: 1.25em;
+}
+#player-instructions .get-started a, #player-instructions .get-started a a:hover, #player-instructions .get-started a a:focus, #player-instructions .get-started a a:active {
+  text-decoration: none;
+}
+
+#history a, #history a:hover, #history a:focus, #history a:active {
+  text-decoration: none;
 }
