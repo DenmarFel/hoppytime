@@ -188,9 +188,10 @@ input[type=text] {
 }
 
 button {
+  padding: 0;
+  border-style: none;
   background: $nord1;
   color: $nord6;
-  border-style: none;
   font-size: 1em;
   box-shadow:  6px 6px 10px $nord0dark,
   -6px -6px 10px $nord0light,

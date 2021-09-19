@@ -148,9 +148,10 @@ input[type=text]:focus {
 }
 
 button {
+  padding: 0;
+  border-style: none;
   background: #3B4252;
   color: #ECEFF4;
-  border-style: none;
   font-size: 1em;
   box-shadow: 6px 6px 10px rgba(37, 42, 51, 0.8), -6px -6px 10px rgba(55, 62, 77, 0.5), inset 2px 2px 2px rgba(71, 79, 98, 0.5), inset -2px -2px 2px rgba(47, 53, 66, 0.8);
   cursor: pointer;
