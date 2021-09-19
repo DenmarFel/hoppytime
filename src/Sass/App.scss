@@ -142,19 +142,21 @@ nav {
 }
 
 main {
-  padding: 30px 30px 100px 30px;
   grid-area: main;
+  padding: 30px 30px 140px 30px;
 }
 
 footer {
   position: absolute;
+  left: 0;
+  right: 0;
   bottom: 0;
-  width: 100%;
+  width: 90%;
   height: 100px;
-  padding-top: 20px;
+  padding: 10px;
   border-top: 1px solid $nord3;
-  margin-top: 300px;
-  box-sizing: border-box;
+  margin: auto;
+  text-align: center;
 
   i {
     color: $nord11;
@@ -317,6 +319,9 @@ button {
 
 #nav-menu-btn {
   grid-area: navMenuBtn;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding-top: 20px;
   
   @media only screen and (min-width: 900px) {
@@ -541,16 +546,18 @@ button {
     }
 
     a {
-      padding: 15px 30px;
-      border-radius: 20px;
-      background: linear-gradient(135deg, 
-        $nord10 0%, 
-        $nord9 25%, 
-        $nord8 75%, 
-        $nord7 100%);
-        color: $nord6;
-      font-weight: bold;
-      font-size: 1.25em;
+      div {
+        display: inline-block;
+        padding: 15px 30px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, 
+          $nord10 0%, 
+          $nord9 25%, 
+          $nord8 75%, 
+          $nord7 100%);
+        font-weight: bold;
+        font-size: 1.25em;
+      }
 
       &, a:hover, a:focus, a:active {
         text-decoration: none;

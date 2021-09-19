@@ -107,19 +107,21 @@ nav .nav-logo h3 {
 }
 
 main {
-  padding: 30px 30px 100px 30px;
   grid-area: main;
+  padding: 30px 30px 140px 30px;
 }
 
 footer {
   position: absolute;
+  left: 0;
+  right: 0;
   bottom: 0;
-  width: 100%;
+  width: 90%;
   height: 100px;
-  padding-top: 20px;
+  padding: 10px;
   border-top: 1px solid #4C566A;
-  margin-top: 300px;
-  box-sizing: border-box;
+  margin: auto;
+  text-align: center;
 }
 footer i {
   color: #BF616A;
@@ -248,6 +250,9 @@ button .enabled {
 
 #nav-menu-btn {
   grid-area: navMenuBtn;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding-top: 20px;
 }
 @media only screen and (min-width: 900px) {
@@ -439,11 +444,11 @@ button .enabled {
 #player-instructions .get-started h3 {
   padding-bottom: 10px;
 }
-#player-instructions .get-started a {
+#player-instructions .get-started a div {
+  display: inline-block;
   padding: 15px 30px;
   border-radius: 20px;
   background: linear-gradient(135deg, #5E81AC 0%, #81A1C1 25%, #88C0D0 75%, #8FBCBB 100%);
-  color: #ECEFF4;
   font-weight: bold;
   font-size: 1.25em;
 }

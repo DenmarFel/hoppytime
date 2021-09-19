@@ -13,12 +13,9 @@ export default function PlayerInstructions(props) {
 					choice! 
 				</p>
 			</div>
-
 			<div className="get-started">
-				<h3>
-					Enter a Youtube link above or take a tour!
-				</h3>
-				<Link to="player/lIsT3fQfwdU?tourEnabled=true"> Start tour </Link>
+				<h3>Enter a Youtube link above or take a tour!</h3>
+				<Link to="player/lIsT3fQfwdU?tourEnabled=true"><div>Start tour</div></Link>
 			</div>
     </div>
 	)
