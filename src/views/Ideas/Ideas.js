@@ -72,6 +72,10 @@ export default function Ideas(props) {
 			link: 'https://www.youtube.com/watch?v=RbbwaWPJcCs',
 			videoTitle: 'The Legend of Zelda: Breath of the Wild - FULL OST (OFFICIAL SOUNDTRACK)'
 		},
+		{
+			link: 'https://www.youtube.com/watch?v=I22AqV9zV50',
+			videoTitle: 'Tron: Legacy Ultimate Cut'
+		}
 	]
 
 	const lectureIdeas = [
@@ -92,7 +96,7 @@ export default function Ideas(props) {
 	return (
 		<div id="ideas">
 			<h1>Ideas</h1>
-			<h3>Enjoy some lo-fi</h3>
+			<h3>Enjoy some lofi</h3>
 			<ul className="list">
 				{lofiIdeas.map(idea => 
 					<Idea key={idea.link} link={idea.link} videoTitle={idea.videoTitle} />

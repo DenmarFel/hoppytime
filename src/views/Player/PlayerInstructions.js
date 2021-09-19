@@ -7,7 +7,7 @@ export default function PlayerInstructions(props) {
 			<div className="intro">
 				<h1>HoppyTime</h1>
 				<p>
-					Hop around Youtube videos with timestamps! For lo-fi 
+					Hop around Youtube videos with timestamps! For lofi 
 					playlists, movie soundtracks, lecture videos, and more, use 
 					HoppyTime to shuffle, skip, and repeat content of your
 					choice! 
