@@ -12,6 +12,9 @@ A web application that takes in a YouTube link and returns a video player that a
 - [Contact](#contact)
 
 ## Demo
+Video from demo in Youtube: https://www.youtube.com/watch?v=YF1eYbfbH5k
+<br>
+Video from demo in HoppyTime: https://hoppytime.io/player/YF1eYbfbH5k
 <p align="center">
 <img 
     src="README_images/HoppyTimeDemo.gif" 
