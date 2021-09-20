@@ -1,8 +1,19 @@
-# video-timestamp-player
+<p align="center"><img src="public/logo512.png" alt="HoppyTime Logo" width="300" height="300"/></p>
 
-## Getting Started with Create React App
+# HoppyTime.io - A Video Player for Timestamps in Youtube Videos
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A web application that takes in a YouTube link and returns a video player that allows you to skip, shuffle, repeat, and disable timestamps.
+
+
+
+## Table of Contents
+
+- Demo
+- About the Project
+
+
+## Demo
+## About the Project
 
 ## Available Scripts
 

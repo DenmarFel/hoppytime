@@ -131,22 +131,6 @@ a, a:hover, a:focus, a:active {
   color: inherit;
 }
 
-input[type=text] {
-  box-sizing: border-box;
-  width: 95%;
-  padding: 10px 20px 10px 20px;
-  border-style: hidden;
-  border-radius: 20px;
-  background: #434C5E;
-  color: #ECEFF4;
-  box-shadow: 6px 6px 10px rgba(37, 42, 51, 0.8), -6px -6px 10px rgba(55, 62, 77, 0.5);
-  font-size: 1.1em;
-  outline: none;
-}
-input[type=text]:focus {
-  background: #4C566A;
-}
-
 button {
   padding: 0;
   border-style: none;
@@ -273,6 +257,38 @@ button .enabled {
   display: flex;
   justify-content: center;
   padding: 27.5px 0 7.5px 0;
+}
+#player-form label {
+  width: 90%;
+  border-radius: 20px;
+  box-shadow: 6px 6px 10px rgba(37, 42, 51, 0.8), -6px -6px 10px rgba(55, 62, 77, 0.5);
+}
+#player-form input[type=text] {
+  box-sizing: border-box;
+  width: 85%;
+  padding: 10px 20px 10px 20px;
+  border-style: hidden;
+  border-radius: 20px 0 0 20px;
+  background: #434C5E;
+  color: #ECEFF4;
+  font-size: 1.1em;
+  outline: none;
+}
+#player-form input[type=text]:focus {
+  background: #4C566A;
+  font-size: 1.1em;
+}
+#player-form button[type=submit] {
+  width: 15%;
+  height: 100%;
+  padding: 10px;
+  border-radius: 0 20px 20px 0;
+  background: #434C5E;
+  box-shadow: none;
+  font-size: 1.1em;
+}
+#player-form button[type=submit]:focus, #player-form button[type=submit]:hover {
+  background: #4C566A;
 }
 
 #video-container {

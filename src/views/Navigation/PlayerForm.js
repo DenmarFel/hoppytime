@@ -22,11 +22,19 @@ export default function PlayerForm(props) {
 
 	return (
 		<form id="player-form" onSubmit={event => handleSubmit(event)}>
-			<input 
-				type="text" 
-				value={value} 
-				onChange={event => setValue(event.target.value)} 
-				placeholder="Enter Youtube Link" />
+			<label>
+				<input 
+					type="text" 
+					value={value} 
+					onChange={event => setValue(event.target.value)} 
+					placeholder="Enter Youtube Link" />
+				<button 
+					type="submit" 
+					aria-label="Submit"
+					title="Submit">
+					<i className="bi bi-arrow-right"/>
+				</button>
+			</label>
 		</form>
 	)
 }

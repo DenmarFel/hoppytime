@@ -167,26 +167,6 @@ a, a:hover, a:focus, a:active {
   color: inherit;
 }
 
-input[type=text] {
-  box-sizing: border-box;
-  width: 95%;
-  padding: 10px 20px 10px 20px;
-  border-style: hidden;
-  border-radius: 20px;
-  background: $nord2;
-  color: $nord6;
-  box-shadow:  6px 6px 10px $nord0dark,
-  -6px -6px 10px $nord0light;
-
-  font-size: 1.1em;
-
-  outline: none;
-
-  &:focus {
-    background: $nord3;
-  }
-}
-
 button {
   padding: 0;
   border-style: none;
@@ -340,6 +320,47 @@ button {
   display: flex;
   justify-content: center;
   padding: 27.5px 0 7.5px 0;
+
+  label {
+    width: 90%;
+    border-radius: 20px;
+    box-shadow:  6px 6px 10px $nord0dark,
+    -6px -6px 10px $nord0light;
+  }
+
+  input[type=text] {
+    box-sizing: border-box;
+    width: 85%;
+    padding: 10px 20px 10px 20px;
+    border-style: hidden;
+
+    border-radius: 20px 0 0 20px;
+    background: $nord2;
+    color: $nord6;
+  
+    font-size: 1.1em;
+  
+    outline: none;
+  
+    &:focus {
+      background: $nord3;
+      font-size: 1.1em;
+    }
+  }
+
+  button[type=submit] {
+    width: 15%;
+    height: 100%;
+    padding: 10px;
+    border-radius:  0 20px 20px 0;
+    background: $nord2;
+    box-shadow:  none;
+    font-size: 1.1em;
+
+    &:focus, &:hover {
+      background: $nord3;
+    }
+  }
 }
 
 // Video Component

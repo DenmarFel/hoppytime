@@ -1,6 +1,10 @@
 # From create-react-app
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+#custom
+/.firebase
+firebase.json
+
 # dependencies
 /node_modules
 /.pnp
