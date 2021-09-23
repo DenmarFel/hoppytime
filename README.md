@@ -5,7 +5,7 @@ A web application that takes in a YouTube link and returns a video player that
 allows you to skip, shuffle, repeat, and disable timestamps.
 
 <p align="center">
-<a href="https://www.buymeacoffee.com/denmar" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-yellow.png" alt="Buy Me A Coffee" height="41" width="174"></a>
+<a href="https://www.buymeacoffee.com/denmar"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=denmar&button_colour=434c5e&font_colour=eceff4&font_family=Poppins&outline_colour=eceff4&coffee_colour=FFDD00"></a>
 </p>
 
 
@@ -31,9 +31,9 @@ Video from demo in HoppyTime: https://hoppytime.io/player/YF1eYbfbH5k
 ## Features
 ### Description Timestamps
 Timestamps seen in Youtube Videos are taken from the video description. If 
-timestamps are present in the description, HoppyTime will also make a playlist 
+timestamps are present in the video description, HoppyTime will also make a playlist 
 from that information.
-
+<p align="left">
 <img 
     src="README_images/TimestampsDescription.PNG" 
     width="403"
@@ -41,16 +41,18 @@ from that information.
     alt="HoppyTime Demo"/>
 
 More info: [Youtube Timestamps](https://support.google.com/youtube/answer/9884579?hl=en)
+</p>
 
 ### Comment Timestamps
-Oftentimes, timestamps are not present in the video description and a helpful
+Frequently, timestamps are not present in the video description and a helpful
 viewer comments the relevant timestamps instead. If timestamps are not present 
-in the description, HoppyTime will search through the top 20 comments instead.
-
+in the video description, HoppyTime will search through the top 20 comments 
+instead.
+<p align="left">
 <img 
     src="README_images/TimestampsComments.PNG" 
     alt="HoppyTime Demo"/>
-
+</p>
 
 ### Player Controls
 Play, pause, skip, shuffle, and repeat timestamps like any other music player
@@ -95,6 +97,7 @@ More info: [Web Storage API](https://developer.mozilla.org/en-US/docs/Web/API/We
 
 ### API's
 - [Video Timestamp API](https://github.com/DenmarFel/timestamp-api)
+    - I made this API. It is still a work in progress. It is built with Spring Boot and connects to Youtube Data API under the hood. I plan to open source this once it is polished up.
 - [Youtube Iframe API](https://developers.google.com/youtube/iframe_api_reference)
 
 ## How to Install

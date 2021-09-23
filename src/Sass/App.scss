@@ -196,6 +196,10 @@ button {
   & .enabled {
     color: $nord8
   }
+
+  &:focus {
+    -webkit-tap-highlight-color: transparent;
+  }
 }
 
 // View/Component Specific

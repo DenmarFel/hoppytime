@@ -152,6 +152,9 @@ button:active {
 button .enabled {
   color: #88C0D0;
 }
+button:focus {
+  -webkit-tap-highlight-color: transparent;
+}
 
 .customTour * {
   font-family: "Poppins", sans-serif !important;
